@@ -1,7 +1,7 @@
 # **DJ App: Next-Gen Music Mixing Software**
 
 ## 🎵 **Overview**
-Welcome to **[Your DJ App Name]**, an advanced DJing application designed for professionals and music enthusiasts. Our app provides real-time mixing, beat synchronization, and powerful effects to create seamless and dynamic DJ sets.
+Welcome to **FLUX**, an advanced DJing application designed for professionals and music enthusiasts. Our app provides real-time mixing, beat synchronization, and powerful effects to create seamless and dynamic DJ sets.
 
 ## 🚀 **Key Features**
 ### 🎧 **Core DJ Features**
@@ -31,27 +31,24 @@ Welcome to **[Your DJ App Name]**, an advanced DJing application designed for pr
 - **Microphone Input** – Add live voice input during performances.
 
 ## 🏗 **Tech Stack**
-- **Frontend:** JavaFX (for UI design)
-- **Backend:** Java (Core Logic, Audio Processing)
-- **Networking:** Socket Programming (for real-time sync)
-- **Database:** SQLite (for playlist & track storage)
-- **Audio Engine:** OpenAL / FMOD (for mixing & effects)
+- **Frontend:** React.js (for UI design)
+- **Backend:** Node.js (Express.js for API handling)
+- **Database:** MongoDB (for playlist & track storage)
+- **State Management:** Redux (for UI state management)
+- **Audio Engine:** Web Audio API / Tone.js (for mixing & effects)
 
 ## 👥 **Team Members**
 | Role | Name |
 |------|------|
-| **Product Owner** | [Your Name] |
-| **Scrum Master** | [Team Member] |
-| **Backend Developer** | [Team Member] |
-| **Frontend Developer** | [Team Member] |
-| **UI/UX Designer** | [Team Member] |
-| **QA/Test Engineer** | [Team Member] |
+| **Product Owner** | Umer Farooq |
+| **Scrum Master** | Muhammad Usman |
+| **Team Member** | Muhammad Irtaza Khan |
 
 ## 🛠 **Installation & Setup**
 ### **Prerequisites**
-- Java Development Kit (JDK 11+)
-- JavaFX SDK
-- Gradle (for dependency management)
+- Node.js (v14+)
+- npm or yarn
+- MongoDB (local or cloud instance)
 
 ### **Steps to Run**
 1. Clone the repository:  
@@ -62,27 +59,19 @@ Welcome to **[Your DJ App Name]**, an advanced DJing application designed for pr
    ```sh
    cd dj-app
    ```
-3. Build the project:  
+3. Install dependencies:  
    ```sh
-   ./gradlew build
+   npm install
    ```
-4. Run the application:  
+4. Start the backend server:  
    ```sh
-   ./gradlew run
+   npm run server
    ```
-
-## 📌 **Contributing**
-We welcome contributions! Please follow these steps:
-1. Fork the repository.
-2. Create a new branch (`feature-branch-name`).
-3. Commit your changes (`git commit -m "Add new feature"`).
-4. Push to your fork and submit a **Pull Request**.
-
-## 📜 **License**
-This project is licensed under the **MIT License** – feel free to modify and distribute it.
-
-## 📧 **Contact**
-For any inquiries or issues, reach out via email: [your-email@example.com] or create a GitHub issue.
+5. Start the frontend:  
+   ```sh
+   npm start
+   ```
+6. Open `http://localhost:3000` in your browser.
 
 🚀 **Happy Mixing!** 🎶
 
