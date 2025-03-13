@@ -1,68 +1,29 @@
-const express = require("express");
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
 const app = express();
+const PORT = 5000;
 
-// Middleware to parse JSON
-app.use(express.json());
+// Serve static files (React app)
+app.use(express.static(path.join(__dirname, 'public')));
 
-// 🏠 Home Route
-app.get("/", (req, res) => {
-    res.send("Welcome to My Express App!");
-});
-
-// 📌 About Route
-app.get("/about", (req, res) => {
-    res.send("This is the About Page.");
-});
-
-// 🔐 Login Route (POST Request)
-app.post("/login", (req, res) => {
-    const { username, password } = req.body;
-
-    if (!username || !password) {
-        return res.status(400).json({ error: "Username and password are required" });
+// API to get list of music files
+app.get('/api/music', (req, res) => {
+  const musicDir = path.join(__dirname, 'music');
+  fs.readdir(musicDir, (err, files) => {
+    if (err) {
+      return res.status(500).json({ error: 'Unable to read music directory' });
     }
-    res.json({ message: "Login successful", username });
+    res.json(files);
+  });
 });
 
-// 🛠 Services Route
-app.get("/services", (req, res) => {
-    res.json([
-        { id: 1, name: "Web Development" },
-        { id: 2, name: "App Development" },
-        { id: 3, name: "SEO Optimization" }
-    ]);
+// Serve music files
+app.get('/api/music/:filename', (req, res) => {
+  const filePath = path.join(__dirname, 'music', req.params.filename);
+  res.sendFile(filePath);
 });
 
-app.patch("/user/:username", (req, res) => {
-    const { username } = req.params;
-    const updates = req.body;
-
-    if (!updates.email && !updates.age) {
-        return res.status(400).json({ error: "At least one field (email or age) is required" });
-    }
-
-    res.json({ message: "User updated successfully", username, updates });
-});
-
-app.put("/user/:username", (req, res) => {
-    const { username } = req.params;
-    const { email, age } = req.body;
-
-    
-    if (!email || !age) {
-        return res.status(400).json({ error: "Email and age are required" });
-    }
-
-    res.json({ message: "User updated successfully", user: { username, email, age } });
-});
-
-
-// ❓ 404 Route (For unknown paths)
-app.use((req, res) => {
-    res.status(404).send("404 - Page Not Found");
-});
-
-// 🚀 Start Server
-app.listen(3000, () => {
-    console.log("Server running on http://localhost:3000");
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
