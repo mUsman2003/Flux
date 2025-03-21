@@ -1,31 +1,28 @@
+require('dotenv').config();
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
+const cors = require('cors');
+const pool = require('./db/db');
+
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-// Serve static files (React app)
-app.use(express.static(path.join(__dirname, 'public')));
+// Middleware
+app.use(cors()); // Enable CORS
+app.use(express.json()); // Parse JSON requests
 
-// API to get list of music files
-app.get('/api/music', (req, res) => {
-  const musicDir = path.join(__dirname, 'music');
-  fs.readdir(musicDir, (err, files) => {
-    if (err) {
-      return res.status(500).json({ error: 'Unable to read music directory' });
-    }
-    res.json(files);
-  });
+// Sample API Route
+app.get('/users', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM users;');
+    console.log("Query Result:", result.rows);  // Logs query output to console
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Database Error:", err.message);
+    res.status(500).json({ error: 'Database error' });
+  }
 });
 
-// Serve music files
-app.get('/api/music/:filename', (req, res) => {
-  const filePath = path.join(__dirname, 'music', req.params.filename);
-  res.sendFile(filePath);
-});
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
-
-console.log("hduwhod")
