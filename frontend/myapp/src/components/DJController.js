@@ -49,7 +49,7 @@ const DJController = () => {
 // Inline CSS
 const styles = {
   container: {
-    backgroundColor: "#0d0d0d",
+    backgroundColor: "red",
     color: "white",
     padding: "20px",
     borderRadius: "10px",
