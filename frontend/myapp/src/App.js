@@ -10,7 +10,6 @@ function App() {
         <Taskbar />
         </div>
         <DJController />
-      <Body/>
     </div>
   );
 }
