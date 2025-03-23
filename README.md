@@ -1,4 +1,4 @@
-# **DJ App: Next-Gen Music Mixing Software**
+# **FLUX DJ App: Next-Gen Music Mixing Software**
 
 ## 🎵 **Overview**
 Welcome to **FLUX**, an advanced DJing application designed for professionals and music enthusiasts. Our app provides real-time mixing, beat synchronization, and powerful effects to create seamless and dynamic DJ sets.
