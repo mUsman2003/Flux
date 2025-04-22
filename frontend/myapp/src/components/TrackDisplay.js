@@ -1,7 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ControlButtons from "./ControlButtons";
 
-const TrackDisplay = () => {
+const TrackDisplay = ({ onTrackLoaded, deck }) => {
   const [audioFile, setAudioFile] = useState(null);
   const [audioSrc, setAudioSrc] = useState("");
   const audioRef = useRef(null);
@@ -10,10 +10,25 @@ const TrackDisplay = () => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      const src = URL.createObjectURL(file);
       setAudioFile(file);
-      setAudioSrc(URL.createObjectURL(file));
+      setAudioSrc(src);
     }
   };
+
+  // If the audio file changes, update the ref
+  useEffect(() => {
+    if (audioRef.current) {
+      // Send the audio ref to the parent component
+      onTrackLoaded({
+        audioRef,  // Pass the ref back to parent
+        deck,      // Pass the current deck (A or B)
+        fileName: audioFile ? audioFile.name : null,
+        audioSrc: audioSrc,
+      });
+      console.log(`Current deck: ${deck}`);
+    }
+  }, [audioSrc, audioFile, onTrackLoaded, deck]);
 
   return (
     <div style={styles.track}>
@@ -25,22 +40,21 @@ const TrackDisplay = () => {
         type="file"
         accept="audio/*"
         style={{ display: "none" }}
-        id={`fileInput-${audioSrc}`}
         onChange={handleFileChange}
+        id={`file-input-${deck}`}  // Ensure unique ID for each deck
       />
 
       {/* Plus button to select a song */}
       <button
         style={styles.plusButton}
-        onClick={() => document.getElementById(`fileInput-${audioSrc}`).click()}
+        onClick={() => document.getElementById(`file-input-${deck}`).click()}  // Reference specific deck
       >
         +
       </button>
 
-      {/* Audio player */}
-      {audioSrc && <audio ref={audioRef} src={audioSrc} controls style={styles.audioPlayer} />}
+      {/* Audio element */}
+      {audioSrc && <audio ref={audioRef} src={audioSrc} />}
 
-      {/* Playback Controls */}
       <ControlButtons audioRef={audioRef} />
     </div>
   );
@@ -76,9 +90,15 @@ const styles = {
     cursor: "pointer",
     marginTop: "10px",
   },
-  audioPlayer: {
+  playPauseButton: {
+    backgroundColor: "#4CAF50",
+    color: "white",
+    border: "none",
+    padding: "10px 20px",
+    fontSize: "16px",
+    borderRadius: "5px",
+    cursor: "pointer",
     marginTop: "10px",
-    width: "100%",
   },
 };
 

@@ -1,52 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import TrackDisplay from "./TrackDisplay";
 import Knob from "./Knob";
 import VolumeSlider from "./VolumeSlider";
 import SyncButton from "./SyncButton";
 import JogWheel from "./JogWheel";
-import ControlButtons from "./ControlButtons";
 
 const DJController = () => {
+  const [deckA, setDeckA] = useState(null);  // Deck A state
+  const [deckB, setDeckB] = useState(null);  // Deck B state
+
+  // Called when a track is loaded in TrackDisplay A
+  const handleTrackLoadedA = ({ audioRef, deck, fileName, audioSrc }) => {
+    setDeckA(audioRef);  // Set deck A's audio ref
+  };
+
+  // Called when a track is loaded in TrackDisplay B
+  const handleTrackLoadedB = ({ audioRef, deck, fileName, audioSrc }) => {
+    setDeckB(audioRef);  // Set deck B's audio ref
+  };
+
   return (
     <div style={styles.container}>
       <h2 style={styles.title}>Digital DJ Suite</h2>
-      
+
       {/* Track Displays */}
       <div style={styles.trackContainer}>
-        <TrackDisplay />
-        <TrackDisplay />
+        <TrackDisplay onTrackLoaded={handleTrackLoadedA} deck="A" />
+        <TrackDisplay onTrackLoaded={handleTrackLoadedB} deck="B" />
       </div>
 
       {/* Controls */}
       <div style={styles.controls}>
         <JogWheel />
-        <div style={styles.mixer}>
-          <Knob label="High" />
-          <Knob label="Mid" />
-          <Knob label="Low" />
-          <SyncButton />
-          <VolumeSlider />
-        </div>
-        <div style={styles.mixer}>
-          <Knob label="High" />
-          <Knob label="Mid" />
-          <Knob label="Low" />
-          <SyncButton />
-          <VolumeSlider />
-        </div>
-        <JogWheel />
-      </div>
 
-      {/* Cue & Play Buttons */}
-      <div style={styles.buttonContainer}>
-        <ControlButtons />
-        <ControlButtons />
+        <div style={styles.mixer}>
+          <Knob label="High" />
+          <Knob label="Mid" />
+          <Knob label="Low" />
+          <SyncButton />
+          <VolumeSlider audioRef={deckA} />
+        </div>
+
+        <div style={styles.mixer}>
+          <Knob label="High" />
+          <Knob label="Mid" />
+          <Knob label="Low" />
+          <SyncButton />
+          <VolumeSlider audioRef={deckB} />
+        </div>
+
+        <JogWheel />
       </div>
     </div>
   );
 };
 
-// Inline CSS
 const styles = {
   container: {
     backgroundColor: "red",
@@ -76,11 +84,6 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-  },
-  buttonContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginTop: "20px",
   },
 };
 
