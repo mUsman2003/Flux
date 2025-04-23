@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import useCrossfadeAudio from "./useCrossfadeAudio"; // Import the hook
 
 const ControlButtons = ({ audioRef }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [cuePoints, setCuePoints] = useState([]);
+  const [fadeDuration, setFadeDuration] = useState(1); // Example
   const [selectedCue, setSelectedCue] = useState(null); // Track the selected cue
+  const { crossfadeTo } = useCrossfadeAudio(audioRef, fadeDuration);
 
   const handlePlayPause = () => {
     if (audioRef.current) {
@@ -26,13 +29,11 @@ const ControlButtons = ({ audioRef }) => {
       setCuePoints([...cuePoints, newCue]);
     }
   };
-
   const goToCuePoint = (time, index) => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = time;
-      setSelectedCue(index); // Set the selected cue when clicking
-    }
+    crossfadeTo(time); // Use crossfade instead of setting time directly
+    setSelectedCue(index); // Highlight the cue
   };
+  
 
   const removeCuePoint = (index) => {
     const updatedCues = cuePoints.filter((_, i) => i !== index);
@@ -66,7 +67,23 @@ const ControlButtons = ({ audioRef }) => {
           </div>
         ))}
       </div>
+      <div style={styles.fadeControl}>
+        <label style={styles.fadeLabel}>
+          Fade Duration: {fadeDuration.toFixed(1)}s
+        </label>
+        <input
+          type="range"
+          min="0"
+          max="2"
+          step="0.1"
+          value={fadeDuration}
+          onChange={(e) => setFadeDuration(parseFloat(e.target.value))}
+          style={styles.slider}
+        />
+      </div>
+
     </div>
+
   );
 };
 
@@ -146,6 +163,25 @@ const styles = {
     padding: "6px",
     cursor: "pointer",
   },
+  fadeControl: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "4px",
+    backgroundColor: "#1e1e1e",
+    padding: "10px",
+    borderRadius: "8px",
+    width: "100%",
+  },
+  fadeLabel: {
+    color: "white",
+    fontSize: "14px",
+  },
+  slider: {
+    width: "150px",
+    accentColor: "#1e90ff",
+  }
+  
 };
 
 export default ControlButtons;
