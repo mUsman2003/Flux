@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import useCrossfadeAudio from "./useCrossfadeAudio"; // Import the hook
+import TempoSlider from "./TempoSlider";
 
 const ControlButtons = ({ audioRef }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -33,7 +34,6 @@ const ControlButtons = ({ audioRef }) => {
     crossfadeTo(time); // Use crossfade instead of setting time directly
     setSelectedCue(index); // Highlight the cue
   };
-  
 
   const removeCuePoint = (index) => {
     const updatedCues = cuePoints.filter((_, i) => i !== index);
@@ -50,7 +50,24 @@ const ControlButtons = ({ audioRef }) => {
         <button style={styles.play} onClick={handlePlayPause}>
           {isPlaying ? "⏸" : "▶"}
         </button>
-        <button style={styles.addCue} onClick={addCuePoint}>Add Cue</button>
+        <button style={styles.addCue} onClick={addCuePoint}>
+          Add Cue
+        </button>
+
+        <div style={styles.fadeControl}>
+          <label style={styles.fadeLabel}>
+            Fade Duration: {fadeDuration.toFixed(1)}s
+          </label>
+          <input
+            type="range"
+            min="0"
+            max="2"
+            step="0.1"
+            value={fadeDuration}
+            onChange={(e) => setFadeDuration(parseFloat(e.target.value))}
+            style={styles.slider}
+          />
+        </div>
       </div>
 
       {/* Bottom Row: Cue Buttons */}
@@ -59,31 +76,23 @@ const ControlButtons = ({ audioRef }) => {
           <div key={index} style={styles.cueItem}>
             <button
               onClick={() => goToCuePoint(cue.time, index)}
-              style={selectedCue === index ? styles.selectedCue : styles.gotoCue} // Apply selected style
+              style={
+                selectedCue === index ? styles.selectedCue : styles.gotoCue
+              } // Apply selected style
             >
               {cue.label}
             </button>
-            <button onClick={() => removeCuePoint(index)} style={styles.deleteCue}>🗑</button>
+            <button
+              onClick={() => removeCuePoint(index)}
+              style={styles.deleteCue}
+            >
+              🗑
+            </button>
           </div>
         ))}
       </div>
-      <div style={styles.fadeControl}>
-        <label style={styles.fadeLabel}>
-          Fade Duration: {fadeDuration.toFixed(1)}s
-        </label>
-        <input
-          type="range"
-          min="0"
-          max="2"
-          step="0.1"
-          value={fadeDuration}
-          onChange={(e) => setFadeDuration(parseFloat(e.target.value))}
-          style={styles.slider}
-        />
-      </div>
-
+      <TempoSlider audioRef={audioRef} />
     </div>
-
   );
 };
 
@@ -97,23 +106,23 @@ const styles = {
   },
   topRow: {
     display: "flex",
-    gap: "20px",
+    gap: "10px",
     justifyContent: "center",
     position: "sticky",
     top: 0,
     zIndex: 2,
     backgroundColor: "#121212",
     padding: "10px",
-    borderRadius: "8px",
+    borderRadius: "5px",
   },
   cueList: {
     display: "flex", // Align items horizontally
-    gap: "10px", // Space between cues
-    justifyContent: "flex-start", // Align cues to the left
-    padding: "10px",
+    gap: "5px", // Space between cues
+    justifyContent: "flex-center", // Align cues to the left
+    padding: "5px",
     borderRadius: "8px",
     backgroundColor: "#1e1e1e",
-    maxWidth: "500px", // Adjust this as per your layout
+    maxWidth: "400px", // Adjust this as per your layout
     overflowX: "auto", // Enable horizontal scrolling
     whiteSpace: "nowrap", // Prevent line breaks
   },
@@ -121,7 +130,7 @@ const styles = {
     backgroundColor: "#222",
     color: "white",
     padding: "10px",
-    borderRadius: "50%",
+    borderRadius: "100%",
     border: "none",
     cursor: "pointer",
   },
@@ -137,7 +146,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: "4px",
-    minWidth: "120px", // Adjust the minimum width of cue items
+    minWidth: "100px", // Adjust the minimum width of cue items
   },
   gotoCue: {
     backgroundColor: "#444",
@@ -147,7 +156,8 @@ const styles = {
     padding: "6px 12px",
     cursor: "pointer",
   },
-  selectedCue: { // New style for selected cue
+  selectedCue: {
+    // New style for selected cue
     backgroundColor: "#28a745", // Green color for selection
     color: "white",
     border: "none",
@@ -167,7 +177,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: "4px",
+    gap: "2px",
     backgroundColor: "#1e1e1e",
     padding: "10px",
     borderRadius: "8px",
@@ -180,8 +190,19 @@ const styles = {
   slider: {
     width: "150px",
     accentColor: "#1e90ff",
-  }
-  
+  },
+
+  tempoContainer: {
+    marginTop: "10px",
+    color: "#fff",
+    textAlign: "center",
+  },
+  sliderLabel: {
+    display: "block",
+    marginBottom: "4px",
+    fontSize: "14px",
+    fontWeight: "bold",
+  },
 };
 
 export default ControlButtons;

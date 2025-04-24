@@ -33,7 +33,7 @@ const TrackDisplay = ({ onTrackLoaded, deck }) => {
   return (
     <div style={styles.track}>
       <p>{audioFile ? audioFile.name : "Load Track..."}</p>
-      <div style={styles.waveform}></div>
+      <div style={styles.waveform}></div>     {/*Wave Form Adjustment*/}
 
       {/* Hidden file input */}
       <input

@@ -72,7 +72,7 @@ const styles = {
   trackContainer: {
     display: "flex",
     justifyContent: "space-between",
-    marginBottom: "20px",
+    marginBottom: "150px",
   },
   controls: {
     display: "flex",
