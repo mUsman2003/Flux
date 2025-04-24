@@ -9,7 +9,7 @@ const AddSongModal = ({ onClose, onSelectFile, onSelectDatabaseSong }) => {
       fetch("http://localhost:5000/api/songs")
         .then((res) => res.json())
         .then((data) => setSongs(data))
-        .catch((err) => console.error("Failed to load songs:", err));
+        .catch((err) => console.error("Error fetching songs:", err));
     }
   }, [showList]);
 
