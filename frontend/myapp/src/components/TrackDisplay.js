@@ -1,59 +1,59 @@
 import React, { useState, useRef, useEffect } from "react";
 import ControlButtons from "./ControlButtons";
+import AddSongModal from "./AddSongModal"; // Import modal
 
 const TrackDisplay = ({ onTrackLoaded, deck }) => {
   const [audioFile, setAudioFile] = useState(null);
   const [audioSrc, setAudioSrc] = useState("");
+  const [showModal, setShowModal] = useState(false);
   const audioRef = useRef(null);
 
-  // Handle file selection
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const src = URL.createObjectURL(file);
-      setAudioFile(file);
-      setAudioSrc(src);
-    }
+  // When file is chosen (local)
+  const handleFileUpload = (file) => {
+    const src = URL.createObjectURL(file);
+    setAudioFile(file);
+    setAudioSrc(src);
   };
 
-  // If the audio file changes, update the ref
+  // When song is selected from DB
+  const handleDatabaseSong = (song) => {
+    setAudioFile({ name: song.name });
+    setAudioSrc(song.url);
+  };
+
   useEffect(() => {
     if (audioRef.current) {
-      // Send the audio ref to the parent component
       onTrackLoaded({
-        audioRef,  // Pass the ref back to parent
-        deck,      // Pass the current deck (A or B)
+        audioRef,
+        deck,
         fileName: audioFile ? audioFile.name : null,
         audioSrc: audioSrc,
       });
-      console.log(`Current deck: ${deck}`);
     }
   }, [audioSrc, audioFile, onTrackLoaded, deck]);
 
   return (
     <div style={styles.track}>
       <p>{audioFile ? audioFile.name : "Load Track..."}</p>
-      <div style={styles.waveform}></div>     {/*Wave Form Adjustment*/}
+      <div style={styles.waveform}></div>
 
-      {/* Hidden file input */}
-      <input
-        type="file"
-        accept="audio/*"
-        style={{ display: "none" }}
-        onChange={handleFileChange}
-        id={`file-input-${deck}`}  // Ensure unique ID for each deck
-      />
-
-      {/* Plus button to select a song */}
-      <button
-        style={styles.plusButton}
-        onClick={() => document.getElementById(`file-input-${deck}`).click()}  // Reference specific deck
-      >
+      {/* Add song button */}
+      <button style={styles.plusButton} onClick={() => setShowModal(true)}>
         +
       </button>
 
-      {/* Audio element */}
+      {/* Modal with upload options */}
+      {showModal && (
+        <AddSongModal
+          onClose={() => setShowModal(false)}
+          onSelectFile={handleFileUpload}
+          onSelectDatabaseSong={handleDatabaseSong}
+        />
+      )}
+
+      {/* Audio playback */}
       {audioSrc && <audio ref={audioRef} src={audioSrc} />}
+      <audio ref={audioRef} src={audioSrc} controls />
 
       <ControlButtons audioRef={audioRef} />
     </div>
@@ -87,16 +87,6 @@ const styles = {
     borderRadius: "50%",
     width: "40px",
     height: "40px",
-    cursor: "pointer",
-    marginTop: "10px",
-  },
-  playPauseButton: {
-    backgroundColor: "#4CAF50",
-    color: "white",
-    border: "none",
-    padding: "10px 20px",
-    fontSize: "16px",
-    borderRadius: "5px",
     cursor: "pointer",
     marginTop: "10px",
   },
