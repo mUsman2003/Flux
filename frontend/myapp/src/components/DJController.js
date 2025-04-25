@@ -6,17 +6,17 @@ import SyncButton from "./SyncButton";
 import JogWheel from "./JogWheel";
 
 const DJController = () => {
-  const [deckA, setDeckA] = useState(null);  // Deck A state
-  const [deckB, setDeckB] = useState(null);  // Deck B state
+  const [deckA, setDeckA] = useState(null); // Deck A state
+  const [deckB, setDeckB] = useState(null); // Deck B state
 
   // Called when a track is loaded in TrackDisplay A
   const handleTrackLoadedA = ({ audioRef, deck, fileName, audioSrc }) => {
-    setDeckA(audioRef);  // Set deck A's audio ref
+    setDeckA(audioRef); // Set deck A's audio ref
   };
 
   // Called when a track is loaded in TrackDisplay B
   const handleTrackLoadedB = ({ audioRef, deck, fileName, audioSrc }) => {
-    setDeckB(audioRef);  // Set deck B's audio ref
+    setDeckB(audioRef); // Set deck B's audio ref
   };
 
   return (
