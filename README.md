@@ -53,11 +53,13 @@ Welcome to **FLUX**, an advanced DJing application designed for professionals an
 ### **Steps to Run**
 1. Clone the repository:  
    ```sh
-   git clone https://github.com/your-repo/dj-app.git
+   git clone https://github.com/mUsman2003/Flux.git
    ```
 2. Navigate to the project directory:  
    ```sh
-   cd dj-app
+   cd Flux
+   cd backend
+   cd frontend
    ```
 3. Install dependencies:  
    ```sh
