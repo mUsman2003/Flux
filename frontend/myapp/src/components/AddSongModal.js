@@ -5,6 +5,9 @@ const AddSongModal = ({ onClose, onSelectFile, onSelectDatabaseSong }) => {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [cuePoints, setCuePoints] = useState([]); // Restored cue points state
+  const [selectedCue, setSelectedCue] = useState(null);
+  const [crossfaderValue, setCrossfaderValue] = useState(50); // Added crossfader state
 
   useEffect(() => {
     if (showList) {
@@ -23,31 +26,70 @@ const AddSongModal = ({ onClose, onSelectFile, onSelectDatabaseSong }) => {
   }, [showList]);
 
   // Filter songs based on search term
-  const filteredSongs = songs.filter(song => 
+  const filteredSongs = songs.filter((song) =>
     song.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // Add Cue Point - Restored functionality
+  const addCuePoint = (currentTime) => {
+    const newCue = {
+      label: `CUE ${cuePoints.length + 1}`,
+      time: currentTime,
+    };
+    setCuePoints([...cuePoints, newCue]);
+    setSelectedCue(cuePoints.length);
+  };
+
+  // Handle Crossfader Logic - Fixed to maintain original volume levels
+  const handleCrossfade = (value, deckA, deckB) => {
+    setCrossfaderValue(value);
+    
+    if (deckA?.current && deckB?.current) {
+      // Store original volumes if not already stored
+      if (!deckA.current.originalVolume) {
+        deckA.current.originalVolume = deckA.current.volume;
+      }
+      if (!deckB.current.originalVolume) {
+        deckB.current.originalVolume = deckB.current.volume;
+      }
+      
+      // Calculate new volumes based on crossfader position
+      // When value is 50, both decks play at their original volumes
+      // When value is 0, only deckA plays at original volume, deckB is silent
+      // When value is 100, only deckB plays at original volume, deckA is silent
+      const valueA = value < 50 ? 1 : 1 - (value - 50) / 50;
+      const valueB = value > 50 ? 1 : value / 50;
+
+      deckA.current.volume = valueA * deckA.current.originalVolume;
+      deckB.current.volume = valueB * deckB.current.originalVolume;
+    }
+  };
 
   return (
     <div style={styles.modalOverlay}>
       <div style={styles.modal}>
         <div style={styles.modalHeader}>
           <h3 style={styles.title}>ADD TRACK</h3>
-          <button onClick={onClose} style={styles.closeIcon}>×</button>
+          <button onClick={onClose} style={styles.closeIcon}>
+            ×
+          </button>
         </div>
 
         {!showList ? (
           <div style={styles.optionsContainer}>
-            <button 
-              style={styles.optionButton} 
+            <button
+              style={styles.optionButton}
               onClick={() => document.getElementById("fileInput").click()}
             >
               <div style={styles.optionIcon}>📁</div>
               <div style={styles.optionText}>
                 <span style={styles.optionTitle}>Upload Track</span>
-                <span style={styles.optionDescription}>From your computer</span>
+                <span style={styles.optionDescription}>
+                  From your computer
+                </span>
               </div>
             </button>
-            
+
             <input
               id="fileInput"
               type="file"
@@ -60,17 +102,69 @@ const AddSongModal = ({ onClose, onSelectFile, onSelectDatabaseSong }) => {
                 }
               }}
             />
-            
-            <button 
+
+            <button
               style={styles.optionButton}
               onClick={() => setShowList(true)}
             >
               <div style={styles.optionIcon}>🎵</div>
               <div style={styles.optionText}>
                 <span style={styles.optionTitle}>Track Library</span>
-                <span style={styles.optionDescription}>Choose from database</span>
+                <span style={styles.optionDescription}>
+                  Choose from database
+                </span>
               </div>
             </button>
+            
+            {/* Restored Cue Points UI Section */}
+            <div style={styles.cuePointsSection}>
+              <div style={styles.sectionHeader}>
+                <span style={styles.sectionTitle}>CUE POINTS</span>
+                <button 
+                  style={styles.addCueButton}
+                  onClick={() => addCuePoint(0)} // This should be connected to the current playback time
+                >
+                  + ADD CUE
+                </button>
+              </div>
+              
+              <div style={styles.cuePointsList}>
+                {cuePoints.length === 0 ? (
+                  <div style={styles.noCues}>No cue points added</div>
+                ) : (
+                  cuePoints.map((cue, index) => (
+                    <div 
+                      key={index} 
+                      style={{
+                        ...styles.cuePoint,
+                        backgroundColor: selectedCue === index ? "#444" : "#2a2a2a"
+                      }}
+                      onClick={() => setSelectedCue(index)}
+                    >
+                      <span style={styles.cueLabel}>{cue.label}</span>
+                      <span style={styles.cueTime}>{cue.time.toFixed(2)}s</span>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+            
+            {/* Crossfader UI Section */}
+            <div style={styles.crossfaderSection}>
+              <span style={styles.sectionTitle}>CROSSFADER</span>
+              <div style={styles.crossfaderControl}>
+                <span style={styles.deckLabel}>DECK A</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={crossfaderValue}
+                  onChange={(e) => handleCrossfade(parseInt(e.target.value))}
+                  style={styles.crossfaderSlider}
+                />
+                <span style={styles.deckLabel}>DECK B</span>
+              </div>
+            </div>
           </div>
         ) : (
           <div style={styles.songLibraryContainer}>
@@ -83,7 +177,7 @@ const AddSongModal = ({ onClose, onSelectFile, onSelectDatabaseSong }) => {
                 style={styles.searchInput}
               />
             </div>
-            
+
             <div style={styles.songList}>
               {loading ? (
                 <div style={styles.loadingContainer}>
@@ -108,8 +202,8 @@ const AddSongModal = ({ onClose, onSelectFile, onSelectDatabaseSong }) => {
                 ))
               )}
             </div>
-            
-            <button 
+
+            <button
               style={styles.backButton}
               onClick={() => {
                 setShowList(false);
@@ -132,11 +226,13 @@ const styles = {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.75)",
+    backgroundColor: "rgba(0, 0, 0, 0.9)", // Darker background for better coverage
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     zIndex: 1000,
+    width: "100vw", // Ensure full viewport width
+    height: "100vh", // Ensure full viewport height
   },
   modal: {
     width: "400px",
@@ -211,6 +307,89 @@ const styles = {
   optionDescription: {
     fontSize: "14px",
     color: "#999",
+  },
+  // Cue Points Styles
+  cuePointsSection: {
+    backgroundColor: "#1a1a1a",
+    borderRadius: "6px",
+    padding: "12px",
+    border: "1px solid #444",
+  },
+  sectionHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "10px",
+  },
+  sectionTitle: {
+    fontSize: "14px",
+    fontWeight: "600",
+    color: "#00c3ff",
+    letterSpacing: "1px",
+  },
+  addCueButton: {
+    backgroundColor: "#00c3ff",
+    color: "#000",
+    border: "none",
+    borderRadius: "4px",
+    padding: "4px 8px",
+    fontSize: "12px",
+    fontWeight: "600",
+    cursor: "pointer",
+  },
+  cuePointsList: {
+    maxHeight: "120px",
+    overflowY: "auto",
+  },
+  noCues: {
+    textAlign: "center",
+    color: "#777",
+    padding: "10px",
+    fontSize: "12px",
+  },
+  cuePoint: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "8px 10px",
+    borderRadius: "4px",
+    marginBottom: "4px",
+    cursor: "pointer",
+    transition: "background-color 0.2s ease",
+  },
+  cueLabel: {
+    fontSize: "12px",
+    fontWeight: "600",
+  },
+  cueTime: {
+    fontSize: "12px",
+    color: "#999",
+  },
+  // Crossfader Styles
+  crossfaderSection: {
+    backgroundColor: "#1a1a1a",
+    borderRadius: "6px",
+    padding: "12px",
+    border: "1px solid #444",
+  },
+  crossfaderControl: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: "10px",
+  },
+  crossfaderSlider: {
+    flex: 1,
+    margin: "0 10px",
+    height: "10px",
+    accentColor: "#00c3ff",
+  },
+  deckLabel: {
+    fontSize: "12px",
+    fontWeight: "600",
+    color: "#fff",
+    width: "50px",
+    textAlign: "center",
   },
   songLibraryContainer: {
     display: "flex",

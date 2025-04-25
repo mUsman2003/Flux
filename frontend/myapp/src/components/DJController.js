@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import TrackDisplay from "./TrackDisplay";
 import Knob from "./Knob";
 import VolumeSlider from "./VolumeSlider";
@@ -7,30 +7,40 @@ import JogWheel from "./JogWheel";
 import AudioEffects from "./AudioEffects";
 
 const DJController = () => {
-  const [deckA, setDeckA] = useState(null); // Deck A state
-  const [deckB, setDeckB] = useState(null); // Deck B state
+  const [deckA, setDeckA] = useState(null);
+  const [deckB, setDeckB] = useState(null);
   const [crossfaderValue, setCrossfaderValue] = useState(50); // Middle position
+  const deckAOriginalVolume = useRef(1);
+  const deckBOriginalVolume = useRef(1);
 
   // Called when a track is loaded in TrackDisplay A
   const handleTrackLoadedA = ({ audioRef, deck, fileName, audioSrc }) => {
-    setDeckA(audioRef); // Set deck A's audio ref
+    setDeckA(audioRef);
+    if (audioRef?.current) {
+      deckAOriginalVolume.current = audioRef.current.volume;
+    }
   };
 
   // Called when a track is loaded in TrackDisplay B
   const handleTrackLoadedB = ({ audioRef, deck, fileName, audioSrc }) => {
-    setDeckB(audioRef); // Set deck B's audio ref
+    setDeckB(audioRef);
+    if (audioRef?.current) {
+      deckBOriginalVolume.current = audioRef.current.volume;
+    }
   };
 
   // Handle crossfader change
   const handleCrossfaderChange = (e) => {
     setCrossfaderValue(e.target.value);
-    // Implement actual audio crossfading logic here
+    
+    // Implement improved crossfading logic
     if (deckA?.current && deckB?.current) {
       const valueA = e.target.value < 50 ? 1 : 1 - (e.target.value - 50) / 50;
       const valueB = e.target.value > 50 ? 1 : e.target.value / 50;
       
-      deckA.current.volume = valueA;
-      deckB.current.volume = valueB;
+      // Maintain original volume relationships while crossfading
+      deckA.current.volume = valueA * deckAOriginalVolume.current;
+      deckB.current.volume = valueB * deckBOriginalVolume.current;
     }
   };
 
@@ -61,7 +71,7 @@ const DJController = () => {
             
             <div style={styles.volumeSection}>
               <SyncButton />
-              <VolumeSlider audioRef={deckA} />
+              <VolumeSlider audioRef={deckA} side="left" />
             </div>
           </div>
           
@@ -72,6 +82,7 @@ const DJController = () => {
         <div style={styles.mixer}>
           <div style={styles.crossfaderContainer}>
             <span style={styles.deckLabel}>A</span>
+            <div style={styles.crossfaderLabel}>CROSSFADER</div>
             <input
               type="range"
               min="0"
@@ -103,7 +114,7 @@ const DJController = () => {
             
             <div style={styles.volumeSection}>
               <SyncButton />
-              <VolumeSlider audioRef={deckB} />
+              <VolumeSlider audioRef={deckB} side="right" />
             </div>
           </div>
           
@@ -204,6 +215,14 @@ const styles = {
     borderRadius: "8px",
     border: "1px solid #444",
   },
+  crossfaderLabel: {
+    color: "#999",
+    fontSize: "10px",
+    fontWeight: "bold",
+    textAlign: "center",
+    letterSpacing: "1px",
+    marginBottom: "5px",
+  },
   crossfader: {
     width: "150px",
     margin: "15px 0",
@@ -219,6 +238,7 @@ const styles = {
     color: "#00c3ff",
     fontWeight: "bold",
     fontSize: "16px",
+    margin: "5px 0",
   }
 };
 

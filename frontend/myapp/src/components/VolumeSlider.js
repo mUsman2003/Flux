@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const VolumeSlider = ({ audioRef, side = "left" }) => {
   const [volume, setVolume] = useState(100);
+  const [originalVolume, setOriginalVolume] = useState(1);
+  
+  useEffect(() => {
+    if (audioRef?.current) {
+      setOriginalVolume(audioRef.current.volume);
+    }
+  }, [audioRef]);
   
   const handleVolumeChange = (e) => {
     const newVolume = parseInt(e.target.value);
     setVolume(newVolume);
     
     if (audioRef?.current) {
-      audioRef.current.volume = newVolume / 100;
+      audioRef.current.volume = (newVolume / 100) * originalVolume;
     }
   };
 

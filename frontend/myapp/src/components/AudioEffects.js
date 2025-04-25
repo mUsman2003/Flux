@@ -225,19 +225,6 @@ const AudioEffects = ({ audioRef }) => {
     }
   };
 
-  // If audio context failed to initialize, show error message
-  if (!initializedRef.current && audioRef?.current) {
-    return (
-      <div style={styles.container}>
-        <h3 style={styles.title}>EFFECTS</h3>
-        <p style={styles.errorMessage}>
-          Unable to initialize audio effects. The audio element may already be
-          in use.
-        </p>
-      </div>
-    );
-  }
-
   return (
     <div style={styles.container}>
       <h3 style={styles.title}>EFFECTS</h3>
@@ -285,6 +272,7 @@ const styles = {
     marginTop: "15px",
     width: "100%",
     border: "1px solid #444",
+    display: "block", // Ensure it's always displayed
   },
   title: {
     color: "#00c3ff",

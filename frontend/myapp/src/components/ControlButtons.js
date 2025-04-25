@@ -11,6 +11,7 @@ const ControlButtons = ({ audioRef }) => {
   const [showEffects, setShowEffects] = useState(true);
   const { crossfadeTo } = useCrossfadeAudio(audioRef, fadeDuration);
   const [currentTime, setCurrentTime] = useState(0);
+  const [cuePoint, setCuePoint] = useState(null); // Store current cue point
 
   useEffect(() => {
     if (!audioRef?.current) return;
@@ -43,6 +44,20 @@ const ControlButtons = ({ audioRef }) => {
       } else {
         audioRef.current.pause();
       }
+    }
+  };
+
+  const setCuePointHandler = () => {
+    if (audioRef.current) {
+      // Set cue point at current position
+      setCuePoint(audioRef.current.currentTime);
+    }
+  };
+
+  const jumpToCuePoint = () => {
+    if (audioRef.current && cuePoint !== null) {
+      // Jump to stored cue point
+      crossfadeTo(cuePoint);
     }
   };
 
@@ -94,13 +109,46 @@ const ControlButtons = ({ audioRef }) => {
           )}
         </button>
         
-        <button style={styles.cueButton} onClick={addCuePoint}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
-            <circle cx="12" cy="12" r="5"/>
-          </svg>
-          <span>CUE</span>
-        </button>
+        <div style={styles.cueControls}>
+          {/* Set cue button */}
+          <button 
+            style={{
+              ...styles.cueButton,
+              backgroundColor: cuePoint !== null ? '#FF5500' : '#333'
+            }} 
+            onClick={setCuePointHandler}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+              <circle cx="12" cy="12" r="5"/>
+            </svg>
+            <span>SET CUE</span>
+          </button>
+          
+          {/* Jump to cue button */}
+          <button 
+            style={{
+              ...styles.cueButton,
+              opacity: cuePoint !== null ? 1 : 0.5,
+              cursor: cuePoint !== null ? 'pointer' : 'not-allowed',
+            }} 
+            onClick={jumpToCuePoint}
+            disabled={cuePoint === null}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+              <path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/>
+            </svg>
+            <span>CUE JUMP</span>
+          </button>
+          
+          {/* Add to cue list button */}
+          <button style={styles.cueButton} onClick={addCuePoint}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            </svg>
+            <span>SAVE CUE</span>
+          </button>
+        </div>
         
         <div style={styles.currentTime}>
           {formatTime(currentTime)}
@@ -129,7 +177,7 @@ const ControlButtons = ({ audioRef }) => {
                   backgroundColor: selectedCue === index ? '#FF5500' : '#333',
                 }}
               >
-                {cue.label}
+                {cue.label} [{formatTime(cue.time)}]
               </button>
               <button
                 onClick={() => removeCuePoint(index)}
@@ -161,7 +209,7 @@ const ControlButtons = ({ audioRef }) => {
       </div>
       
       {/* Effects Panel */}
-      {showEffects && <AudioEffects audioRef={audioRef} />}
+      {showEffects && audioRef && <AudioEffects audioRef={audioRef} />}
     </div>
   );
 };
@@ -193,21 +241,25 @@ const styles = {
     cursor: 'pointer',
     transition: 'background-color 0.2s',
   },
+  cueControls: {
+    display: 'flex',
+    gap: '8px',
+  },
   cueButton: {
     backgroundColor: '#333',
     color: 'white',
-    height: '40px',
-    padding: '0 16px',
-    borderRadius: '20px',
+    height: '34px',
+    padding: '0 12px',
+    borderRadius: '17px',
     border: 'none',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     gap: '6px',
     cursor: 'pointer',
-    transition: 'background-color 0.2s',
+    transition: 'all 0.2s ease',
     fontWeight: 'bold',
-    fontSize: '14px',
+    fontSize: '12px',
   },
   currentTime: {
     color: 'white',
