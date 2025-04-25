@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import useCrossfadeAudio from "./useCrossfadeAudio"; // Import the hook
 import TempoSlider from "./TempoSlider";
+import AudioEffects from "./AudioEffects"; // Import the new component
 
 const ControlButtons = ({ audioRef }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [cuePoints, setCuePoints] = useState([]);
   const [fadeDuration, setFadeDuration] = useState(1); // Example
   const [selectedCue, setSelectedCue] = useState(null); // Track the selected cue
+  const [showEffects, setShowEffects] = useState(false); // Toggle effects panel
   const { crossfadeTo } = useCrossfadeAudio(audioRef, fadeDuration);
 
   const handlePlayPause = () => {
@@ -68,6 +70,17 @@ const ControlButtons = ({ audioRef }) => {
             style={styles.slider}
           />
         </div>
+        
+        {/* Effects toggle button */}
+        <button 
+          style={{
+            ...styles.effectsToggle,
+            backgroundColor: showEffects ? "#28a745" : "#444"
+          }} 
+          onClick={() => setShowEffects(!showEffects)}
+        >
+          FX
+        </button>
       </div>
 
       {/* Bottom Row: Cue Buttons */}
@@ -92,6 +105,9 @@ const ControlButtons = ({ audioRef }) => {
         ))}
       </div>
       <TempoSlider audioRef={audioRef} />
+      
+      {/* Effects panel (conditionally rendered) */}
+      {showEffects && <AudioEffects audioRef={audioRef} />}
     </div>
   );
 };
@@ -141,6 +157,15 @@ const styles = {
     borderRadius: "6px",
     border: "none",
     cursor: "pointer",
+  },
+  effectsToggle: {
+    backgroundColor: "#444",
+    color: "white",
+    padding: "10px 16px",
+    borderRadius: "6px",
+    border: "none",
+    cursor: "pointer",
+    fontWeight: "bold",
   },
   cueItem: {
     display: "flex",
