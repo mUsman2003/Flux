@@ -9,29 +9,37 @@ const TrackDisplay = ({ onTrackLoaded, deck }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [cuePoints, setCuePoints] = useState([]);
+  const [selectedCue, setSelectedCue] = useState(null);
+  const cueListRef = useRef(null);
 
   // Handle file selection from the modal
   const handleSelectFile = (file) => {
     const objectUrl = URL.createObjectURL(file);
     setFileName(file.name);
     setAudioSrc(objectUrl);
-    
-    // If we already have an audio element, clean up the old object URL
+    setCuePoints([]); // Clear cues when new track loads
+
     if (audioSrc) {
       URL.revokeObjectURL(audioSrc);
     }
-    
-    // Set a short timeout to ensure the audio element is updated with the new source
+
     setTimeout(() => {
       if (audioRef.current) {
-        // Start playing immediately when a file is loaded
-        audioRef.current.play().then(() => {
-          setIsPlaying(true);
-          // Notify parent component that track is loaded and playing
-          onTrackLoaded({ audioRef, deck, fileName: file.name, audioSrc: objectUrl });
-        }).catch(error => {
-          console.error("Error playing audio:", error);
-        });
+        audioRef.current
+          .play()
+          .then(() => {
+            setIsPlaying(true);
+            onTrackLoaded({
+              audioRef,
+              deck,
+              fileName: file.name,
+              audioSrc: objectUrl,
+            });
+          })
+          .catch((error) => {
+            console.error("Error playing audio:", error);
+          });
       }
     }, 100);
   };
@@ -40,18 +48,24 @@ const TrackDisplay = ({ onTrackLoaded, deck }) => {
   const handleSelectDatabaseSong = (song) => {
     setFileName(song.name);
     setAudioSrc(song.url);
-    
-    // Set a short timeout to ensure the audio element is updated with the new source
+    setCuePoints([]); // Clear cues when new track loads
+
     setTimeout(() => {
       if (audioRef.current) {
-        // Start playing immediately when a track is selected
-        audioRef.current.play().then(() => {
-          setIsPlaying(true);
-          // Notify parent component that track is loaded and playing
-          onTrackLoaded({ audioRef, deck, fileName: song.name, audioSrc: song.url });
-        }).catch(error => {
-          console.error("Error playing audio:", error);
-        });
+        audioRef.current
+          .play()
+          .then(() => {
+            setIsPlaying(true);
+            onTrackLoaded({
+              audioRef,
+              deck,
+              fileName: song.name,
+              audioSrc: song.url,
+            });
+          })
+          .catch((error) => {
+            console.error("Error playing audio:", error);
+          });
       }
     }, 100);
   };
@@ -65,6 +79,47 @@ const TrackDisplay = ({ onTrackLoaded, deck }) => {
         audioRef.current.play();
       }
       setIsPlaying(!isPlaying);
+    }
+  };
+
+  // Add cue point at current position
+  const addCuePoint = () => {
+    if (audioRef.current) {
+      const newCue = {
+        id: Date.now(),
+        time: audioRef.current.currentTime,
+        label: `CUE ${cuePoints.length + 1}`,
+      };
+      setCuePoints([...cuePoints, newCue]);
+      setSelectedCue(cuePoints.length);
+
+      // Scroll to the new cue point
+      setTimeout(() => {
+        if (cueListRef.current) {
+          cueListRef.current.scrollLeft = cueListRef.current.scrollWidth;
+        }
+      }, 10);
+    }
+  };
+
+  // Jump to specific cue point
+  const jumpToCuePoint = (time, index) => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = time;
+      setSelectedCue(index);
+      if (!isPlaying) {
+        audioRef.current.play().then(() => setIsPlaying(true));
+      }
+    }
+  };
+
+  // Remove cue point
+  const removeCuePoint = (id, event) => {
+    // Prevent the click from bubbling up to the cue item
+    event.stopPropagation();
+    setCuePoints(cuePoints.filter((cue) => cue.id !== id));
+    if (selectedCue !== null && cuePoints[selectedCue]?.id === id) {
+      setSelectedCue(null);
     }
   };
 
@@ -86,7 +141,7 @@ const TrackDisplay = ({ onTrackLoaded, deck }) => {
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
   return (
@@ -103,35 +158,93 @@ const TrackDisplay = ({ onTrackLoaded, deck }) => {
 
           <div style={styles.waveform}>
             <div style={styles.progressBar}>
-              <div 
+              <div
                 style={{
                   ...styles.progress,
-                  width: `${(currentTime / duration) * 100}%`
+                  width: `${(currentTime / duration) * 100}%`,
                 }}
               ></div>
+              {/* Cue point markers */}
+              {cuePoints.map((cue, index) => (
+                <div
+                  key={cue.id}
+                  style={{
+                    ...styles.cueMarker,
+                    left: `${(cue.time / duration) * 100}%`,
+                    backgroundColor:
+                      selectedCue === index ? "#FF5500" : "#00c3ff",
+                  }}
+                  onClick={() => jumpToCuePoint(cue.time, index)}
+                />
+              ))}
             </div>
           </div>
 
           <div style={styles.controls}>
-            <button style={styles.playButton} onClick={togglePlay}>
-              {isPlaying ? (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
-                  <rect x="6" y="4" width="4" height="16" rx="1" />
-                  <rect x="14" y="4" width="4" height="16" rx="1" />
+            <div style={styles.playbackControls}>
+              <button
+                style={{
+                  ...styles.playButton,
+                  backgroundColor: isPlaying ? "#00c3ff" : "#333",
+                  boxShadow: isPlaying
+                    ? "0 0 10px rgba(0, 195, 255, 0.5)"
+                    : "none",
+                }}
+                onClick={togglePlay}
+              >
+                {isPlaying ? (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+                    <rect x="6" y="4" width="4" height="16" rx="1" />
+                    <rect x="14" y="4" width="4" height="16" rx="1" />
+                  </svg>
+                ) : (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                )}
+              </button>
+              <button style={styles.cueButton} onClick={addCuePoint}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+                  <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
                 </svg>
-              ) : (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              )}
-            </button>
-            <button 
-              style={styles.loadButton} 
+              </button>
+            </div>
+            <button
+              style={styles.loadButton}
               onClick={() => setShowAddSong(true)}
             >
               LOAD
             </button>
           </div>
+
+          {/* Horizontal scrollable cue list */}
+          {cuePoints.length > 0 && (
+            <div style={styles.cueListWrapper}>
+              <div ref={cueListRef} style={styles.cueListContainer}>
+                {cuePoints.map((cue, index) => (
+                  <div
+                    key={cue.id}
+                    style={{
+                      ...styles.cueItem,
+                      backgroundColor:
+                        selectedCue === index ? "#FF5500" : "#333",
+                    }}
+                    onClick={() => jumpToCuePoint(cue.time, index)}
+                  >
+                    <span style={styles.cueLabel}>
+                      {cue.label} [{formatTime(cue.time)}]
+                    </span>
+                    <button
+                      style={styles.deleteCueButton}
+                      onClick={(e) => removeCuePoint(cue.id, e)}
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           <audio
             ref={audioRef}
@@ -144,7 +257,7 @@ const TrackDisplay = ({ onTrackLoaded, deck }) => {
       ) : (
         <div style={styles.emptyState}>
           <div style={styles.emptyText}>No Track Loaded</div>
-          <button 
+          <button
             style={styles.loadEmptyButton}
             onClick={() => setShowAddSong(true)}
           >
@@ -169,7 +282,7 @@ const styles = {
     backgroundColor: "#2a2a2a",
     borderRadius: "6px",
     padding: "15px",
-    height: "150px",
+    minHeight: "150px",
     display: "flex",
     flexDirection: "column",
     border: "1px solid #444",
@@ -205,6 +318,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: "10px",
   },
   progressBar: {
     width: "100%",
@@ -220,11 +334,23 @@ const styles = {
     background: "linear-gradient(90deg, #00c3ff30, #00c3ff80)",
     transition: "width 0.1s linear",
   },
+  cueMarker: {
+    position: "absolute",
+    top: 0,
+    width: "3px",
+    height: "100%",
+    cursor: "pointer",
+    zIndex: 2,
+  },
   controls: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: "10px",
+  },
+  playbackControls: {
+    display: "flex",
+    gap: "8px",
   },
   playButton: {
     backgroundColor: "#333",
@@ -237,7 +363,22 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     cursor: "pointer",
+    transition: "all 0.2s ease",
   },
+  cueButton: {
+    backgroundColor: "#333",
+    color: "white",
+    borderRadius: "50%",
+    width: "36px",
+    height: "36px",
+    border: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+  },
+
   loadButton: {
     backgroundColor: "#333",
     color: "white",
@@ -247,7 +388,64 @@ const styles = {
     fontSize: "12px",
     fontWeight: "bold",
     cursor: "pointer",
+    transition: "all 0.2s ease",
   },
+
+  cueListWrapper: {
+    width: "100%",
+    marginTop: "15px",
+    padding: "5px 0",
+    borderTop: "1px solid #444",
+  },
+
+  cueListContainer: {
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "nowrap", // <== Important fix!
+    overflowX: "auto",
+    overflowY: "hidden",
+    scrollbarWidth: "thin",
+    scrollbarColor: "#555 #222",
+    gap: "10px",
+    padding: "10px 0",
+    maxWidth: "500px",
+    whiteSpace: "nowrap",
+  },
+
+  cueItem: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    backgroundColor: "#333",
+    borderRadius: "4px",
+    padding: "8px 12px",
+    cursor: "pointer",
+    minWidth: "90px",
+    maxWidth: "150px",
+    flexShrink: 0, // Prevents shrinking ✅
+    transition: "all 0.2s ease",
+  },
+
+  cueLabel: {
+    fontSize: "12px",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    flex: 1,
+  },
+
+  deleteCueButton: {
+    backgroundColor: "transparent",
+    border: "none",
+    color: "#fff",
+    cursor: "pointer",
+    fontSize: "14px",
+    padding: "0 4px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
   emptyState: {
     flex: 1,
     display: "flex",
@@ -271,7 +469,7 @@ const styles = {
     fontWeight: "bold",
     cursor: "pointer",
     transition: "all 0.2s ease",
-  }
+  },
 };
 
 export default TrackDisplay;
