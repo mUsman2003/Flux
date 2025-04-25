@@ -11,14 +11,14 @@ const AudioEffects = ({ audioRef }) => {
   const gainNodeRef = useRef(null);
   const initializedRef = useRef(false);
 
-  // Available effects
+  // Available effects with better colors
   const effects = [
-    { id: "echo", name: "Echo", color: "#3498db" },
-    { id: "reverb", name: "Reverb", color: "#9b59b6" },
-    { id: "flanger", name: "Flanger", color: "#e74c3c" },
-    { id: "distortion", name: "Distortion", color: "#f39c12" },
-    { id: "lowpass", name: "Low Pass", color: "#27ae60" },
-    { id: "highpass", name: "High Pass", color: "#16a085" },
+    { id: "echo", name: "ECHO", color: "#00c3ff" },
+    { id: "reverb", name: "REVERB", color: "#9146ff" },
+    { id: "flanger", name: "FLANGER", color: "#ff3860" },
+    { id: "distortion", name: "DISTORT", color: "#ffdd57" },
+    { id: "lowpass", name: "LOW PASS", color: "#23d160" },
+    { id: "highpass", name: "HIGH PASS", color: "#00d1b2" },
   ];
 
   // Initialize Audio Context only once when component mounts
@@ -229,7 +229,7 @@ const AudioEffects = ({ audioRef }) => {
   if (!initializedRef.current && audioRef?.current) {
     return (
       <div style={styles.container}>
-        <h3 style={styles.title}>Effects</h3>
+        <h3 style={styles.title}>EFFECTS</h3>
         <p style={styles.errorMessage}>
           Unable to initialize audio effects. The audio element may already be
           in use.
@@ -240,7 +240,7 @@ const AudioEffects = ({ audioRef }) => {
 
   return (
     <div style={styles.container}>
-      <h3 style={styles.title}>Effects</h3>
+      <h3 style={styles.title}>EFFECTS</h3>
 
       <div style={styles.effectButtons}>
         {effects.map((effect) => (
@@ -248,9 +248,9 @@ const AudioEffects = ({ audioRef }) => {
             key={effect.id}
             style={{
               ...styles.effectButton,
-              backgroundColor:
-                activeEffect === effect.id ? effect.color : "#444",
+              backgroundColor: activeEffect === effect.id ? effect.color : "#2a2a2a",
               borderColor: effect.color,
+              boxShadow: activeEffect === effect.id ? `0 0 15px ${effect.color}80` : "none",
             }}
             onClick={() => toggleEffect(effect.id)}
           >
@@ -261,7 +261,7 @@ const AudioEffects = ({ audioRef }) => {
 
       {activeEffect && (
         <div style={styles.intensityControl}>
-          <span style={styles.label}>Intensity</span>
+          <span style={styles.label}>INTENSITY</span>
           <input
             type="range"
             min="1"
@@ -270,6 +270,7 @@ const AudioEffects = ({ audioRef }) => {
             onChange={(e) => setIntensity(parseInt(e.target.value))}
             style={styles.slider}
           />
+          <span style={styles.valueDisplay}>{intensity}%</span>
         </div>
       )}
     </div>
@@ -278,53 +279,75 @@ const AudioEffects = ({ audioRef }) => {
 
 const styles = {
   container: {
-    backgroundColor: "#1e1e1e",
-    padding: "10px",
+    backgroundColor: "#222",
+    padding: "15px",
     borderRadius: "8px",
     marginTop: "15px",
     width: "100%",
-    maxWidth: "400px",
+    border: "1px solid #444",
   },
   title: {
-    color: "white",
+    color: "#00c3ff",
     fontSize: "16px",
-    margin: "0 0 10px 0",
+    margin: "0 0 15px 0",
     textAlign: "center",
+    letterSpacing: "1px",
+    borderBottom: "1px solid #444",
+    paddingBottom: "5px",
   },
   effectButtons: {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: "6px",
+    display: "grid",
+    gridTemplateColumns: "repeat(3, 1fr)",
+    gap: "8px",
     justifyContent: "center",
   },
   effectButton: {
-    padding: "6px 12px",
+    padding: "10px",
     border: "2px solid",
-    borderRadius: "4px",
+    borderRadius: "6px",
     cursor: "pointer",
     color: "white",
     fontWeight: "bold",
     fontSize: "12px",
-    transition: "all 0.2s ease",
+    transition: "all 0.3s ease",
+    textAlign: "center",
+    letterSpacing: "1px",
   },
   intensityControl: {
     display: "flex",
     alignItems: "center",
-    marginTop: "12px",
+    marginTop: "15px",
     gap: "10px",
+    backgroundColor: "#2a2a2a",
+    padding: "8px 12px",
+    borderRadius: "6px",
   },
   label: {
-    color: "white",
-    fontSize: "14px",
+    color: "#00c3ff",
+    fontSize: "12px",
+    fontWeight: "bold",
+    minWidth: "70px",
+    letterSpacing: "1px",
   },
   slider: {
     flexGrow: 1,
-    accentColor: "#1e90ff",
+    accentColor: "#00c3ff",
+    height: "10px",
+  },
+  valueDisplay: {
+    color: "#fff",
+    fontSize: "12px",
+    fontWeight: "bold",
+    minWidth: "40px",
+    textAlign: "right",
   },
   errorMessage: {
-    color: "#e74c3c",
+    color: "#ff3860",
     fontSize: "14px",
     textAlign: "center",
+    padding: "10px",
+    backgroundColor: "rgba(255, 56, 96, 0.1)",
+    borderRadius: "4px",
   },
 };
 
