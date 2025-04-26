@@ -6,7 +6,8 @@ import SyncButton from "./SyncButton";
 import JogWheel from "./JogWheel";
 import AudioEffects from "./AudioEffects";
 import MicrophoneInput from "./MicrophoneInput";
-import useCrossfadeAudio from "./useCrossfadeAudio";
+import TempoSlider from "./TempoSlider";
+import { useEQControls } from "./useEQControls"; // Import our new hook
 
 const DJController = () => {
   const [deckA, setDeckA] = useState(null);
@@ -14,7 +15,25 @@ const DJController = () => {
   const [fadeDuration, setFadeDuration] = useState(1);
   const deckAOriginalVolume = useRef(1);
   const deckBOriginalVolume = useRef(1);
-  const [showCrossfader, setShowCrossfader] = useState(false);
+
+  // Create refs to store tempo slider references
+  const deckATempoRef = useRef(null);
+  const deckBTempoRef = useRef(null);
+
+  // Track which deck is currently the master (for sync)
+  const [masterDeck, setMasterDeck] = useState("A");
+
+  // EQ state for both decks
+  const [deckAHighEQ, setDeckAHighEQ] = useState(0);
+  const [deckAMidEQ, setDeckAMidEQ] = useState(0);
+  const [deckALowEQ, setDeckALowEQ] = useState(0);
+
+  const [deckBHighEQ, setDeckBHighEQ] = useState(0);
+  const [deckBMidEQ, setDeckBMidEQ] = useState(0);
+  const [deckBLowEQ, setDeckBLowEQ] = useState(0);
+
+  const deckAEQ = useEQControls(deckA);
+  const deckBEQ = useEQControls(deckB);
 
   const handleTrackLoadedA = ({ audioRef, deck, fileName, audioSrc }) => {
     setDeckA(audioRef);
@@ -38,10 +57,45 @@ const DJController = () => {
     }
   };
 
+  // Toggle which deck is the master for syncing
+  const toggleMasterDeck = () => {
+    setMasterDeck(masterDeck === "A" ? "B" : "A");
+  };
+
+  // EQ Handler functions
+  const handleDeckAHighEQ = (value) => deckAEQ.setHighEQ(value);
+  const handleDeckAMidEQ = (value) => deckAEQ.setMidEQ(value);
+  const handleDeckALowEQ = (value) => deckAEQ.setLowEQ(value);
+
+  const handleDeckBHighEQ = (value) => deckBEQ.setHighEQ(value);
+  const handleDeckBMidEQ = (value) => deckBEQ.setMidEQ(value);
+  const handleDeckBLowEQ = (value) => deckBEQ.setLowEQ(value);
+
   return (
     <div style={styles.container}>
       <div style={styles.header}>
         <h2 style={styles.title}>DIGITAL DJ PRO</h2>
+        <div style={styles.masterToggle}>
+          <span
+            style={{
+              ...styles.masterIndicator,
+              backgroundColor: masterDeck === "A" ? "#00c3ff" : "#333",
+            }}
+          >
+            DECK A MASTER
+          </span>
+          <button onClick={toggleMasterDeck} style={styles.toggleButton}>
+            SWAP
+          </button>
+          <span
+            style={{
+              ...styles.masterIndicator,
+              backgroundColor: masterDeck === "B" ? "#00c3ff" : "#333",
+            }}
+          >
+            DECK B MASTER
+          </span>
+        </div>
         <div style={styles.logo}>DJ PRO</div>
       </div>
 
@@ -51,6 +105,9 @@ const DJController = () => {
           <div style={styles.deck}>
             <div style={styles.deckHeader}>
               <h3 style={styles.deckTitle}>DECK A</h3>
+              {masterDeck === "A" && (
+                <span style={styles.masterBadge}>MASTER</span>
+              )}
             </div>
 
             <TrackDisplay
@@ -59,28 +116,59 @@ const DJController = () => {
               fadeDuration={fadeDuration}
             />
             <div style={styles.deckControls}>
-              <JogWheel />
+              {/* Pass the audioRef to JogWheel */}
+              <JogWheel audioRef={deckA} side="left" />
 
               <div style={styles.eqSection}>
-                <Knob label="HIGH" />
-                <Knob label="MID" />
-                <Knob label="LOW" />
+                <Knob
+                  label="HIGH"
+                  color="#00c3ff"
+                  min={-12}
+                  max={12}
+                  defaultValue={0}
+                  onChange={handleDeckAHighEQ}
+                />
+                <Knob
+                  label="MID"
+                  color="#9146ff"
+                  min={-12}
+                  max={12}
+                  defaultValue={0}
+                  onChange={handleDeckAMidEQ}
+                />
+                <Knob
+                  label="LOW"
+                  color="#ff3860"
+                  min={-12}
+                  max={12}
+                  defaultValue={0}
+                  onChange={handleDeckALowEQ}
+                />
               </div>
 
               <div style={styles.volumeSection}>
-                <SyncButton />
+                <SyncButton
+                  masterDeck={masterDeck === "A" ? deckA : deckB}
+                  slaveDeck={masterDeck === "A" ? deckB : deckA}
+                  tempoRef={masterDeck === "A" ? deckBTempoRef : deckATempoRef}
+                />
                 <VolumeSlider audioRef={deckA} side="left" />
               </div>
             </div>
 
-            {deckA && <AudioEffects audioRef={deckA} style={{ width: "100%" }} />}
+            {/* Add Tempo Slider for Deck A */}
+            <div style={styles.tempoContainer}>
+              <TempoSlider audioRef={deckA} tempoRef={deckATempoRef} />
+            </div>
+
+            {deckA && (
+              <AudioEffects audioRef={deckA} style={{ width: "100%" }} />
+            )}
           </div>
 
           {/* MIXER SECTION */}
           <div style={styles.mixer}>
-            <div style={styles.crossfaderContainer}>
-              CROSSFADER
-            </div>
+            <div style={styles.crossfaderContainer}>CROSSFADER</div>
 
             <div style={styles.fadeControlContainer}>
               <div style={styles.fadeControl}>
@@ -102,6 +190,9 @@ const DJController = () => {
           <div style={styles.deck}>
             <div style={styles.deckHeader}>
               <h3 style={styles.deckTitle}>DECK B</h3>
+              {masterDeck === "B" && (
+                <span style={styles.masterBadge}>MASTER</span>
+              )}
             </div>
 
             <TrackDisplay
@@ -110,24 +201,57 @@ const DJController = () => {
               fadeDuration={fadeDuration}
             />
             <div style={styles.deckControls}>
-              <JogWheel />
+              {/* Pass the audioRef to JogWheel */}
+              <JogWheel audioRef={deckB} side="right" />
 
               <div style={styles.eqSection}>
-                <Knob label="HIGH" />
-                <Knob label="MID" />
-                <Knob label="LOW" />
+                <Knob
+                  label="HIGH"
+                  color="#00c3ff"
+                  min={-12}
+                  max={12}
+                  defaultValue={0}
+                  onChange={handleDeckBHighEQ}
+                />
+                <Knob
+                  label="MID"
+                  color="#9146ff"
+                  min={-12}
+                  max={12}
+                  defaultValue={0}
+                  onChange={handleDeckBMidEQ}
+                />
+                <Knob
+                  label="LOW"
+                  color="#ff3860"
+                  min={-12}
+                  max={12}
+                  defaultValue={0}
+                  onChange={handleDeckBLowEQ}
+                />
               </div>
 
               <div style={styles.volumeSection}>
-                <SyncButton />
+                <SyncButton
+                  masterDeck={masterDeck === "B" ? deckB : deckA}
+                  slaveDeck={masterDeck === "B" ? deckA : deckB}
+                  tempoRef={masterDeck === "B" ? deckATempoRef : deckBTempoRef}
+                />
                 <VolumeSlider audioRef={deckB} side="right" />
               </div>
             </div>
 
-            {deckB && <AudioEffects audioRef={deckB} style={{ width: "100%" }} />}
+            {/* Add Tempo Slider for Deck B */}
+            <div style={styles.tempoContainer}>
+              <TempoSlider audioRef={deckB} tempoRef={deckBTempoRef} />
+            </div>
+
+            {deckB && (
+              <AudioEffects audioRef={deckB} style={{ width: "100%" }} />
+            )}
           </div>
         </div>
-        
+
         {/* Add Microphone Input Panel */}
         <div style={styles.micPanel}>
           <MicrophoneInput />
@@ -198,12 +322,45 @@ const styles = {
     borderBottom: "1px solid #444",
     marginBottom: "15px",
     paddingBottom: "5px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   deckTitle: {
     margin: 0,
     fontSize: "18px",
     fontWeight: "bold",
     color: "#00c3ff",
+  },
+  masterBadge: {
+    backgroundColor: "#00c3ff",
+    color: "#000",
+    padding: "2px 6px",
+    borderRadius: "4px",
+    fontSize: "10px",
+    fontWeight: "bold",
+  },
+  masterToggle: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+  },
+  masterIndicator: {
+    padding: "4px 8px",
+    borderRadius: "4px",
+    fontSize: "12px",
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  toggleButton: {
+    backgroundColor: "#333",
+    color: "#fff",
+    border: "1px solid #444",
+    borderRadius: "4px",
+    padding: "4px 8px",
+    cursor: "pointer",
+    fontSize: "12px",
+    fontWeight: "bold",
   },
   deckControls: {
     display: "flex",
@@ -289,6 +446,13 @@ const styles = {
     height: "100%",
     display: "flex",
     alignItems: "stretch", // Make the MicrophoneInput component stretch to full height
+  },
+  tempoContainer: {
+    marginTop: "15px",
+    backgroundColor: "#2a2a2a",
+    borderRadius: "6px",
+    padding: "12px",
+    border: "1px solid #444",
   },
 };
 
