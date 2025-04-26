@@ -5,17 +5,17 @@ import VolumeSlider from "./VolumeSlider";
 import SyncButton from "./SyncButton";
 import JogWheel from "./JogWheel";
 import AudioEffects from "./AudioEffects";
+import MicrophoneInput from "./MicrophoneInput";
 import useCrossfadeAudio from "./useCrossfadeAudio";
 
 const DJController = () => {
   const [deckA, setDeckA] = useState(null);
   const [deckB, setDeckB] = useState(null);
-  // const [crossfaderValue, setCrossfaderValue] = useState(50);
   const [fadeDuration, setFadeDuration] = useState(1);
   const deckAOriginalVolume = useRef(1);
   const deckBOriginalVolume = useRef(1);
-
   const [showCrossfader, setShowCrossfader] = useState(false);
+
   const handleTrackLoadedA = ({ audioRef, deck, fileName, audioSrc }) => {
     setDeckA(audioRef);
     if (audioRef?.current) {
@@ -38,30 +38,6 @@ const DJController = () => {
     }
   };
 
-  // const handleCrossfaderChange = (e) => {
-  //   const newValue = parseInt(e.target.value);
-  //   setCrossfaderValue(newValue);
-
-  //   // Determine crossfade direction based on previous and current values
-  //   if (deckA?.current && deckB?.current) {
-  //     if (newValue < 40 && crossfaderValue >= 40) {
-  //       // Crossfade to deck A
-  //       crossfade('BtoA');
-  //     } else if (newValue > 60 && crossfaderValue <= 60) {
-  //       // Crossfade to deck B
-  //       crossfade('AtoB');
-  //     } else if (newValue >= 40 && newValue <= 60) {
-  //       // Middle position - both decks play at reduced volume
-  //       const centerValue = (newValue - 50) / 10; // -1 to 1
-  //       const volumeA = 0.5 - (centerValue * 0.5);
-  //       const volumeB = 0.5 + (centerValue * 0.5);
-
-  //       deckA.current.volume = volumeA * deckAOriginalVolume.current;
-  //       deckB.current.volume = volumeB * deckBOriginalVolume.current;
-  //     }
-  //   }
-  // };
-
   return (
     <div style={styles.container}>
       <div style={styles.header}>
@@ -69,99 +45,92 @@ const DJController = () => {
         <div style={styles.logo}>DJ PRO</div>
       </div>
 
-      <div style={styles.decksContainer}>
-        {/* DECK A */}
-        <div style={styles.deck}>
-          <div style={styles.deckHeader}>
-            <h3 style={styles.deckTitle}>DECK A</h3>
-          </div>
-
-          {/* <TrackDisplay onTrackLoaded={handleTrackLoadedA} deck="A" /> */}
-          <TrackDisplay
-            onTrackLoaded={handleTrackLoadedA}
-            deck="A"
-            fadeDuration={fadeDuration} // Add this prop
-          />
-          <div style={styles.deckControls}>
-            <JogWheel />
-
-            <div style={styles.eqSection}>
-              <Knob label="HIGH" />
-              <Knob label="MID" />
-              <Knob label="LOW" />
+      <div style={styles.mainContent}>
+        <div style={styles.decksContainer}>
+          {/* DECK A */}
+          <div style={styles.deck}>
+            <div style={styles.deckHeader}>
+              <h3 style={styles.deckTitle}>DECK A</h3>
             </div>
 
-            <div style={styles.volumeSection}>
-              <SyncButton />
-              <VolumeSlider audioRef={deckA} side="left" />
+            <TrackDisplay
+              onTrackLoaded={handleTrackLoadedA}
+              deck="A"
+              fadeDuration={fadeDuration}
+            />
+            <div style={styles.deckControls}>
+              <JogWheel />
+
+              <div style={styles.eqSection}>
+                <Knob label="HIGH" />
+                <Knob label="MID" />
+                <Knob label="LOW" />
+              </div>
+
+              <div style={styles.volumeSection}>
+                <SyncButton />
+                <VolumeSlider audioRef={deckA} side="left" />
+              </div>
+            </div>
+
+            {deckA && <AudioEffects audioRef={deckA} />}
+          </div>
+
+          {/* MIXER SECTION */}
+          <div style={styles.mixer}>
+            <div style={styles.crossfaderContainer}>
+              CROSSFADER
+            </div>
+
+            <div style={styles.fadeControlContainer}>
+              <div style={styles.fadeControl}>
+                <input
+                  type="range"
+                  min="0.1"
+                  max="3"
+                  step="0.1"
+                  value={fadeDuration}
+                  onChange={(e) => setFadeDuration(parseFloat(e.target.value))}
+                  style={styles.fadeSlider}
+                />
+                <div style={styles.fadeValue}>{fadeDuration.toFixed(1)}s</div>
+              </div>
             </div>
           </div>
 
-          {deckA && <AudioEffects audioRef={deckA} />}
+          {/* DECK B */}
+          <div style={styles.deck}>
+            <div style={styles.deckHeader}>
+              <h3 style={styles.deckTitle}>DECK B</h3>
+            </div>
+
+            <TrackDisplay
+              onTrackLoaded={handleTrackLoadedB}
+              deck="B"
+              fadeDuration={fadeDuration}
+            />
+            <div style={styles.deckControls}>
+              <JogWheel />
+
+              <div style={styles.eqSection}>
+                <Knob label="HIGH" />
+                <Knob label="MID" />
+                <Knob label="LOW" />
+              </div>
+
+              <div style={styles.volumeSection}>
+                <SyncButton />
+                <VolumeSlider audioRef={deckB} side="right" />
+              </div>
+            </div>
+
+            {deckB && <AudioEffects audioRef={deckB} />}
+          </div>
         </div>
-
-        {/* MIXER SECTION */}
-        <div style={styles.mixer}>
-          <div style={styles.crossfaderContainer}>
-            CROSSFADER
-            {/* <span style={styles.deckLabel}>A</span> */}
-            {/* <div style={styles.crossfaderLabel}>CROSSFADER</div>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={crossfaderValue}
-            onChange={handleCrossfaderChange}
-            style={styles.crossfader}
-          /> */}
-            {/* <span style={styles.deckLabel}>B</span> */}
-          </div>
-
-          <div style={styles.fadeControlContainer}>
-            <div style={styles.fadeControl}>
-              <input
-                type="range"
-                min="0.1"
-                max="3"
-                step="0.1"
-                value={fadeDuration}
-                onChange={(e) => setFadeDuration(parseFloat(e.target.value))}
-                style={styles.fadeSlider}
-                orient="vertical"
-              />
-              <div style={styles.fadeValue}>{fadeDuration.toFixed(1)}s</div>
-            </div>
-          </div>
-        </div>
-
-        {/* DECK B */}
-        <div style={styles.deck}>
-          <div style={styles.deckHeader}>
-            <h3 style={styles.deckTitle}>DECK B</h3>
-          </div>
-
-          {/* <TrackDisplay onTrackLoaded={handleTrackLoadedB} deck="B" /> */}
-          <TrackDisplay
-            onTrackLoaded={handleTrackLoadedB}
-            deck="B"
-            fadeDuration={fadeDuration} // Add this prop
-          />
-          <div style={styles.deckControls}>
-            <JogWheel />
-
-            <div style={styles.eqSection}>
-              <Knob label="HIGH" />
-              <Knob label="MID" />
-              <Knob label="LOW" />
-            </div>
-
-            <div style={styles.volumeSection}>
-              <SyncButton />
-              <VolumeSlider audioRef={deckB} side="right" />
-            </div>
-          </div>
-
-          {deckB && <AudioEffects audioRef={deckB} />}
+        
+        {/* Add Microphone Input Panel */}
+        <div style={styles.micPanel}>
+          <MicrophoneInput />
         </div>
       </div>
     </div>
@@ -203,10 +172,15 @@ const styles = {
     fontWeight: "bold",
     letterSpacing: "1px",
   },
+  mainContent: {
+    display: "flex",
+    gap: "20px", // Add gap between decks and mic input
+  },
   decksContainer: {
     display: "flex",
     justifyContent: "space-between",
     gap: "20px",
+    flex: 1, // Take available space
   },
   deck: {
     flex: "1",
@@ -248,24 +222,7 @@ const styles = {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    gap: "20px", // Add gap between crossfader and fade control
-  },
-
-  crossfader: {
-    width: "150px",
-    margin: "15px 0",
-    WebkitAppearance: "none",
-    height: "6px",
-    borderRadius: "3px",
-    background: "linear-gradient(to right, #00c3ff, #ff0084)",
-    outline: "none",
-    transform: "rotate(270deg)",
-    accentColor: "#fff",
-    cursor: "pointer",
-    transition: "background 0.3s ease",
-    "&:hover": {
-      height: "8px",
-    },
+    gap: "20px",
   },
   crossfaderContainer: {
     display: "flex",
@@ -292,28 +249,11 @@ const styles = {
     fontSize: "16px",
     margin: "5px 0",
   },
-  fadeDurationControl: {
-    backgroundColor: "#2a2a2a",
-    padding: "10px",
-    borderRadius: "8px",
-    marginTop: "15px",
-    border: "1px solid #444",
-  },
-  sliderLabel: {
-    color: "#aaa",
-    fontSize: "12px",
-    marginBottom: "5px",
-    textAlign: "center",
-  },
-  slider: {
-    width: "100%",
-    accentColor: "#00c3ff",
-  },
   fadeControlContainer: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    height: "200px", // Make it longer
+    height: "200px",
     justifyContent: "space-between",
   },
   fadeControl: {
@@ -327,20 +267,23 @@ const styles = {
     height: "100%",
     justifyContent: "space-between",
   },
-
   fadeSlider: {
     width: "6px",
-    height: "150px", // Make it longer
+    height: "150px",
     WebkitAppearance: "slider-vertical",
     accentColor: "#00c3ff",
     cursor: "pointer",
   },
-
   fadeValue: {
     color: "#fff",
     fontSize: "12px",
     fontWeight: "bold",
     marginTop: "10px",
+  },
+  micPanel: {
+    height: "100%",
+    display: "flex",
+    alignItems: "stretch", // Make the MicrophoneInput component stretch to full height
   },
 };
 

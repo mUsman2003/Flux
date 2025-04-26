@@ -1,34 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import SongLibrary from "./SongLibrary";
+import CuePointsManager from "./CuePointsManager";
 
 const AddSongModal = ({ onClose, onSelectFile, onSelectDatabaseSong }) => {
   const [showList, setShowList] = useState(false);
-  const [songs, setSongs] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [cuePoints, setCuePoints] = useState([]); // Restored cue points state
+  const [cuePoints, setCuePoints] = useState([]);
   const [selectedCue, setSelectedCue] = useState(null);
-  const [crossfaderValue, setCrossfaderValue] = useState(50); // Added crossfader state
-
-  useEffect(() => {
-    if (showList) {
-      setLoading(true);
-      fetch("http://localhost:5000/api/songs")
-        .then((res) => res.json())
-        .then((data) => {
-          setSongs(data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error("Error fetching songs:", err);
-          setLoading(false);
-        });
-    }
-  }, [showList]);
-
-  // Filter songs based on search term
-  const filteredSongs = songs.filter((song) =>
-    song.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const [crossfaderValue, setCrossfaderValue] = useState(50);
 
   // Add Cue Point - Restored functionality
   const addCuePoint = (currentTime) => {
@@ -114,104 +92,24 @@ const AddSongModal = ({ onClose, onSelectFile, onSelectDatabaseSong }) => {
               </div>
             </button>
 
-            {/* Restored Cue Points UI Section */}
-            <div style={styles.cuePointsSection}>
-              <div style={styles.sectionHeader}>
-                <span style={styles.sectionTitle}>CUE POINTS</span>
-                <button
-                  style={styles.addCueButton}
-                  onClick={() => addCuePoint(0)} // This should be connected to the current playback time
-                >
-                  + ADD CUE
-                </button>
-              </div>
-
-              <div style={styles.cuePointsList}>
-                {cuePoints.length === 0 ? (
-                  <div style={styles.noCues}>No cue points added</div>
-                ) : (
-                  cuePoints.map((cue, index) => (
-                    <div
-                      key={index}
-                      style={{
-                        ...styles.cuePoint,
-                        backgroundColor:
-                          selectedCue === index ? "#444" : "#2a2a2a",
-                      }}
-                      onClick={() => setSelectedCue(index)}
-                    >
-                      <span style={styles.cueLabel}>{cue.label}</span>
-                      <span style={styles.cueTime}>{cue.time.toFixed(2)}s</span>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-
-            {/* Crossfader UI Section */}
-            <div style={styles.crossfaderSection}>
-              <span style={styles.sectionTitle}>CROSSFADER</span>
-              <div style={styles.crossfaderControl}>
-                <span style={styles.deckLabel}>DECK A</span>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={crossfaderValue}
-                  onChange={(e) => handleCrossfade(parseInt(e.target.value))}
-                  style={styles.crossfaderSlider}
-                />
-                <span style={styles.deckLabel}>DECK B</span>
-              </div>
-            </div>
+            {/* Cue Points Manager Component */}
+            <CuePointsManager 
+              cuePoints={cuePoints} 
+              selectedCue={selectedCue}
+              setSelectedCue={setSelectedCue}
+              addCuePoint={addCuePoint}
+              crossfaderValue={crossfaderValue}
+              handleCrossfade={handleCrossfade}
+            />
           </div>
         ) : (
-          <div style={styles.songLibraryContainer}>
-            <div style={styles.searchContainer}>
-              <input
-                type="text"
-                placeholder="Search tracks..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                style={styles.searchInput}
-              />
-            </div>
-
-            <div style={styles.songList}>
-              {loading ? (
-                <div style={styles.loadingContainer}>
-                  <div style={styles.loadingSpinner}></div>
-                  <span>Loading tracks...</span>
-                </div>
-              ) : filteredSongs.length === 0 ? (
-                <div style={styles.noResults}>No tracks found</div>
-              ) : (
-                filteredSongs.map((song) => (
-                  <button
-                    key={song.id}
-                    style={styles.songItem}
-                    onClick={() => {
-                      onSelectDatabaseSong(song);
-                      onClose();
-                    }}
-                  >
-                    <span style={styles.songName}>{song.name}</span>
-                    <span style={styles.loadIcon}>▶</span>
-                  </button>
-                ))
-              )}
-            </div>
-
-            <button
-              style={styles.backButton}
-              onClick={() => {
-                setShowList(false);
-                setSearchTerm("");
-              }}
-            >
-              ← Back
-            </button>
-          </div>
+          <SongLibrary 
+            onSelectDatabaseSong={onSelectDatabaseSong}
+            onClose={onClose}
+            goBack={() => {
+              setShowList(false);
+            }}
+          />
         )}
       </div>
     </div>
@@ -225,13 +123,13 @@ const styles = {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.9)", // Darker background for better coverage
+    backgroundColor: "rgba(0, 0, 0, 0.9)",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     zIndex: 1000,
-    width: "100vw", // Ensure full viewport width
-    height: "100vh", // Ensure full viewport height
+    width: "100vw",
+    height: "100vh",
   },
   modal: {
     width: "400px",
@@ -305,166 +203,6 @@ const styles = {
   },
   optionDescription: {
     fontSize: "14px",
-    color: "#999",
-  },
-  // Cue Points Styles
-  cuePointsSection: {
-    backgroundColor: "#1a1a1a",
-    borderRadius: "6px",
-    padding: "12px",
-    border: "1px solid #444",
-  },
-  sectionHeader: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "10px",
-  },
-  sectionTitle: {
-    fontSize: "14px",
-    fontWeight: "600",
-    color: "#00c3ff",
-    letterSpacing: "1px",
-  },
-  addCueButton: {
-    backgroundColor: "#00c3ff",
-    color: "#000",
-    border: "none",
-    borderRadius: "4px",
-    padding: "4px 8px",
-    fontSize: "12px",
-    fontWeight: "600",
-    cursor: "pointer",
-  },
-  cuePointsList: {
-    maxHeight: "120px",
-    overflowY: "auto",
-  },
-  noCues: {
-    textAlign: "center",
-    color: "#777",
-    padding: "10px",
-    fontSize: "12px",
-  },
-  cuePoint: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "8px 10px",
-    borderRadius: "4px",
-    marginBottom: "4px",
-    cursor: "pointer",
-    transition: "background-color 0.2s ease",
-  },
-  cueLabel: {
-    fontSize: "12px",
-    fontWeight: "600",
-  },
-  cueTime: {
-    fontSize: "12px",
-    color: "#999",
-  },
-  // Crossfader Styles
-  crossfaderSection: {
-    backgroundColor: "#1a1a1a",
-    borderRadius: "6px",
-    padding: "12px",
-    border: "1px solid #444",
-  },
-  crossfaderControl: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginTop: "10px",
-  },
-  crossfaderSlider: {
-    flex: 1,
-    margin: "0 10px",
-    height: "10px",
-    accentColor: "#00c3ff",
-  },
-  deckLabel: {
-    fontSize: "12px",
-    fontWeight: "600",
-    color: "#fff",
-    width: "50px",
-    textAlign: "center",
-  },
-  songLibraryContainer: {
-    display: "flex",
-    flexDirection: "column",
-    height: "400px",
-  },
-  searchContainer: {
-    padding: "15px",
-    borderBottom: "1px solid #333",
-  },
-  searchInput: {
-    width: "100%",
-    padding: "10px",
-    borderRadius: "6px",
-    border: "1px solid #444",
-    backgroundColor: "#333",
-    color: "#fff",
-    fontSize: "14px",
-  },
-  songList: {
-    flex: 1,
-    overflowY: "auto",
-    padding: "10px",
-  },
-  songItem: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
-    padding: "12px 15px",
-    marginBottom: "6px",
-    borderRadius: "6px",
-    border: "none",
-    backgroundColor: "#2a2a2a",
-    color: "#fff",
-    textAlign: "left",
-    cursor: "pointer",
-    transition: "background-color 0.2s ease",
-  },
-  songName: {
-    fontSize: "14px",
-    fontWeight: "500",
-  },
-  loadIcon: {
-    fontSize: "12px",
-    color: "#4095e5",
-  },
-  backButton: {
-    backgroundColor: "#333",
-    color: "#fff",
-    border: "none",
-    padding: "10px",
-    cursor: "pointer",
-    borderTop: "1px solid #444",
-    fontWeight: "500",
-  },
-  loadingContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "30px",
-    color: "#999",
-  },
-  loadingSpinner: {
-    width: "30px",
-    height: "30px",
-    borderRadius: "50%",
-    border: "3px solid #444",
-    borderTopColor: "#4095e5",
-    animation: "spin 1s linear infinite",
-    marginBottom: "10px",
-  },
-  noResults: {
-    padding: "20px",
-    textAlign: "center",
     color: "#999",
   },
 };
