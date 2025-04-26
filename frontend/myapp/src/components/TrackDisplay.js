@@ -10,12 +10,11 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
   const [duration, setDuration] = useState(0);
   const [cuePoints, setCuePoints] = useState([]);
   const [selectedCue, setSelectedCue] = useState(null);
-  const [isCrossfading, setIsCrossfading] = useState(false); // Add this line
+  const [isCrossfading, setIsCrossfading] = useState(false);
   
   const audioRef = useRef(null);
   const cueListRef = useRef(null);
-
-  
+  const progressBarRef = useRef(null);
   
   // Handle file selection from the modal
   const handleSelectFile = (file) => {
@@ -142,7 +141,50 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
     }
   };
 
-
+  // Handle click on progress bar to jump to position
+  const handleProgressBarClick = (e) => {
+    if (!audioRef.current || !progressBarRef.current || !duration) return;
+    
+    const rect = progressBarRef.current.getBoundingClientRect();
+    const clickPosition = e.clientX - rect.left;
+    const progressBarWidth = rect.width;
+    
+    // Calculate the corresponding time in the track
+    const clickRatio = clickPosition / progressBarWidth;
+    const seekTime = clickRatio * duration;
+    
+    // Use the crossfade functionality to jump
+    setIsCrossfading(true);
+    const originalVolume = audioRef.current.volume;
+    const steps = 10;
+    const stepSize = originalVolume / steps;
+    
+    // Fade out
+    const fadeOutInterval = setInterval(() => {
+      if (audioRef.current.volume > 0.05) {
+        audioRef.current.volume -= stepSize;
+      } else {
+        clearInterval(fadeOutInterval);
+        audioRef.current.currentTime = seekTime;
+        
+        // Fade in
+        const fadeInInterval = setInterval(() => {
+          if (audioRef.current.volume < originalVolume) {
+            audioRef.current.volume += stepSize;
+          } else {
+            clearInterval(fadeInInterval);
+            audioRef.current.volume = originalVolume;
+            setIsCrossfading(false);
+          }
+        }, (fadeDuration / 2 * 1000) / steps); // Slightly faster fade-in
+      }
+    }, (fadeDuration / 2 * 1000) / steps); // Slightly faster fade-out
+    
+    setSelectedCue(null); // Deselect any active cue point
+    if (!isPlaying) {
+      audioRef.current.play().then(() => setIsPlaying(true));
+    }
+  };
 
   // Remove cue point
   const removeCuePoint = (id, event) => {
@@ -188,34 +230,40 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
           </div>
 
           <div style={styles.waveform}>
-          <div style={styles.progressBar}>
-        <div 
-          style={{
-            ...styles.progress,
-            width: `${(currentTime / duration) * 100}%`,
-            opacity: isCrossfading ? 0.7 : 1
-          }}
-        ></div>
-        <div 
-          style={{
-            ...styles.crossfadeOverlay,
-            opacity: isCrossfading ? 0.5 : 0
-          }}
-        ></div>
-        {cuePoints.map((cue, index) => (
-          <div
-            key={cue.id}
-            style={{
-              ...styles.cueMarker,
-              ...(selectedCue === index && styles.activeCueMarker),
-              ...(selectedCue === index && isCrossfading && styles.crossfadingCueMarker),
-              left: `${(cue.time / duration) * 100}%`
-            }}
-            onClick={() => jumpToCuePoint(cue.time, index)}
-          />
-        ))}
-      </div>
-
+            <div 
+              ref={progressBarRef}
+              style={styles.progressBar}
+              onClick={handleProgressBarClick}
+            >
+              <div 
+                style={{
+                  ...styles.progress,
+                  width: `${(currentTime / duration) * 100}%`,
+                  opacity: isCrossfading ? 0.7 : 1
+                }}
+              ></div>
+              <div 
+                style={{
+                  ...styles.crossfadeOverlay,
+                  opacity: isCrossfading ? 0.5 : 0
+                }}
+              ></div>
+              {cuePoints.map((cue, index) => (
+                <div
+                  key={cue.id}
+                  style={{
+                    ...styles.cueMarker,
+                    ...(selectedCue === index && styles.activeCueMarker),
+                    ...(selectedCue === index && isCrossfading && styles.crossfadingCueMarker),
+                    left: `${(cue.time / duration) * 100}%`
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent triggering progressBar click
+                    jumpToCuePoint(cue.time, index);
+                  }}
+                />
+              ))}
+            </div>
           </div>
 
           <div style={styles.controls}>
@@ -366,6 +414,11 @@ const styles = {
     overflow: "hidden",
     border: "1px solid #333",
     position: "relative",
+    cursor: "pointer", // Show pointer cursor to indicate it's clickable
+    transition: "background-color 0.2s ease", // Smooth hover effect
+    "&:hover": {
+      backgroundColor: "#2a2a2a", // Slightly lighter on hover
+    },
   },
   progress: {
     height: "100%",
@@ -373,6 +426,7 @@ const styles = {
     transition: "width 0.1s linear",
     opacity: 1,
     transition: "opacity 0.3s ease",
+    pointerEvents: "none", // Allow clicks to pass through to the parent
   },
   crossfadeOverlay: {
     position: "absolute",
@@ -383,6 +437,7 @@ const styles = {
     backgroundColor: "rgba(255, 136, 0, 0.3)",
     opacity: 0,
     transition: "opacity 0.3s ease",
+    pointerEvents: "none", // Allow clicks to pass through
   },
   cueMarker: {
     position: "absolute",
@@ -404,17 +459,6 @@ const styles = {
     transform: "scaleX(2)",
     boxShadow: "0 0 15px rgba(255, 136, 0, 0.9)",
   },
-  // crossfadeIndicator: {
-  //   position: "absolute",
-  //   top: 0,
-  //   left: 0,
-  //   width: "100%",
-  //   height: "100%",
-  //   backgroundColor: "rgba(255, 136, 0, 0.3)",
-  //   zIndex: 1,
-  //   opacity: isCrossfading ? 1 : 0,
-  //   transition: "opacity 0.3s ease",
-  // },
   crossfading: {
     opacity: 0.7,
   },
@@ -467,7 +511,6 @@ const styles = {
     cursor: "pointer",
     transition: "all 0.2s ease",
   },
-
   loadButton: {
     backgroundColor: "#333",
     color: "white",
@@ -479,18 +522,16 @@ const styles = {
     cursor: "pointer",
     transition: "all 0.2s ease",
   },
-
   cueListWrapper: {
     width: "100%",
     marginTop: "15px",
     padding: "5px 0",
     borderTop: "1px solid #444",
   },
-
   cueListContainer: {
     display: "flex",
     flexDirection: "row",
-    flexWrap: "nowrap", // <== Important fix!
+    flexWrap: "nowrap",
     overflowX: "auto",
     overflowY: "hidden",
     scrollbarWidth: "thin",
@@ -500,7 +541,6 @@ const styles = {
     maxWidth: "500px",
     whiteSpace: "nowrap",
   },
-
   cueItem: {
     display: "flex",
     alignItems: "center",
@@ -511,10 +551,9 @@ const styles = {
     cursor: "pointer",
     minWidth: "90px",
     maxWidth: "150px",
-    flexShrink: 0, // Prevents shrinking ✅
+    flexShrink: 0,
     transition: "all 0.2s ease",
   },
-
   cueLabel: {
     fontSize: "12px",
     overflow: "hidden",
@@ -522,7 +561,6 @@ const styles = {
     whiteSpace: "nowrap",
     flex: 1,
   },
-
   deleteCueButton: {
     backgroundColor: "transparent",
     border: "none",
@@ -534,7 +572,6 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
   },
-
   emptyState: {
     flex: 1,
     display: "flex",
