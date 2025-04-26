@@ -10,12 +10,12 @@ import useCrossfadeAudio from "./useCrossfadeAudio";
 const DJController = () => {
   const [deckA, setDeckA] = useState(null);
   const [deckB, setDeckB] = useState(null);
-  const [crossfaderValue, setCrossfaderValue] = useState(50);
+  // const [crossfaderValue, setCrossfaderValue] = useState(50);
   const [fadeDuration, setFadeDuration] = useState(1);
   const deckAOriginalVolume = useRef(1);
   const deckBOriginalVolume = useRef(1);
 
-  const { crossfade } = useCrossfadeAudio(deckA, deckB, fadeDuration); // Properly destructure crossfade
+  const [showCrossfader, setShowCrossfader] = useState(false);  
   const handleTrackLoadedA = ({ audioRef, deck, fileName, audioSrc }) => {
     setDeckA(audioRef);
     if (audioRef?.current) {
@@ -33,34 +33,34 @@ const DJController = () => {
       deckBOriginalVolume.current = audioRef.current.volume;
       // Start with deck B silent if deck A is already playing
       if (deckA) {
-        audioRef.current.volume = 0;
+        audioRef.current.volume = 1;
       }
     }
   };
 
-  const handleCrossfaderChange = (e) => {
-    const newValue = parseInt(e.target.value);
-    setCrossfaderValue(newValue);
+  // const handleCrossfaderChange = (e) => {
+  //   const newValue = parseInt(e.target.value);
+  //   setCrossfaderValue(newValue);
 
-    // Determine crossfade direction based on previous and current values
-    if (deckA?.current && deckB?.current) {
-      if (newValue < 40 && crossfaderValue >= 40) {
-        // Crossfade to deck A
-        crossfade('BtoA');
-      } else if (newValue > 60 && crossfaderValue <= 60) {
-        // Crossfade to deck B
-        crossfade('AtoB');
-      } else if (newValue >= 40 && newValue <= 60) {
-        // Middle position - both decks play at reduced volume
-        const centerValue = (newValue - 50) / 10; // -1 to 1
-        const volumeA = 0.5 - (centerValue * 0.5);
-        const volumeB = 0.5 + (centerValue * 0.5);
+  //   // Determine crossfade direction based on previous and current values
+  //   if (deckA?.current && deckB?.current) {
+  //     if (newValue < 40 && crossfaderValue >= 40) {
+  //       // Crossfade to deck A
+  //       crossfade('BtoA');
+  //     } else if (newValue > 60 && crossfaderValue <= 60) {
+  //       // Crossfade to deck B
+  //       crossfade('AtoB');
+  //     } else if (newValue >= 40 && newValue <= 60) {
+  //       // Middle position - both decks play at reduced volume
+  //       const centerValue = (newValue - 50) / 10; // -1 to 1
+  //       const volumeA = 0.5 - (centerValue * 0.5);
+  //       const volumeB = 0.5 + (centerValue * 0.5);
 
-        deckA.current.volume = volumeA * deckAOriginalVolume.current;
-        deckB.current.volume = volumeB * deckBOriginalVolume.current;
-      }
-    }
-  };
+  //       deckA.current.volume = volumeA * deckAOriginalVolume.current;
+  //       deckB.current.volume = volumeB * deckBOriginalVolume.current;
+  //     }
+  //   }
+  // };
 
   return (
     <div style={styles.container}>
