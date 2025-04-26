@@ -7,37 +7,45 @@ const useCrossfadeAudio = (audioRef, fadeDuration = 1) => {
       if (!audio) return;
 
       const originalVolume = audio.volume;
-      const step = originalVolume / (fadeDuration * 10); // 10 steps per sec
-      let fadeOutInterval;
-      console.log("Crossfading to:", targetTime);
+      const isPlaying = !audio.paused;
+      const fadeSteps = 10; // Steps per second
+      const totalSteps = fadeDuration * fadeSteps;
+      const stepInterval = 100; // ms
 
-      // Fade Out
-      fadeOutInterval = setInterval(() => {
-        if (audio.volume > step) {
-          audio.volume -= step;
-        } else {
-          clearInterval(fadeOutInterval);
-          audio.pause();
-          audio.currentTime = targetTime;
-
-          // Fade In
-          audio.play().then(() => {
-            let fadeInInterval = setInterval(() => {
-              if (audio.volume < originalVolume - step) {
-                audio.volume += step;
-              } else {
-                audio.volume = originalVolume;
-                clearInterval(fadeInInterval);
-              }
-            }, 100);
-          });
+      let stepsCompleted = 0;
+      
+      const fadeInterval = setInterval(() => {
+        stepsCompleted++;
+        
+        // Fade out first half
+        if (stepsCompleted <= totalSteps / 2) {
+          audio.volume = Math.max(0, originalVolume - (originalVolume * (stepsCompleted / (totalSteps / 2))));
+        } 
+        // Fade in second half after jumping
+        else {
+          if (stepsCompleted === Math.floor(totalSteps / 2) + 1) {
+            audio.currentTime = targetTime;
+            if (isPlaying) {
+              audio.play().catch(e => console.error("Play error:", e));
+            }
+          }
+          audio.volume = Math.min(originalVolume, 
+            originalVolume * ((stepsCompleted - (totalSteps / 2)) / (totalSteps / 2)));
         }
-      }, 100);
+
+        if (stepsCompleted >= totalSteps) {
+          clearInterval(fadeInterval);
+          audio.volume = originalVolume; // Ensure perfect final volume
+        }
+      }, stepInterval);
+
+      return () => clearInterval(fadeInterval);
     },
     [audioRef, fadeDuration]
   );
 
   return { crossfadeTo };
 };
+
 
 export default useCrossfadeAudio;

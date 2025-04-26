@@ -1,18 +1,22 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import AddSongModal from "./AddSongModal";
 
-const TrackDisplay = ({ onTrackLoaded, deck }) => {
+const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
   const [showAddSong, setShowAddSong] = useState(false);
   const [fileName, setFileName] = useState(null);
   const [audioSrc, setAudioSrc] = useState(null);
-  const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [cuePoints, setCuePoints] = useState([]);
   const [selectedCue, setSelectedCue] = useState(null);
+  const [isCrossfading, setIsCrossfading] = useState(false); // Add this line
+  
+  const audioRef = useRef(null);
   const cueListRef = useRef(null);
 
+  
+  
   // Handle file selection from the modal
   const handleSelectFile = (file) => {
     const objectUrl = URL.createObjectURL(file);
@@ -102,16 +106,43 @@ const TrackDisplay = ({ onTrackLoaded, deck }) => {
     }
   };
 
-  // Jump to specific cue point
+  // Jump to cue point with crossfade
   const jumpToCuePoint = (time, index) => {
     if (audioRef.current) {
-      audioRef.current.currentTime = time;
+      setIsCrossfading(true);
+      const originalVolume = audioRef.current.volume;
+      const steps = 10; // Number of fade steps
+      const stepSize = originalVolume / steps;
+      
+      // Fade out
+      const fadeOutInterval = setInterval(() => {
+        if (audioRef.current.volume > 0.05) {
+          audioRef.current.volume -= stepSize;
+        } else {
+          clearInterval(fadeOutInterval);
+          audioRef.current.currentTime = time;
+          
+          // Fade in
+          const fadeInInterval = setInterval(() => {
+            if (audioRef.current.volume < originalVolume) {
+              audioRef.current.volume += stepSize;
+            } else {
+              clearInterval(fadeInInterval);
+              audioRef.current.volume = originalVolume;
+              setIsCrossfading(false);
+            }
+          }, (fadeDuration * 1000) / steps);
+        }
+      }, (fadeDuration * 1000) / steps);
+      
       setSelectedCue(index);
       if (!isPlaying) {
         audioRef.current.play().then(() => setIsPlaying(true));
       }
     }
   };
+
+
 
   // Remove cue point
   const removeCuePoint = (id, event) => {
@@ -157,27 +188,34 @@ const TrackDisplay = ({ onTrackLoaded, deck }) => {
           </div>
 
           <div style={styles.waveform}>
-            <div style={styles.progressBar}>
-              <div
-                style={{
-                  ...styles.progress,
-                  width: `${(currentTime / duration) * 100}%`,
-                }}
-              ></div>
-              {/* Cue point markers */}
-              {cuePoints.map((cue, index) => (
-                <div
-                  key={cue.id}
-                  style={{
-                    ...styles.cueMarker,
-                    left: `${(cue.time / duration) * 100}%`,
-                    backgroundColor:
-                      selectedCue === index ? "#FF5500" : "#00c3ff",
-                  }}
-                  onClick={() => jumpToCuePoint(cue.time, index)}
-                />
-              ))}
-            </div>
+          <div style={styles.progressBar}>
+        <div 
+          style={{
+            ...styles.progress,
+            width: `${(currentTime / duration) * 100}%`,
+            opacity: isCrossfading ? 0.7 : 1
+          }}
+        ></div>
+        <div 
+          style={{
+            ...styles.crossfadeOverlay,
+            opacity: isCrossfading ? 0.5 : 0
+          }}
+        ></div>
+        {cuePoints.map((cue, index) => (
+          <div
+            key={cue.id}
+            style={{
+              ...styles.cueMarker,
+              ...(selectedCue === index && styles.activeCueMarker),
+              ...(selectedCue === index && isCrossfading && styles.crossfadingCueMarker),
+              left: `${(cue.time / duration) * 100}%`
+            }}
+            onClick={() => jumpToCuePoint(cue.time, index)}
+          />
+        ))}
+      </div>
+
           </div>
 
           <div style={styles.controls}>
@@ -333,6 +371,18 @@ const styles = {
     height: "100%",
     background: "linear-gradient(90deg, #00c3ff30, #00c3ff80)",
     transition: "width 0.1s linear",
+    opacity: 1,
+    transition: "opacity 0.3s ease",
+  },
+  crossfadeOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(255, 136, 0, 0.3)",
+    opacity: 0,
+    transition: "opacity 0.3s ease",
   },
   cueMarker: {
     position: "absolute",
@@ -341,6 +391,45 @@ const styles = {
     height: "100%",
     cursor: "pointer",
     zIndex: 2,
+    transition: "all 0.3s ease",
+    backgroundColor: "#00c3ff",
+  },
+  activeCueMarker: {
+    backgroundColor: "#FF5500",
+    transform: "scaleX(1.5)",
+    boxShadow: "0 0 10px rgba(255, 85, 0, 0.7)",
+  },
+  crossfadingCueMarker: {
+    backgroundColor: "#FF8800",
+    transform: "scaleX(2)",
+    boxShadow: "0 0 15px rgba(255, 136, 0, 0.9)",
+  },
+  // crossfadeIndicator: {
+  //   position: "absolute",
+  //   top: 0,
+  //   left: 0,
+  //   width: "100%",
+  //   height: "100%",
+  //   backgroundColor: "rgba(255, 136, 0, 0.3)",
+  //   zIndex: 1,
+  //   opacity: isCrossfading ? 1 : 0,
+  //   transition: "opacity 0.3s ease",
+  // },
+  crossfading: {
+    opacity: 0.7,
+  },
+  pulseAnimation: {
+    animation: "pulse 0.5s ease infinite alternate",
+  },
+  "@keyframes pulse": {
+    from: {
+      opacity: 0.7,
+      transform: "scale(1)"
+    },
+    to: {
+      opacity: 1,
+      transform: "scale(1.2)"
+    }
   },
   controls: {
     display: "flex",

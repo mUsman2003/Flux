@@ -5,42 +5,60 @@ import VolumeSlider from "./VolumeSlider";
 import SyncButton from "./SyncButton";
 import JogWheel from "./JogWheel";
 import AudioEffects from "./AudioEffects";
+import useCrossfadeAudio from "./useCrossfadeAudio";
 
 const DJController = () => {
   const [deckA, setDeckA] = useState(null);
   const [deckB, setDeckB] = useState(null);
-  const [crossfaderValue, setCrossfaderValue] = useState(50); // Middle position
+  const [crossfaderValue, setCrossfaderValue] = useState(50);
+  const [fadeDuration, setFadeDuration] = useState(1);
   const deckAOriginalVolume = useRef(1);
   const deckBOriginalVolume = useRef(1);
 
-  // Called when a track is loaded in TrackDisplay A
+ const { crossfade } = useCrossfadeAudio(deckA, deckB, fadeDuration); // Properly destructure crossfade
   const handleTrackLoadedA = ({ audioRef, deck, fileName, audioSrc }) => {
     setDeckA(audioRef);
     if (audioRef?.current) {
       deckAOriginalVolume.current = audioRef.current.volume;
+      // Start with deck A at full volume if it's the first deck loaded
+      if (!deckB) {
+        audioRef.current.volume = 1;
+      }
     }
   };
 
-  // Called when a track is loaded in TrackDisplay B
   const handleTrackLoadedB = ({ audioRef, deck, fileName, audioSrc }) => {
     setDeckB(audioRef);
     if (audioRef?.current) {
       deckBOriginalVolume.current = audioRef.current.volume;
+      // Start with deck B silent if deck A is already playing
+      if (deckA) {
+        audioRef.current.volume = 0;
+      }
     }
   };
 
-  // Handle crossfader change
   const handleCrossfaderChange = (e) => {
-    setCrossfaderValue(e.target.value);
+    const newValue = parseInt(e.target.value);
+    setCrossfaderValue(newValue);
     
-    // Implement improved crossfading logic
+    // Determine crossfade direction based on previous and current values
     if (deckA?.current && deckB?.current) {
-      const valueA = e.target.value < 50 ? 1 : 1 - (e.target.value - 50) / 50;
-      const valueB = e.target.value > 50 ? 1 : e.target.value / 50;
-      
-      // Maintain original volume relationships while crossfading
-      deckA.current.volume = valueA * deckAOriginalVolume.current;
-      deckB.current.volume = valueB * deckBOriginalVolume.current;
+      if (newValue < 40 && crossfaderValue >= 40) {
+        // Crossfade to deck A
+        crossfade('BtoA');
+      } else if (newValue > 60 && crossfaderValue <= 60) {
+        // Crossfade to deck B
+        crossfade('AtoB');
+      } else if (newValue >= 40 && newValue <= 60) {
+        // Middle position - both decks play at reduced volume
+        const centerValue = (newValue - 50) / 10; // -1 to 1
+        const volumeA = 0.5 - (centerValue * 0.5);
+        const volumeB = 0.5 + (centerValue * 0.5);
+        
+        deckA.current.volume = volumeA * deckAOriginalVolume.current;
+        deckB.current.volume = volumeB * deckBOriginalVolume.current;
+      }
     }
   };
 
@@ -58,8 +76,12 @@ const DJController = () => {
             <h3 style={styles.deckTitle}>DECK A</h3>
           </div>
           
-          <TrackDisplay onTrackLoaded={handleTrackLoadedA} deck="A" />
-          
+          {/* <TrackDisplay onTrackLoaded={handleTrackLoadedA} deck="A" /> */}
+          <TrackDisplay 
+          onTrackLoaded={handleTrackLoadedA} 
+          deck="A" 
+          fadeDuration={fadeDuration} // Add this prop
+        />
           <div style={styles.deckControls}>
             <JogWheel />
             
@@ -80,20 +102,33 @@ const DJController = () => {
 
         {/* MIXER SECTION */}
         <div style={styles.mixer}>
-          <div style={styles.crossfaderContainer}>
-            <span style={styles.deckLabel}>A</span>
-            <div style={styles.crossfaderLabel}>CROSSFADER</div>
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={crossfaderValue}
-              onChange={handleCrossfaderChange}
-              style={styles.crossfader}
-            />
-            <span style={styles.deckLabel}>B</span>
-          </div>
+        <div style={styles.crossfaderContainer}>
+          <span style={styles.deckLabel}>A</span>
+          <div style={styles.crossfaderLabel}>CROSSFADER</div>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={crossfaderValue}
+            onChange={handleCrossfaderChange}
+            style={styles.crossfader}
+          />
+          <span style={styles.deckLabel}>B</span>
         </div>
+
+        <div style={styles.fadeControl}>
+          <label style={styles.fadeLabel}>Fade: {fadeDuration.toFixed(1)}s</label>
+          <input
+            type="range"
+            min="0.1"
+            max="3"
+            step="0.1"
+            value={fadeDuration}
+            onChange={(e) => setFadeDuration(parseFloat(e.target.value))}
+            style={styles.fadeSlider}
+          />
+        </div>
+      </div>
 
         {/* DECK B */}
         <div style={styles.deck}>
@@ -101,8 +136,12 @@ const DJController = () => {
             <h3 style={styles.deckTitle}>DECK B</h3>
           </div>
           
-          <TrackDisplay onTrackLoaded={handleTrackLoadedB} deck="B" />
-          
+          {/* <TrackDisplay onTrackLoaded={handleTrackLoadedB} deck="B" /> */}
+          <TrackDisplay 
+          onTrackLoaded={handleTrackLoadedB} 
+          deck="B" 
+          fadeDuration={fadeDuration} // Add this prop
+        />
           <div style={styles.deckControls}>
             <JogWheel />
             
@@ -206,23 +245,6 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
   },
-  crossfaderContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    backgroundColor: "#333",
-    padding: "15px 5px",
-    borderRadius: "8px",
-    border: "1px solid #444",
-  },
-  crossfaderLabel: {
-    color: "#999",
-    fontSize: "10px",
-    fontWeight: "bold",
-    textAlign: "center",
-    letterSpacing: "1px",
-    marginBottom: "5px",
-  },
   crossfader: {
     width: "150px",
     margin: "15px 0",
@@ -233,13 +255,72 @@ const styles = {
     outline: "none",
     transform: "rotate(270deg)",
     accentColor: "#fff",
+    cursor: "pointer",
+    transition: "background 0.3s ease",
+    '&:hover': {
+      height: "8px",
+    }
+  },
+  crossfaderContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    backgroundColor: "#333",
+    padding: "15px 5px",
+    borderRadius: "8px",
+    border: "1px solid #444",
+    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.3)",
+  },
+  crossfaderLabel: {
+    color: "#fff",
+    fontSize: "10px",
+    fontWeight: "bold",
+    textAlign: "center",
+    letterSpacing: "1px",
+    marginBottom: "5px",
+    textTransform: "uppercase",
   },
   deckLabel: {
     color: "#00c3ff",
     fontWeight: "bold",
     fontSize: "16px",
     margin: "5px 0",
-  }
+  },
+  fadeDurationControl: {
+    backgroundColor: '#2a2a2a',
+    padding: '10px',
+    borderRadius: '8px',
+    marginTop: '15px',
+    border: '1px solid #444',
+  },
+  sliderLabel: {
+    color: '#aaa',
+    fontSize: '12px',
+    marginBottom: '5px',
+    textAlign: 'center',
+  },
+  slider: {
+    width: '100%',
+    accentColor: '#00c3ff',
+  },
+  fadeControl: {
+    backgroundColor: '#2a2a2a',
+    padding: '10px',
+    borderRadius: '8px',
+    marginTop: '15px',
+    border: '1px solid #444',
+  },
+  fadeLabel: {
+    color: '#aaa',
+    fontSize: '12px',
+    display: 'block',
+    marginBottom: '5px',
+    textAlign: 'center',
+  },
+  fadeSlider: {
+    width: '100%',
+    accentColor: '#00c3ff',
+  },
 };
 
 export default DJController;
