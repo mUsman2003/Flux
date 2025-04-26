@@ -11,64 +11,75 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
-// Function to create the songs table if it doesn't exist
-async function createSongsTable() {
-  const query = `
-    CREATE TABLE IF NOT EXISTS songs (
-      song_id SERIAL PRIMARY KEY,
-      song_name TEXT NOT NULL,
-      song_path TEXT NOT NULL UNIQUE
-    );
-  `;
-  await pool.query(query);
-  console.log('Songs table created or already exists.');
-}
-
-// Function to read MP3 files from the Music folder
-function getMp3Files() {
-  const songsDir = path.join(__dirname, 'Music');
-  const files = fs.readdirSync(songsDir);
-  return files
-    .filter(file => path.extname(file).toLowerCase() === '.mp3')
-    .map(file => ({
-      name: path.basename(file, '.mp3'),
-      path: path.join(songsDir, file),
-    }));
-}
-
-// Function to insert songs into the database
-async function insertSongs(songs) {
-  const query = `
-    INSERT INTO songs (song_name, song_path)
-    VALUES ($1, $2)
-    ON CONFLICT (song_path) DO NOTHING;
-  `;
-  for (const song of songs) {
-    await pool.query(query, [song.name, song.path]);
-  }
-  console.log('Checked all songs and inserted new ones.');
-}
-
-// Main function to execute the steps
-async function main() {
+// Function to clean up database
+async function cleanupDatabase() {
+  const client = await pool.connect();
   try {
-    await pool.connect();
-    console.log('Connected to PostgreSQL');
-
-    await createSongsTable();
-
-    const songs = getMp3Files();
-    if (songs.length > 0) {
-      await insertSongs(songs);
-    } else {
-      console.log('No songs found in the Music folder.');
-    }
-
+    console.log('Cleaning up database...');
+    await client.query('TRUNCATE TABLE songs RESTART IDENTITY CASCADE');
+    console.log('Database cleaned up successfully');
   } catch (err) {
-    console.error('Error:', err);
+    console.error('Cleanup error:', err);
   } finally {
-    await pool.end();
+    client.release();
   }
 }
 
-main();
+// Handle server shutdown events
+process.on('SIGINT', async () => {
+  await cleanupDatabase();
+  await pool.end();
+  process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
+  await cleanupDatabase();
+  await pool.end();
+  process.exit(0);
+});
+
+// Initialize function
+async function initializeDatabase() {
+  const client = await pool.connect();
+  try {
+    console.log('Connected to PostgreSQL');
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS songs (
+        song_id SERIAL PRIMARY KEY,
+        song_name TEXT NOT NULL,
+        song_path TEXT NOT NULL UNIQUE
+      );
+    `);
+    console.log('Songs table ready');
+
+    const songsDir = path.join(__dirname, 'Music');
+    if (fs.existsSync(songsDir)) {
+      const files = fs.readdirSync(songsDir)
+        .filter(file => path.extname(file).toLowerCase() === '.mp3')
+        .map(file => ({
+          name: path.basename(file, '.mp3'),
+          path: path.join(songsDir, file),
+        }));
+
+      for (const song of files) {
+        await client.query(
+          `INSERT INTO songs (song_name, song_path)
+           VALUES ($1, $2)
+           ON CONFLICT (song_path) DO NOTHING`,
+          [song.name, song.path]
+        );
+      }
+      console.log(`Scanned ${files.length} songs`);
+    }
+  } catch (err) {
+    console.error('Initialization error:', err);
+  } finally {
+    client.release();
+  }
+}
+
+module.exports = {
+  pool,
+  initializeDatabase,
+  cleanupDatabase // Export cleanup function if needed elsewhere
+};

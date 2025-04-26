@@ -78,11 +78,14 @@ const styles = {
   songLibraryContainer: {
     display: "flex",
     flexDirection: "column",
-    height: "400px",
+    height: "500px",
+    alignItems: "center", // This will center child elements horizontally
   },
   searchContainer: {
-    padding: "15px",
+    padding: "10px",
     borderBottom: "1px solid #333",
+    width: "80%", // Add some width so it's not full width
+    alignItems: "center",
   },
   searchInput: {
     width: "100%",
