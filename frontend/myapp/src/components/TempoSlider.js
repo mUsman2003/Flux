@@ -6,14 +6,14 @@ const TempoSlider = ({ audioRef }) => {
   const handleTempoChange = (e) => {
     const value = parseFloat(e.target.value);
     setTempo(value);
-    if (audioRef.current) {
+    if (audioRef?.current) {
       audioRef.current.playbackRate = value;
     }
   };
 
   return (
     <div style={styles.tempoContainer}>
-      <label style={styles.label}>Tempo: {tempo.toFixed(2)}x</label>
+      <label style={styles.label}>TEMPO: {tempo.toFixed(2)}x</label>
       <input
         type="range"
         min="0.5"
@@ -31,16 +31,17 @@ const styles = {
   tempoContainer: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    color: "#fff",
-    marginTop: "15px",
+    flex: 1,
   },
   label: {
-    fontSize: "14px",
+    fontSize: "12px",
     marginBottom: "6px",
+    color: "#999",
+    fontWeight: "bold",
   },
   slider: {
-    width: "100px",
+    width: "100%",
+    accentColor: "#FF5500",
   },
 };
 
