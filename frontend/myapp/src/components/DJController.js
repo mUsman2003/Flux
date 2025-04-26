@@ -73,7 +73,7 @@ const DJController = () => {
               </div>
             </div>
 
-            {deckA && <AudioEffects audioRef={deckA} />}
+            {deckA && <AudioEffects audioRef={deckA} style={{ width: "100%" }} />}
           </div>
 
           {/* MIXER SECTION */}
@@ -124,7 +124,7 @@ const DJController = () => {
               </div>
             </div>
 
-            {deckB && <AudioEffects audioRef={deckB} />}
+            {deckB && <AudioEffects audioRef={deckB} style={{ width: "100%" }} />}
           </div>
         </div>
         
@@ -144,7 +144,7 @@ const styles = {
     padding: "20px",
     borderRadius: "10px",
     width: "100%",
-    maxWidth: "1200px",
+    maxWidth: "1600px",
     margin: "auto",
     boxShadow: "0 10px 25px rgba(0, 17, 255, 0.5)",
     border: "1px solid #333",
@@ -174,13 +174,15 @@ const styles = {
   },
   mainContent: {
     display: "flex",
-    gap: "20px", // Add gap between decks and mic input
+    gap: "20px",
+    overflow: "visible", // Ensure nested overflow is visible
   },
   decksContainer: {
     display: "flex",
     justifyContent: "space-between",
-    gap: "20px",
-    flex: 1, // Take available space
+    gap: "30px",
+    flex: 1,
+    overflow: "visible", // Allow content to expand
   },
   deck: {
     flex: "1",
@@ -188,6 +190,9 @@ const styles = {
     borderRadius: "8px",
     padding: "15px",
     border: "1px solid #444",
+    minWidth: "400px", // Prevent decks from shrinking too much
+    overflow: "hidden", // Prevents content from protruding
+    position: "relative", // For child positioning context
   },
   deckHeader: {
     borderBottom: "1px solid #444",
