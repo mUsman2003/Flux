@@ -5,7 +5,7 @@ import VolumeSlider from "./VolumeSlider";
 import SyncButton from "./SyncButton";
 import JogWheel from "./JogWheel";
 import AudioEffects from "./AudioEffects";
-import MicrophoneInput from "./MicrophoneInput"; // Import the new component
+import MicrophoneInput from "./MicrophoneInput";
 import useCrossfadeAudio from "./useCrossfadeAudio";
 
 const DJController = () => {
