@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
 const VolumeSlider = ({ audioRef, side = "left" }) => {
-  const [volume, setVolume] = useState(100);
   const [originalVolume, setOriginalVolume] = useState(1);
+  const [volume, setVolume] = useState(20);
   
   useEffect(() => {
     if (audioRef?.current) {
+      // Preserve original volume but force initial volume to 20%
       setOriginalVolume(audioRef.current.volume);
+      audioRef.current.volume = (20 / 100) * audioRef.current.volume;
     }
   }, [audioRef]);
   
@@ -37,7 +39,7 @@ const VolumeSlider = ({ audioRef, side = "left" }) => {
         <input
           type="range"
           min="0"
-          max="100"
+          max="90"
           value={volume}
           onChange={handleVolumeChange}
           style={styles.slider}
