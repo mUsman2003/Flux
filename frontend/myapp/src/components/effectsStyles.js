@@ -4,7 +4,7 @@ export const styles = {
     padding: "15px",
     borderRadius: "8px",
     marginTop: "15px",
-    width: "100%",
+    width: "94%",
     border: "1px solid #444",
     display: "block", // Ensure it's always displayed
   },

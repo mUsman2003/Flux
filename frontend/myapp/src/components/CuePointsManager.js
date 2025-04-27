@@ -3,20 +3,20 @@ import React, { useRef, useState } from "react";
 const CuePointsManager = ({
   // Audio reference
   audioRef,
-  
+
   // Cue points state
   cuePoints,
   setCuePoints,
   selectedCue,
   setSelectedCue,
-  
+
   // Navigation functions
   jumpToCuePoint,
   crossfadeTo,
-  
+
   // Utility functions
   formatTime,
-  
+
   // Crossfade controls
   crossfaderValue,
   handleCrossfade,
@@ -49,7 +49,7 @@ const CuePointsManager = ({
   // Navigate to cue point with crossfade
   const goToCuePoint = (time, index) => {
     if (audioRef?.current) {
-      // Use crossfade instead of direct jump
+      // Always use crossfade for cue point navigation
       crossfadeTo(time);
       setSelectedCue(index);
 
@@ -62,9 +62,10 @@ const CuePointsManager = ({
     }
   };
 
-  // Jump to temporary cue point
+  // Jump to temporary cue point with crossfade
   const jumpToTempCuePoint = () => {
     if (audioRef?.current && cuePoint !== null) {
+      // Use crossfade for temporary cue point as well
       crossfadeTo(cuePoint);
     }
   };
@@ -74,10 +75,10 @@ const CuePointsManager = ({
     if (event) {
       event.stopPropagation();
     }
-    
+
     const updatedCues = cuePoints.filter((cue) => cue.id !== id);
     setCuePoints(updatedCues);
-    
+
     if (selectedCue !== null && cuePoints[selectedCue]?.id === id) {
       setSelectedCue(null);
     }
@@ -164,6 +165,7 @@ const CuePointsManager = ({
                   backgroundColor: selectedCue === index ? "#FF5500" : "#333",
                 }}
                 onClick={() => goToCuePoint(cue.time, index)}
+                title={`Jump to ${formatTime(cue.time)} with crossfade`}
               >
                 <span style={styles.cueLabel}>
                   {cue.label} [{formatTime(cue.time)}]
@@ -171,6 +173,7 @@ const CuePointsManager = ({
                 <button
                   style={styles.deleteCueButton}
                   onClick={(e) => removeCuePoint(cue.id, e)}
+                  title="Remove cue point"
                 >
                   ×
                 </button>
@@ -291,6 +294,7 @@ const styles = {
     maxWidth: "150px",
     flexShrink: 0,
     transition: "all 0.2s ease",
+    position: "relative",
   },
   cueLabel: {
     fontSize: "12px",
@@ -301,7 +305,7 @@ const styles = {
   },
   deleteCueButton: {
     backgroundColor: "transparent",
-    border: "none", 
+    border: "none",
     color: "#fff",
     cursor: "pointer",
     fontSize: "14px",
