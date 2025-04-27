@@ -1,59 +1,68 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
-const Knob = ({ label, min = 0, max = 100, defaultValue = 50, color = "#4095e5" }) => {
+const Knob = ({
+  label,
+  min = -12,
+  max = 12,
+  defaultValue = 0,
+  color = "#4095e5",
+  onChange,
+}) => {
   const [value, setValue] = useState(defaultValue);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startY, setStartY] = useState(0);
-  const [startValue, setStartValue] = useState(defaultValue);
+  const knobRef = useRef(null);
+  const startYRef = useRef(0);
+  const startValueRef = useRef(0);
+
+  // Convert value to rotation angle (-135deg to 135deg)
+  const rotation = ((value - min) / (max - min)) * 270 - 135;
 
   const handleMouseDown = (e) => {
-    setIsDragging(true);
-    setStartY(e.clientY);
-    setStartValue(value);
+    startYRef.current = e.clientY;
+    startValueRef.current = value;
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
+    e.preventDefault();
   };
 
   const handleMouseMove = (e) => {
-    if (isDragging) {
-      const deltaY = startY - e.clientY;
-      const deltaValue = deltaY * 0.5;
-      const newValue = Math.max(min, Math.min(max, startValue + deltaValue));
-      setValue(newValue);
-    }
+    const deltaY = startYRef.current - e.clientY;
+    const deltaValue = (deltaY / 100) * (max - min);
+    const newValue = Math.max(
+      min,
+      Math.min(max, startValueRef.current + deltaValue)
+    );
+    const roundedValue = Math.round(newValue * 2) / 2; // Round to nearest 0.5
+
+    setValue(roundedValue);
+    if (onChange) onChange(roundedValue);
   };
 
   const handleMouseUp = () => {
-    setIsDragging(false);
     document.removeEventListener("mousemove", handleMouseMove);
     document.removeEventListener("mouseup", handleMouseUp);
   };
 
-  // Calculate rotation based on value
-  const rotation = ((value - min) / (max - min)) * 270 - 135;
-
   return (
     <div style={styles.knobContainer}>
-      <div 
-        style={styles.knobOuter}
-        onMouseDown={handleMouseDown}
-      >
-        <div 
+      <div ref={knobRef} style={styles.knobOuter} onMouseDown={handleMouseDown}>
+        <div
           style={{
             ...styles.knob,
             transform: `rotate(${rotation}deg)`,
             backgroundColor: "#222",
-            boxShadow: `0 0 10px ${color}40`
+            boxShadow: `0 0 10px ${color}40`,
           }}
         >
           <div style={styles.knobInner}>
-            <div style={{...styles.indicator, backgroundColor: color}}></div>
+            <div style={{ ...styles.indicator, backgroundColor: color }}></div>
           </div>
         </div>
         <div style={styles.knobRing}></div>
       </div>
       <div style={styles.labelContainer}>
-        <div style={{...styles.valueIndicator, backgroundColor: color}}></div>
+        <div style={{ ...styles.valueDisplay, color }}>
+          {value > 0 ? `+${value.toFixed(1)}` : value.toFixed(1)}
+        </div>
         <span style={styles.label}>{label}</span>
       </div>
     </div>
@@ -76,7 +85,7 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
-    cursor: "pointer",
+    cursor: "grab",
   },
   knobRing: {
     position: "absolute",
@@ -85,7 +94,8 @@ const styles = {
     borderRadius: "50%",
     border: "2px solid #333",
     boxShadow: "0 0 5px rgba(0,0,0,0.5)",
-    backgroundImage: "repeating-conic-gradient(from 0deg, #333 0deg 30deg, #222 30deg 60deg)",
+    backgroundImage:
+      "repeating-conic-gradient(from 0deg, #333 0deg 30deg, #222 30deg 60deg)",
   },
   knob: {
     width: "48px",
@@ -98,7 +108,7 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    transform: "rotate(-135deg)",
+    transition: "transform 0.05s ease-out", // Smoother but still responsive rotation
   },
   knobInner: {
     width: "85%",
@@ -123,11 +133,10 @@ const styles = {
     alignItems: "center",
     marginTop: "4px",
   },
-  valueIndicator: {
-    width: "10px",
-    height: "3px",
-    backgroundColor: "#4095e5",
-    marginBottom: "3px",
+  valueDisplay: {
+    fontSize: "12px",
+    fontWeight: "bold",
+    marginBottom: "2px",
   },
   label: {
     fontSize: "12px",
@@ -135,7 +144,7 @@ const styles = {
     textTransform: "uppercase",
     color: "#aaa",
     letterSpacing: "1px",
-  }
+  },
 };
 
 export default Knob;
