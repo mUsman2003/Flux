@@ -42,7 +42,7 @@ const SyncButton = ({ masterDeck, slaveDeck, tempoRef }) => {
       <button
         style={{
           ...styles.button,
-          backgroundColor: active ? "#00c6ff" : "#1a1a1a",
+          backgroundColor: active ? "#00c6ff" : "#333",
           boxShadow: active ? "0 0 15px #00c6ff90" : "none",
         }}
         onClick={handleSync}
@@ -62,18 +62,18 @@ const styles = {
     margin: "10px 0",
   },
   button: {
-    backgroundColor: "#1a1a1a",
+    backgroundColor: "red",
+    fontWeight: "bold",
     color: "white",
-    borderRadius: "4px",
+    borderRadius: "10px",
     padding: "8px 16px",
     border: "1px solid #333",
     cursor: "pointer",
-    fontWeight: "bold",
     letterSpacing: "1px",
     transition: "all 0.2s ease",
     minWidth: "80px",
     textAlign: "center",
-    fontSize: "14px",
+    fontSize: "12px",
     fontFamily: "'Rajdhani', sans-serif",
   },
 };

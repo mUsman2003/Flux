@@ -167,25 +167,7 @@ const DJController = () => {
             )}
           </div>
 
-          {/* MIXER SECTION */}
-          <div style={styles.mixer}>
-            <div style={styles.crossfaderContainer}>CROSSFADER</div>
-
-            <div style={styles.fadeControlContainer}>
-              <div style={styles.fadeControl}>
-                <input
-                  type="range"
-                  min="0.1"
-                  max="3"
-                  step="0.1"
-                  value={fadeDuration}
-                  onChange={(e) => setFadeDuration(parseFloat(e.target.value))}
-                  style={styles.fadeSlider}
-                />
-                <div style={styles.fadeValue}>{fadeDuration.toFixed(1)}s</div>
-              </div>
-            </div>
-          </div>
+          
 
           {/* DECK B */}
           <div style={styles.deck}>
@@ -255,15 +237,37 @@ const DJController = () => {
 
         {/* Right side controls: Microphone and Recording */}
         <div style={styles.rightControls}>
+
+          {/* Recording Panel - Added below the microphone input */}
+          <div style={styles.recordPanel}>
+            <RecordingButton deckA={deckA} deckB={deckB} />
+          </div>
+
+          {/* MIXER SECTION */}
+          <div style={styles.mixer}>
+            <div style={styles.crossfaderContainer}>CROSSFADER</div>
+
+            <div style={styles.fadeControlContainer}>
+              <div style={styles.fadeControl}>
+                <input
+                  type="range"
+                  min="0.1"
+                  max="3"
+                  step="0.1"
+                  value={fadeDuration}
+                  onChange={(e) => setFadeDuration(parseFloat(e.target.value))}
+                  style={styles.fadeSlider}
+                />
+                <div style={styles.fadeValue}>{fadeDuration.toFixed(1)}s</div>
+              </div>
+            </div>
+          </div>
+
           {/* Microphone Input Panel */}
           <div style={styles.micPanel}>
             <MicrophoneInput />
           </div>
           
-          {/* Recording Panel - Added below the microphone input */}
-          <div style={styles.recordPanel}>
-            <RecordingButton deckA={deckA} deckB={deckB} />
-          </div>
         </div>
       </div>
     </div>
@@ -271,17 +275,20 @@ const DJController = () => {
 };
 
 const styles = {
-  container: {
-    backgroundColor: "#1a1a1a",
-    color: "#e0e0e0",
-    padding: "20px",
-    borderRadius: "10px",
-    width: "100%",
-    maxWidth: "1600px",
-    margin: "auto",
-    boxShadow: "0 10px 25px rgba(0, 17, 255, 0.5)",
-    border: "1px solid #333",
-  },
+    container: {
+      backgroundColor: "#1a1a1a",
+      justifyContent: "center",  // <-- center items when wrapped
+      flexWrap: "wrap",
+      color: "#e0e0e0",
+      padding: "10px",
+      borderRadius: "10px",
+      width: "95%",
+      maxWidth: "1600px",
+      margin: "auto",
+      boxShadow: "0 10px 25px rgba(0, 17, 255, 0.5)",
+      border: "1px solid #333",
+      overflow: "hidden", // Add this to contain all children
+    },
   header: {
     display: "flex",
     justifyContent: "space-between",
@@ -312,10 +319,11 @@ const styles = {
   },
   decksContainer: {
     display: "flex",
+    flex: "2",    // <-- Take more space than rightControls
+    flexWrap: "wrap",
     justifyContent: "space-between",
-    gap: "30px",
-    flex: 1,
-    overflow: "visible", // Allow content to expand
+    gap: "20px",
+    overflow: "visible",
   },
   deck: {
     flex: "1",
@@ -388,31 +396,48 @@ const styles = {
     gap: "10px",
   },
   mixer: {
-    width: "80px",
+    backgroundColor: "#222",  // Dark background similar to your recording container
+    borderRadius: "8px",
+    padding: "15px",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: "20px",
+    gap: "15px",  // Added more space between the elements
+    border: "1px solid #444",
+    width: "100%",
+    boxSizing: "border-box",  // Ensure padding and border are included in size
   },
   crossfaderContainer: {
+    fontSize: "18px",
+    fontWeight: "bold",
+    color: "#ff3860",  // Matching the same red color for consistency
+    borderBottom: "1px solid #444",
+    paddingBottom: "10px",
+    marginBottom: "10px",
+  },
+  fadeControlContainer: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    backgroundColor: "#333",
-    padding: "15px 5px",
-    borderRadius: "8px",
-    border: "1px solid #444",
-    boxShadow: "0 2px 10px rgba(168, 93, 12, 0.54)",
+    alignItems: "center",  // Centered for better alignment
+    width: "100%",
   },
-  crossfaderLabel: {
-    color: "#fff",
-    fontSize: "10px",
-    fontWeight: "bold",
-    textAlign: "center",
-    letterSpacing: "1px",
-    marginBottom: "5px",
-    textTransform: "uppercase",
+  fadeControl: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",  // Space between the slider and value text
+  },
+  fadeSlider: {
+    width: "100%",  // Full width to span across
+    height: "6px",  // Consistent height with previous design
+    backgroundColor: "#444",  // Darker background for the slider track
+    borderRadius: "5px",
+    cursor: "pointer",
+  },
+  fadeValue: {
+    fontSize: "14px",
+    color: "#ddd",  // Light text color for better contrast
+    whiteSpace: "nowrap",  // Prevent text overflow
+    overflow: "clip",  // Prevent overflow
+    textOverflow: "ellipsis",  // Add ellipsis if the value exceeds
   },
   deckLabel: {
     color: "#00c3ff",
@@ -420,48 +445,25 @@ const styles = {
     fontSize: "16px",
     margin: "5px 0",
   },
-  fadeControlContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    height: "200px",
-    justifyContent: "space-between",
-  },
-  fadeControl: {
-    backgroundColor: "#2a2a2a",
-    padding: "15px 10px",
-    borderRadius: "8px",
-    border: "1px solid #444",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    height: "100%",
-    justifyContent: "space-between",
-  },
-  fadeSlider: {
-    width: "6px",
-    height: "150px",
-    WebkitAppearance: "slider-vertical",
-    accentColor: "#00c3ff",
-    cursor: "pointer",
-  },
-  fadeValue: {
-    color: "#fff",
-    fontSize: "12px",
-    fontWeight: "bold",
-    marginTop: "10px",
-  },
   rightControls: {
     display: "flex",
     flexDirection: "column",
     gap: "20px",
-    width: "250px", // Fixed width for the right controls area
+    width: "250px",   // keep it narrow and fixed
+    flexShrink: "0",  // <-- don't let it shrink and mess up
   },
+  
   micPanel: {
-    flex: "1", // Takes up proportional space
+    flex: "1", // Allow microphone input panel to take available space
+    overflow: "auto", // Allow scrolling if the content overflows
+
   },
   recordPanel: {
-    marginTop: "20px", // Add space between mic panel and recording panel
+    flex: "0.5", // Allow recording panel to take available space
+    overflow: "auto", // Allow scrolling if the content overflows
+    marginBottom: "15px", // Add space between panels
+    scrollbarWidth: "none", // For Firefox
+    borderBottom: "1px solid #444", // Border line between panels
   },
   tempoContainer: {
     marginTop: "15px",

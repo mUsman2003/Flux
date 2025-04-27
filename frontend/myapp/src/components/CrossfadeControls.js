@@ -28,11 +28,13 @@ const styles = {
     borderRadius: "8px",
     marginTop: "10px",
     border: "1px solid #444",
+    
   },
   crossfadeSliderContainer: {
     display: "flex",
     flexDirection: "column",
     gap: "5px",
+    fontWeight: "bold",
   },
   crossfadeSlider: {
     width: "100%",
