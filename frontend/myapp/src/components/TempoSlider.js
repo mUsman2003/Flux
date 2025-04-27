@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 const TempoSlider = ({ audioRef, tempoRef }) => {
   const [tempo, setTempo] = useState(1);
+  const sliderRef = useRef(null);
 
-  // Handle tempo change
+  // Handle tempo change from slider
   const handleTempoChange = (e) => {
     const newTempo = parseFloat(e.target.value);
     setTempo(newTempo);
@@ -19,10 +20,39 @@ const TempoSlider = ({ audioRef, tempoRef }) => {
       // Set initial state from audio if available
       setTempo(audioRef.current.playbackRate || 1);
 
-      // We could add a listener for rate changes, but that's complex
-      // For now, we'll rely on the sync button directly setting values
+      // Create a MutationObserver to watch for playbackRate changes
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (
+            mutation.type === "attributes" &&
+            mutation.attributeName === "playbackRate"
+          ) {
+            setTempo(audioRef.current.playbackRate);
+          }
+        });
+      });
+
+      // Setup polling mechanism to check for playbackRate changes
+      const checkPlaybackRate = () => {
+        const currentRate = audioRef.current?.playbackRate || 1;
+        if (currentRate !== tempo) {
+          setTempo(currentRate);
+        }
+      };
+
+      const intervalId = setInterval(checkPlaybackRate, 200);
+
+      // Expose the slider's DOM element via the ref for external components
+      if (tempoRef) {
+        tempoRef.current = sliderRef.current;
+      }
+
+      return () => {
+        clearInterval(intervalId);
+        observer.disconnect();
+      };
     }
-  }, [audioRef]);
+  }, [audioRef, tempo, tempoRef]);
 
   return (
     <div style={styles.container}>
@@ -39,7 +69,7 @@ const TempoSlider = ({ audioRef, tempoRef }) => {
         value={tempo}
         onChange={handleTempoChange}
         style={styles.slider}
-        ref={tempoRef}
+        ref={sliderRef}
       />
     </div>
   );

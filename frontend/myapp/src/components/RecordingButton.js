@@ -4,6 +4,7 @@ const RecordingButton = ({ deckA, deckB }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
   const [audioBlob, setAudioBlob] = useState(null);
+  const [useMicrophone, setUseMicrophone] = useState(false);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
   const timerRef = useRef(null);
@@ -21,7 +22,9 @@ const RecordingButton = ({ deckA, deckB }) => {
     return () => {
       stopRecording();
       if (audioContextRef.current) {
-        audioContextRef.current.close().catch((err) => console.warn("Error closing audio context:", err));
+        audioContextRef.current
+          .close()
+          .catch((err) => console.warn("Error closing audio context:", err));
       }
     };
   }, []);
@@ -34,70 +37,108 @@ const RecordingButton = ({ deckA, deckB }) => {
       setRecordingTime(0);
 
       // Create a new AudioContext for recording
-      audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
-      const destination = audioContextRef.current.createMediaStreamDestination();
+      audioContextRef.current = new (window.AudioContext ||
+        window.webkitAudioContext)();
 
-      // Set up audio stream from both decks
+      // Check if we have valid deck references before proceeding
+      if ((!deckA || !deckA.current) && (!deckB || !deckB.current)) {
+        throw new Error(
+          "No audio decks available to record. Make sure decks are loaded and playing."
+        );
+      }
+
+      // Create destination for the recording
+      const destination =
+        audioContextRef.current.createMediaStreamDestination();
+
+      // Flag to track if any audio was connected
       let streamsConnected = false;
 
-      // Create new audio stream from decks
-      const audioStreams = [];
+      // Create a final output node where all audio will be mixed
+      const masterOutput = audioContextRef.current.createGain();
+      masterOutput.connect(destination);
 
-      // Try to get stream from deck A
-      if (deckA?.current && deckA.current.srcObject) {
-        audioStreams.push(deckA.current.srcObject);
-        streamsConnected = true;
-      } else if (deckA?.current) {
+      // Use a more reliable method to capture audio
+      if (deckA?.current) {
         try {
-          const stream = deckA.current.captureStream();
-          audioStreams.push(stream);
+          const deckASource = deckA.current.captureStream
+            ? audioContextRef.current.createMediaStreamSource(
+                deckA.current.captureStream()
+              )
+            : audioContextRef.current.createMediaElementSource(deckA.current);
+          deckASource.connect(masterOutput);
+          deckASource.connect(audioContextRef.current.destination);
+          console.log(
+            "Deck A connected via captureStream or MediaElementSource"
+          );
           streamsConnected = true;
         } catch (err) {
-          console.warn("Could not connect Deck A to recorder:", err);
+          console.warn("Deck A connection failed:", err.message);
         }
       }
 
-      // Try to get stream from deck B
-      if (deckB?.current && deckB.current.srcObject) {
-        audioStreams.push(deckB.current.srcObject);
-        streamsConnected = true;
-      } else if (deckB?.current) {
+      if (deckB?.current) {
         try {
-          const stream = deckB.current.captureStream();
-          audioStreams.push(stream);
+          const deckBSource = deckB.current.captureStream
+            ? audioContextRef.current.createMediaStreamSource(
+                deckB.current.captureStream()
+              )
+            : audioContextRef.current.createMediaElementSource(deckB.current);
+          deckBSource.connect(masterOutput);
+          deckBSource.connect(audioContextRef.current.destination);
+          console.log(
+            "Deck B connected via captureStream or MediaElementSource"
+          );
           streamsConnected = true;
         } catch (err) {
-          console.warn("Could not connect Deck B to recorder:", err);
+          console.warn("Deck B connection failed:", err.message);
         }
       }
 
+      // If we still haven't connected any audio, try to capture system audio
       if (!streamsConnected) {
-        throw new Error("No audio decks available to record. Make sure decks are loaded and playing.");
-      }
-
-      // Connect all streams to the destination
-      for (const stream of audioStreams) {
         try {
-          const source = audioContextRef.current.createMediaStreamSource(stream);
-          source.connect(destination);
+          // Last resort: try to capture system audio
+          const audioStream = await navigator.mediaDevices.getDisplayMedia({
+            video: false,
+            audio: true,
+            preferCurrentTab: true,
+          });
+
+          const audioSource =
+            audioContextRef.current.createMediaStreamSource(audioStream);
+          audioSource.connect(masterOutput);
+
+          streamsConnected = true;
+          console.log("Using system audio capture as fallback");
         } catch (err) {
-          console.warn("Error connecting stream:", err);
+          throw new Error(
+            "Could not access any audio sources. Please ensure your browser allows audio recording."
+          );
         }
       }
 
-      // Try to get user's microphone if available
-      try {
-        const micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-        const micSource = audioContextRef.current.createMediaStreamSource(micStream);
-        micSource.connect(destination);
-        console.log("Microphone connected to recorder");
-      } catch (err) {
-        console.info("Microphone not connected:", err.message);
+      // Add microphone only if explicitly requested
+      if (useMicrophone) {
+        try {
+          const micStream = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+            video: false,
+          });
+          const micSource =
+            audioContextRef.current.createMediaStreamSource(micStream);
+          micSource.connect(masterOutput);
+          console.log("Microphone connected to recorder");
+        } catch (err) {
+          console.info("Microphone not connected:", err.message);
+        }
       }
 
       // Set up media recorder with best quality
       const options = {
-        mimeType: MediaRecorder.isTypeSupported("audio/webm;codecs=opus") ? "audio/webm;codecs=opus" : "audio/webm",
+        mimeType: MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
+          ? "audio/webm;codecs=opus"
+          : "audio/webm",
         audioBitsPerSecond: 128000,
       };
 
@@ -113,7 +154,9 @@ const RecordingButton = ({ deckA, deckB }) => {
 
       // Handle recording completion
       mediaRecorder.onstop = () => {
-        const mimeType = mediaRecorder.mimeType.includes("opus") ? "audio/webm" : "audio/webm";
+        const mimeType = mediaRecorder.mimeType.includes("opus")
+          ? "audio/webm"
+          : "audio/webm";
         const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
         setAudioBlob(audioBlob);
       };
@@ -142,6 +185,14 @@ const RecordingButton = ({ deckA, deckB }) => {
         clearInterval(timerRef.current);
         timerRef.current = null;
       }
+
+      // Clean up any audio context
+      if (audioContextRef.current) {
+        audioContextRef.current
+          .close()
+          .catch((err) => console.warn("Error closing audio context:", err));
+        audioContextRef.current = null;
+      }
     }
   };
 
@@ -152,7 +203,9 @@ const RecordingButton = ({ deckA, deckB }) => {
       const a = document.createElement("a");
       a.style.display = "none";
       a.href = url;
-      a.download = `DJ_Mix_${new Date().toISOString().slice(0, 10)}.${fileExtension}`;
+      a.download = `DJ_Mix_${new Date()
+        .toISOString()
+        .slice(0, 10)}.${fileExtension}`;
       document.body.appendChild(a);
       a.click();
       URL.revokeObjectURL(url);
@@ -205,12 +258,31 @@ const RecordingButton = ({ deckA, deckB }) => {
         </div>
       </div>
 
+      {/* Microphone toggle switch */}
+      <div style={styles.micToggle}>
+        <label style={styles.micLabel}>
+          <input
+            type="checkbox"
+            checked={useMicrophone}
+            onChange={() => setUseMicrophone(!useMicrophone)}
+            style={styles.checkbox}
+          />
+          Include Microphone
+        </label>
+      </div>
+
       {audioBlob && !isRecording && (
         <div style={styles.actionButtons}>
-          <button onClick={previewRecording} style={{ ...styles.actionButton, backgroundColor: "#9146ff" }}>
+          <button
+            onClick={previewRecording}
+            style={{ ...styles.actionButton, backgroundColor: "#9146ff" }}
+          >
             PREVIEW
           </button>
-          <button onClick={downloadRecording} style={{ ...styles.actionButton, backgroundColor: "#00c3ff" }}>
+          <button
+            onClick={downloadRecording}
+            style={{ ...styles.actionButton, backgroundColor: "#00c3ff" }}
+          >
             SAVE
           </button>
         </div>
@@ -230,20 +302,19 @@ const styles = {
     border: "1px solid #444",
     height: "auto",
     width: "100%",
-    overflow: "auto", /* Allow scrolling */
+    overflow: "auto" /* Allow scrolling */,
     boxSizing: "border-box",
     scrollbarWidth: "none", // For Firefox
-    
   },
   // Add these styles to hide the scrollbar in Webkit-based browsers
   "::-webkit-scrollbar": {
     display: "none", // Hide the scrollbar
   },
-  
+
   "::-webkit-scrollbar-thumb": {
     backgroundColor: "transparent", // No color for the thumb
   },
-  
+
   "::-webkit-scrollbar-track": {
     backgroundColor: "transparent", // No background for the track
   },
@@ -252,7 +323,7 @@ const styles = {
     borderBottom: "1px solid #444",
     marginBottom: "15px",
     paddingBottom: "5px",
-    overflow: "hidden", /* Prevent any child elements from overflowing */
+    overflow: "hidden" /* Prevent any child elements from overflowing */,
   },
   recordingTitle: {
     margin: 0,
@@ -265,8 +336,8 @@ const styles = {
     alignItems: "center",
     gap: "15px",
     width: "100%",
-    flexShrink: 0, /* Prevent shrinking */
-    overflow: "auto", /* Allow scrolling */
+    flexShrink: 0 /* Prevent shrinking */,
+    overflow: "auto" /* Allow scrolling */,
     boxSizing: "border-box",
     scrollbarWidth: "none", // For Firefox
   },
@@ -324,9 +395,9 @@ const styles = {
     padding: "12px",
     borderRadius: "4px",
     color: "#ddd",
-    whiteSpace: "nowrap", /* Prevent text wrapping */
-    overflow: "hidden", /* Prevent any overflow */
-    textOverflow: "ellipsis", /* Ensure no content overflows */
+    whiteSpace: "nowrap" /* Prevent text wrapping */,
+    overflow: "hidden" /* Prevent any overflow */,
+    textOverflow: "ellipsis" /* Ensure no content overflows */,
   },
   recordingLabel: {
     color: "#ff3860",
@@ -346,8 +417,8 @@ const styles = {
     display: "flex",
     gap: "10px",
     marginTop: "10px",
-    justifyContent: "space-between", /* Ensure buttons are spaced out */
-    flexShrink: 0, /* Prevent shrinking */
+    justifyContent: "space-between" /* Ensure buttons are spaced out */,
+    flexShrink: 0 /* Prevent shrinking */,
   },
   actionButton: {
     flex: 1,
@@ -359,10 +430,25 @@ const styles = {
     cursor: "pointer",
     color: "#111",
     textAlign: "center",
-    whiteSpace: "nowrap", /* Prevent text wrapping */
-    overflow: "hidden", /* Prevent overflow */
-    textOverflow: "ellipsis", /* Ensure no overflow */
-  }
+    whiteSpace: "nowrap" /* Prevent text wrapping */,
+    overflow: "hidden" /* Prevent overflow */,
+    textOverflow: "ellipsis" /* Ensure no content overflows */,
+  },
+  micToggle: {
+    marginTop: "5px",
+    padding: "5px 0",
+  },
+  micLabel: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    color: "#ddd",
+    fontSize: "14px",
+    cursor: "pointer",
+  },
+  checkbox: {
+    cursor: "pointer",
+  },
 };
 
 export default RecordingButton;

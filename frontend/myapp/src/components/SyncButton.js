@@ -15,9 +15,18 @@ const SyncButton = ({ masterDeck, slaveDeck, tempoRef }) => {
       // Apply the master deck's rate to the slave deck
       slaveDeck.current.playbackRate = masterRate;
 
-      // If we have a tempo reference, update the displayed tempo
+      // Update the tempo slider if available
       if (tempoRef?.current) {
+        // Set both the value property and the displayed value
         tempoRef.current.value = masterRate;
+
+        // Dispatch an input event to trigger any listeners
+        const event = new Event("input", { bubbles: true });
+        tempoRef.current.dispatchEvent(event);
+
+        // Also dispatch a change event
+        const changeEvent = new Event("change", { bubbles: true });
+        tempoRef.current.dispatchEvent(changeEvent);
       }
 
       // Optionally start the playback of the slave deck if it's paused
