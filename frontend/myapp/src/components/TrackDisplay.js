@@ -1,4 +1,4 @@
-// Modified TrackDisplay.js to fix the database song selection
+// Modified TrackDisplay.js to fix the issue of songs restarting in the other deck
 
 import React, { useState, useRef, useEffect } from "react";
 import AddSongModal from "./AddSongModal";
@@ -16,6 +16,7 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
   const [cuePoints, setCuePoints] = useState([]);
   const [selectedCue, setSelectedCue] = useState(null);
   const [isCrossfading, setIsCrossfading] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false); // Track if deck is initialized
 
   const audioRef = useRef(null);
   const { crossfadeTo } = useCrossfadeAudio(audioRef, fadeDuration);
@@ -35,89 +36,95 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
   };
 
   // Handle selection from the database - using object URL like file handling
-const handleSelectDatabaseSong = async (song) => {
-  try {
-    // Validate song data
-    if (!song?.path) {
-      throw new Error('No valid song path provided');
-    }
+  const handleSelectDatabaseSong = async (song) => {
+    try {
+      // Validate song data
+      if (!song?.path) {
+        throw new Error("No valid song path provided");
+      }
 
-    console.log('Loading song from:', song.path);
+      console.log("Loading song from:", song.path);
 
-    // First fetch the audio file from the backend
-    const response = await fetch(`http://localhost:5000/api/songs/${song.id}/file`);
-    
-    if (!response.ok) {
-      throw new Error(`Failed to fetch audio: ${response.status}`);
-    }
+      // First fetch the audio file from the backend
+      const response = await fetch(
+        `http://localhost:5000/api/songs/${song.id}/file`
+      );
 
-    // Convert to blob and create object URL
-    const blob = await response.blob();
-    const objectUrl = URL.createObjectURL(blob);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch audio: ${response.status}`);
+      }
 
-    // Set state (same as file handling)
-    setFileName(song.name);
-    setAudioSrc(objectUrl);
-    setCuePoints([]);
+      // Convert to blob and create object URL
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
 
-    // Clean up previous URL if exists
-    if (audioSrc) {
-      URL.revokeObjectURL(audioSrc);
-    }
+      // Set state (same as file handling)
+      setFileName(song.name);
+      setAudioSrc(objectUrl);
+      setCuePoints([]);
 
-    // Initialize audio element
-    if (!audioRef.current) {
-      audioRef.current = new Audio();
-    }
+      // Clean up previous URL if exists
+      if (audioSrc) {
+        URL.revokeObjectURL(audioSrc);
+      }
 
-    // Set up audio element
-    audioRef.current.src = objectUrl;
-    audioRef.current.load();
+      // Initialize audio element
+      if (!audioRef.current) {
+        audioRef.current = new Audio();
+      }
 
-    // Event listeners
-    audioRef.current.oncanplaythrough = () => {
-      console.log('Audio ready:', song.name);
-      onTrackLoaded({
-        audioRef,
-        deck,
-        fileName: song.name,
-        audioSrc: objectUrl
-      });
-    };
+      // Set up audio element
+      audioRef.current.src = objectUrl;
+      audioRef.current.load();
 
-    audioRef.current.onerror = (e) => {
-      console.error('Audio load error:', e);
-      setFileName(`Error: ${song.name}`);
+      // Event listeners
+      audioRef.current.oncanplaythrough = () => {
+        console.log("Audio ready:", song.name);
+        onTrackLoaded({
+          audioRef,
+          deck,
+          fileName: song.name,
+          audioSrc: objectUrl,
+        });
+      };
+
+      audioRef.current.onerror = (e) => {
+        console.error("Audio load error:", e);
+        setFileName(`Error: ${song.name}`);
+        setAudioSrc(null);
+      };
+    } catch (error) {
+      console.error("Error loading database song:", error);
+      setFileName(`Failed: ${song.name}`);
       setAudioSrc(null);
-    };
-
-  } catch (error) {
-    console.error('Error loading database song:', error);
-    setFileName(`Failed: ${song.name}`);
-    setAudioSrc(null);
-  }
-};
+    }
+  };
 
   // Effect to manage audio loading and notification to parent
   useEffect(() => {
     if (audioSrc && audioRef.current) {
-      // Set the source
-      audioRef.current.src = audioSrc;
-      
-      // Load the audio
-      audioRef.current.load();
-      
+      // Set the source if it's not already set correctly
+      if (audioRef.current.src !== audioSrc) {
+        audioRef.current.src = audioSrc;
+        // Load the audio
+        audioRef.current.load();
+      }
+
       // Wait for it to be ready
       audioRef.current.oncanplaythrough = () => {
-        audioRef.current.play()
+        audioRef.current
+          .play()
           .then(() => {
             setIsPlaying(true);
+            setIsInitialized(true); // Mark deck as initialized
+
             // Notify parent component that track is loaded and ready
             onTrackLoaded({
               audioRef,
               deck,
               fileName: fileName,
               audioSrc: audioSrc,
+              isInitial: !isInitialized, // Flag indicating if this is first load
             });
           })
           .catch((error) => {
@@ -125,7 +132,7 @@ const handleSelectDatabaseSong = async (song) => {
           });
       };
     }
-  }, [audioSrc, fileName, deck, onTrackLoaded]);
+  }, [audioSrc, fileName, deck, onTrackLoaded, isInitialized]);
 
   // Handle play/pause toggle
   const togglePlay = () => {

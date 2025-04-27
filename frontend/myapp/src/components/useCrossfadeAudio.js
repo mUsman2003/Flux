@@ -13,24 +13,31 @@ const useCrossfadeAudio = (audioRef, fadeDuration = 1) => {
       const stepInterval = 100; // ms
 
       let stepsCompleted = 0;
-      
+
       const fadeInterval = setInterval(() => {
         stepsCompleted++;
-        
+
         // Fade out first half
         if (stepsCompleted <= totalSteps / 2) {
-          audio.volume = Math.max(0, originalVolume - (originalVolume * (stepsCompleted / (totalSteps / 2))));
-        } 
+          audio.volume = Math.max(
+            0,
+            originalVolume -
+              originalVolume * (stepsCompleted / (totalSteps / 2))
+          );
+        }
         // Fade in second half after jumping
         else {
           if (stepsCompleted === Math.floor(totalSteps / 2) + 1) {
             audio.currentTime = targetTime;
             if (isPlaying) {
-              audio.play().catch(e => console.error("Play error:", e));
+              audio.play().catch((e) => console.error("Play error:", e));
             }
           }
-          audio.volume = Math.min(originalVolume, 
-            originalVolume * ((stepsCompleted - (totalSteps / 2)) / (totalSteps / 2)));
+          audio.volume = Math.min(
+            originalVolume,
+            originalVolume *
+              ((stepsCompleted - totalSteps / 2) / (totalSteps / 2))
+          );
         }
 
         if (stepsCompleted >= totalSteps) {
@@ -46,6 +53,5 @@ const useCrossfadeAudio = (audioRef, fadeDuration = 1) => {
 
   return { crossfadeTo };
 };
-
 
 export default useCrossfadeAudio;
