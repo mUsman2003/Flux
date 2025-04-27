@@ -127,11 +127,12 @@ const styles = {
   backButton: {
     backgroundColor: "#333",
     color: "#fff",
-    border: "none",
+    border: "2px",
     padding: "10px",
     cursor: "pointer",
     borderTop: "1px solid #444",
     fontWeight: "500",
+    borderRadius: "10%",
   },
   loadingContainer: {
     display: "flex",

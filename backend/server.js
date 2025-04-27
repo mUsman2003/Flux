@@ -45,3 +45,35 @@ app.get('/api/songs', async (req, res) => {
     });
   }
 });
+
+// Add to your server.js
+const fs = require('fs');
+const path = require('path');
+
+app.get('/api/songs/:id/file', async (req, res) => {
+  try {
+    // Get song path from database
+    const result = await pool.query(
+      'SELECT song_path FROM songs WHERE song_id = $1', 
+      [req.params.id]
+    );
+    
+    if (result.rows.length === 0) {
+      return res.status(404).send('Song not found');
+    }
+
+    const filePath = result.rows[0].song_path;
+    
+    // Verify file exists
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).send('Audio file not found');
+    }
+
+    // Stream the file
+    res.sendFile(path.resolve(filePath));
+    
+  } catch (err) {
+    console.error('File serve error:', err);
+    res.status(500).send('Error serving audio file');
+  }
+});
