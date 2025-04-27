@@ -7,7 +7,8 @@ import JogWheel from "./JogWheel";
 import AudioEffects from "./AudioEffects";
 import MicrophoneInput from "./MicrophoneInput";
 import TempoSlider from "./TempoSlider";
-import { useEQControls } from "./useEQControls"; // Import our new hook
+import RecordingButton from "./RecordingButton"; // Import the new component
+import { useEQControls } from "./useEQControls"; 
 
 const DJController = () => {
   const [deckA, setDeckA] = useState(null);
@@ -252,9 +253,17 @@ const DJController = () => {
           </div>
         </div>
 
-        {/* Add Microphone Input Panel */}
-        <div style={styles.micPanel}>
-          <MicrophoneInput />
+        {/* Right side controls: Microphone and Recording */}
+        <div style={styles.rightControls}>
+          {/* Microphone Input Panel */}
+          <div style={styles.micPanel}>
+            <MicrophoneInput />
+          </div>
+          
+          {/* Recording Panel - Added below the microphone input */}
+          <div style={styles.recordPanel}>
+            <RecordingButton deckA={deckA} deckB={deckB} />
+          </div>
         </div>
       </div>
     </div>
@@ -442,10 +451,17 @@ const styles = {
     fontWeight: "bold",
     marginTop: "10px",
   },
-  micPanel: {
-    height: "100%",
+  rightControls: {
     display: "flex",
-    alignItems: "stretch", // Make the MicrophoneInput component stretch to full height
+    flexDirection: "column",
+    gap: "20px",
+    width: "250px", // Fixed width for the right controls area
+  },
+  micPanel: {
+    flex: "1", // Takes up proportional space
+  },
+  recordPanel: {
+    marginTop: "20px", // Add space between mic panel and recording panel
   },
   tempoContainer: {
     marginTop: "15px",
@@ -453,7 +469,7 @@ const styles = {
     borderRadius: "6px",
     padding: "12px",
     border: "1px solid #444",
-  },
+  }
 };
 
 export default DJController;
