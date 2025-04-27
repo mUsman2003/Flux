@@ -4,8 +4,8 @@ import Knob from "./Knob";
 const AudioEffects = ({ audioRef }) => {
   const [activeEffect, setActiveEffect] = useState(null);
   const [intensity, setIntensity] = useState(50);
-  const [wet, setWet] = useState(1.0); // Wet/dry mix knob parameter
-  const [feedback, setFeedback] = useState(0.5); // Feedback knob parameter
+  const [wet, setWet] = useState(0.6); // Default wet/dry mix
+  const [feedback, setFeedback] = useState(0.5); // Default feedback
 
   // Use refs to persist audio nodes across renders
   const audioContextRef = useRef(null);
@@ -16,9 +16,6 @@ const AudioEffects = ({ audioRef }) => {
   const dryGainRef = useRef(null);
   const feedbackGainRef = useRef(null);
   const initializedRef = useRef(false);
-
-  // Use a ref to store the original connections to restore later
-  const originalDestinationRef = useRef(null);
 
   // Available effects with better colors
   const effects = [
@@ -35,318 +32,272 @@ const AudioEffects = ({ audioRef }) => {
     if (!audioRef?.current || initializedRef.current) return;
 
     try {
+      console.log("Initializing audio effects context");
+      
       // Check if the audio element is already connected to an audio context
-      // This is important to avoid conflicts with the EQ controls
       if (audioRef.current._audioEffectsConnected) {
         console.log("Audio element already connected to effects chain");
-
-        // Get existing audio context
+        
+        // Get existing context and nodes
         audioContextRef.current = audioRef.current._audioContext;
         sourceNodeRef.current = audioRef.current._sourceNode;
         gainNodeRef.current = audioRef.current._gainNode;
-        originalDestinationRef.current = audioRef.current._destination;
-
-        initializedRef.current = true;
       } else {
         // Create audio context
-        audioContextRef.current = new (window.AudioContext ||
-          window.webkitAudioContext)();
-
+        audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
+        
         // Create source node
-        sourceNodeRef.current =
-          audioContextRef.current.createMediaElementSource(audioRef.current);
-
+        sourceNodeRef.current = audioContextRef.current.createMediaElementSource(audioRef.current);
+        
         // Create gain node
         gainNodeRef.current = audioContextRef.current.createGain();
-
-        // Create wet and dry gain nodes for effects mixing
-        wetGainRef.current = audioContextRef.current.createGain();
-        dryGainRef.current = audioContextRef.current.createGain();
-
-        // Remember the original destination (may be EQ chain or audio context destination)
-        originalDestinationRef.current = audioContextRef.current.destination;
-
-        // Connect source -> gain -> destination (default chain with no effects)
+        
+        // Connect source -> gain -> destination initially
         sourceNodeRef.current.connect(gainNodeRef.current);
-        gainNodeRef.current.connect(originalDestinationRef.current);
-
-        // Mark audio element to prevent double initialization
+        gainNodeRef.current.connect(audioContextRef.current.destination);
+        
+        // Mark the audio element to prevent double initialization
         audioRef.current._audioEffectsConnected = true;
         audioRef.current._audioContext = audioContextRef.current;
         audioRef.current._sourceNode = sourceNodeRef.current;
         audioRef.current._gainNode = gainNodeRef.current;
-        audioRef.current._destination = originalDestinationRef.current;
-
-        // Mark as initialized
-        initializedRef.current = true;
-
-        console.log("Audio effects context initialized successfully");
       }
+      
+      // Create wet and dry gain nodes for effects mixing
+      wetGainRef.current = audioContextRef.current.createGain();
+      wetGainRef.current.gain.value = wet;
+      
+      dryGainRef.current = audioContextRef.current.createGain();
+      dryGainRef.current.gain.value = 1 - wet;
+      
+      // Mark as initialized
+      initializedRef.current = true;
+      console.log("Audio effects context initialized successfully");
     } catch (error) {
       console.error("Failed to initialize audio effects context:", error);
     }
-
-    // Cleanup on unmount
-    return () => {
-      if (effectNodeRef.current) {
-        effectNodeRef.current.disconnect();
-
-        // Reconnect the original chain
-        gainNodeRef.current.disconnect();
-        gainNodeRef.current.connect(originalDestinationRef.current);
-      }
-    };
   }, [audioRef]);
 
   // Apply or remove effects when activeEffect changes
   useEffect(() => {
-    // Only proceed if audio context is initialized
     if (!initializedRef.current) return;
-
-    const sourceNode = sourceNodeRef.current;
-    const gainNode = gainNodeRef.current;
-    const destination = originalDestinationRef.current;
-
-    console.log("Effect change - Active effect:", activeEffect);
-    console.log(
-      "Has EQ connected:",
-      audioRef.current._eqControlsConnected ? "Yes" : "No"
-    );
-
-    // Disconnect previous effect if any
+    
+    console.log(`Effect change: ${activeEffect || "none"}`);
+    
+    const { current: audioContext } = audioContextRef;
+    const { current: sourceNode } = sourceNodeRef;
+    const { current: gainNode } = gainNodeRef;
+    
+    // Get the final destination node
+    const finalDestination = audioRef.current._eqControlsConnected ? 
+                            audioRef.current._eqLow : // Connect to EQ input if available
+                            audioContextRef.current.destination; // Otherwise to context destination
+    
+    // Clear previous effect setup
     if (effectNodeRef.current) {
-      console.log("Disconnecting previous effect");
-
-      // Disconnect everything first
+      // Disconnect everything for a clean slate
       sourceNode.disconnect();
       effectNodeRef.current.disconnect();
-      if (wetGainRef.current) wetGainRef.current.disconnect();
-      if (dryGainRef.current) dryGainRef.current.disconnect();
-      if (feedbackGainRef.current) feedbackGainRef.current.disconnect();
-      gainNode.disconnect();
-
-      // Reset the effect node reference
+      wetGainRef.current.disconnect();
+      dryGainRef.current.disconnect();
+      
+      // Reset feedback connections if they exist
+      if (feedbackGainRef.current) {
+        feedbackGainRef.current.disconnect();
+        feedbackGainRef.current = null;
+      }
+      
       effectNodeRef.current = null;
     } else {
-      // If there was no previous effect, just disconnect the source
-      // to prepare for new connections
+      // Just disconnect source node to prepare for new connections
       sourceNode.disconnect();
-      gainNode.disconnect();
     }
-
-    // If turning off the effect, restore original routing
+    
+    // If no effect selected, just create direct connection
     if (!activeEffect) {
-      console.log("No active effect - Restoring basic audio path");
-      // Basic routing: source -> gain -> destination
-      sourceNode.connect(gainNode);
-      gainNode.connect(destination);
+      console.log("No effect active - connecting source directly");
+      sourceNode.connect(finalDestination);
       return;
     }
-
-    // Create the appropriate effect node
-    let newEffectNode;
+    
+    // Create and setup the selected effect
+    let effectNode = null;
+    
     switch (activeEffect) {
       case "echo":
-        newEffectNode = createEchoEffect();
+        effectNode = createEchoEffect();
         break;
       case "reverb":
-        newEffectNode = createReverbEffect();
+        effectNode = createReverbEffect();
         break;
       case "flanger":
-        newEffectNode = createFlangerEffect();
+        effectNode = createFlangerEffect();
         break;
       case "distortion":
-        newEffectNode = createDistortionEffect();
+        effectNode = createDistortionEffect();
         break;
       case "lowpass":
-        newEffectNode = createLowPassEffect();
+        effectNode = createLowPassEffect();
         break;
       case "highpass":
-        newEffectNode = createHighPassEffect();
+        effectNode = createHighPassEffect();
         break;
       default:
+        // Fall back to direct connection
+        sourceNode.connect(finalDestination);
         return;
     }
-
-    console.log(`Created new ${activeEffect} effect`);
-
-    // Create wet/dry mix nodes
-    wetGainRef.current = audioContextRef.current.createGain();
-    dryGainRef.current = audioContextRef.current.createGain();
-
-    // Set initial wet/dry values
+    
+    if (!effectNode) {
+      console.error("Failed to create effect");
+      sourceNode.connect(finalDestination);
+      return;
+    }
+    
+    console.log(`Created ${activeEffect} effect`);
+    
+    // Reset wet/dry gain nodes
+    wetGainRef.current = audioContext.createGain();
     wetGainRef.current.gain.value = wet;
+    
+    dryGainRef.current = audioContext.createGain();
     dryGainRef.current.gain.value = 1 - wet;
-    sourceNode.disconnect();
-
-    // Connect the audio graph with the new effect
-    // Parallel paths:
-    // 1. source -> effect -> wetGain -> gain -> destination
-    // 2. source -> dryGain -> gain -> destination
-    if (audioRef.current._eqControlsConnected) {
-      // Disconnect EQ chain if it exists
-      audioRef.current._eqHigh.disconnect();
-    }
+    
+    // Create parallel paths for wet/dry mixing
+    // 1. Dry path: source -> dryGain -> destination
     sourceNode.connect(dryGainRef.current);
-
-    sourceNode.connect(newEffectNode);
-    newEffectNode.connect(wetGainRef.current);
-    if (audioRef.current._eqControlsConnected) {
-      // Connect both paths through EQ
-      dryGainRef.current.connect(audioRef.current._eqLow);
-      wetGainRef.current.connect(audioRef.current._eqLow);
-    } else {
-      // Connect directly to destination
-      dryGainRef.current.connect(gainNode);
-      wetGainRef.current.connect(gainNode);
-      gainNode.connect(destination);
-    }
-
-    // Store the reference to the new effect node
-    effectNodeRef.current = newEffectNode;
-
-    if (effectNodeRef.current) {
-      // Disconnect effect chain
-      effectNodeRef.current.disconnect();
-      if (wetGainRef.current) wetGainRef.current.disconnect();
-      if (dryGainRef.current) dryGainRef.current.disconnect();
-
-      // Reconnect the original chain
-      sourceNode.disconnect();
-      gainNode.disconnect();
-
-      if (audioRef.current._eqControlsConnected) {
-        // Reconnect through EQ
-        sourceNode.connect(audioRef.current._eqLow);
-        audioRef.current._eqHigh.connect(gainNode);
-      } else {
-        // Connect directly
-        sourceNode.connect(gainNode);
-      }
-      gainNode.connect(destination);
-    }
-
-    console.log("Effect routing complete");
+    dryGainRef.current.connect(finalDestination);
+    
+    // 2. Wet path: source -> effect -> wetGain -> destination
+    sourceNode.connect(effectNode);
+    effectNode.connect(wetGainRef.current);
+    wetGainRef.current.connect(finalDestination);
+    
+    // Store effect node reference
+    effectNodeRef.current = effectNode;
+    
+    console.log("Effect routing completed");
   }, [activeEffect]);
 
-  // Update wet/dry mix when the "wet" parameter changes
+  // Update wet/dry mix when parameter changes
   useEffect(() => {
-    if (!initializedRef.current || !activeEffect) return;
+    if (!initializedRef.current || !wetGainRef.current || !dryGainRef.current) return;
+    
+    wetGainRef.current.gain.value = wet;
+    dryGainRef.current.gain.value = 1 - wet;
+  }, [wet]);
 
-    if (wetGainRef.current && dryGainRef.current) {
-      wetGainRef.current.gain.value = wet;
-      dryGainRef.current.gain.value = 1 - wet;
-    }
-  }, [wet, activeEffect]);
-
-  // Update feedback when the parameter changes
+  // Update feedback when parameter changes
   useEffect(() => {
-    if (!initializedRef.current || !activeEffect || !feedbackGainRef.current)
-      return;
-
+    if (!initializedRef.current || !activeEffect || !feedbackGainRef.current) return;
+    
     feedbackGainRef.current.gain.value = feedback;
   }, [feedback, activeEffect]);
 
   // Update intensity parameter
   useEffect(() => {
-    if (!initializedRef.current || !activeEffect || !effectNodeRef.current)
-      return;
-
-    // Apply intensity parameter update to the active effect
+    if (!initializedRef.current || !activeEffect || !effectNodeRef.current) return;
+    
     updateEffectIntensity();
   }, [intensity, activeEffect]);
 
-  // Function to update effect parameter based on the intensity
+  // Function to update effect parameter based on intensity
   const updateEffectIntensity = () => {
     if (!effectNodeRef.current) return;
-
+    
+    const { current: effect } = effectNodeRef;
+    
     switch (activeEffect) {
       case "echo":
-        // For echo, we adjust the delay time
-        if (effectNodeRef.current.delayTime) {
-          effectNodeRef.current.delayTime.value = intensity / 1000;
+        if (effect.delayTime) {
+          effect.delayTime.value = intensity / 1000; // 0-100ms
         }
         break;
       case "lowpass":
+        if (effect.frequency) {
+          effect.frequency.value = 200 + intensity * 40; // 200Hz - 4200Hz
+        }
+        break;
       case "highpass":
-        // For filters, adjust the frequency
-        if (effectNodeRef.current.frequency) {
-          const freq =
-            activeEffect === "lowpass"
-              ? 200 + intensity * 40 // 200Hz - 4200Hz
-              : 200 + (100 - intensity) * 40; // Invert for highpass
-          effectNodeRef.current.frequency.value = freq;
+        if (effect.frequency) {
+          effect.frequency.value = 200 + (100 - intensity) * 40; // Inverted for highpass
         }
         break;
       case "distortion":
-        // We need to regenerate the curve for distortion
-        if (effectNodeRef.current.curve) {
+        if ('curve' in effect) {
           const amount = intensity / 25;
           const curve = makeDistortionCurve(amount);
-          effectNodeRef.current.curve = curve;
+          effect.curve = curve;
         }
         break;
-      // Other effects can update their parameters here
+      case "flanger":
+        // Flanger depth update logic would go here if needed
+        break;
+      case "reverb":
+        // Can't update reverb without recreating it
+        break;
     }
   };
 
   // Create Echo effect
   const createEchoEffect = () => {
-    const delay = audioContextRef.current.createDelay();
-    delay.delayTime.value = intensity / 1000;
-
-    feedbackGainRef.current = audioContextRef.current.createGain();
+    const context = audioContextRef.current;
+    const delay = context.createDelay();
+    delay.delayTime.value = intensity / 1000; // 0-100ms
+    
+    feedbackGainRef.current = context.createGain();
     feedbackGainRef.current.gain.value = feedback;
-
+    
     delay.connect(feedbackGainRef.current);
     feedbackGainRef.current.connect(delay);
-
+    
     return delay;
   };
 
   // Create Reverb effect
   const createReverbEffect = () => {
-    const convolver = audioContextRef.current.createConvolver();
-
+    const context = audioContextRef.current;
+    const convolver = context.createConvolver();
+    
     // Create impulse response buffer
     const impulseLength = intensity * 50;
-    const impulse = audioContextRef.current.createBuffer(
+    const impulse = context.createBuffer(
       2,
       impulseLength,
-      audioContextRef.current.sampleRate
+      context.sampleRate
     );
-
+    
     // Fill the buffer with white noise that decays exponentially
     for (let channel = 0; channel < impulse.numberOfChannels; channel++) {
       const channelData = impulse.getChannelData(channel);
       for (let i = 0; i < impulseLength; i++) {
-        channelData[i] =
-          (Math.random() * 2 - 1) *
-          Math.pow(1 - i / impulseLength, intensity / 50);
+        channelData[i] = (Math.random() * 2 - 1) * 
+                         Math.pow(1 - i / impulseLength, intensity / 50);
       }
     }
-
+    
     convolver.buffer = impulse;
     return convolver;
   };
 
   // Create Flanger effect
   const createFlangerEffect = () => {
-    const delay = audioContextRef.current.createDelay();
+    const context = audioContextRef.current;
+    const delay = context.createDelay();
     const depth = intensity / 500;
     delay.delayTime.value = depth;
-
+    
     // Modulate the delay time with an LFO
-    const lfo = audioContextRef.current.createOscillator();
-    const lfoGain = audioContextRef.current.createGain();
-
+    const lfo = context.createOscillator();
+    const lfoGain = context.createGain();
+    
     lfo.frequency.value = 0.3;
     lfoGain.gain.value = depth / 2;
-
+    
     lfo.connect(lfoGain);
     lfoGain.connect(delay.delayTime);
     lfo.start(0);
-
+    
     return delay;
   };
 
@@ -355,18 +306,18 @@ const AudioEffects = ({ audioRef }) => {
     const samples = 44100;
     const curve = new Float32Array(samples);
     const deg = Math.PI / 180;
-
+    
     for (let i = 0; i < samples; ++i) {
       const x = (i * 2) / samples - 1;
-      curve[i] =
-        ((3 + amount) * x * 20 * deg) / (Math.PI + amount * Math.abs(x));
+      curve[i] = ((3 + amount) * x * 20 * deg) / (Math.PI + amount * Math.abs(x));
     }
     return curve;
   };
 
   // Create Distortion effect
   const createDistortionEffect = () => {
-    const distortion = audioContextRef.current.createWaveShaper();
+    const context = audioContextRef.current;
+    const distortion = context.createWaveShaper();
     const amount = intensity / 25;
     distortion.curve = makeDistortionCurve(amount);
     distortion.oversample = "4x";
@@ -375,7 +326,8 @@ const AudioEffects = ({ audioRef }) => {
 
   // Create Low Pass Filter effect
   const createLowPassEffect = () => {
-    const filter = audioContextRef.current.createBiquadFilter();
+    const context = audioContextRef.current;
+    const filter = context.createBiquadFilter();
     filter.type = "lowpass";
     filter.frequency.value = 200 + intensity * 40; // 200Hz - 4200Hz
     filter.Q.value = 1;
@@ -384,7 +336,8 @@ const AudioEffects = ({ audioRef }) => {
 
   // Create High Pass Filter effect
   const createHighPassEffect = () => {
-    const filter = audioContextRef.current.createBiquadFilter();
+    const context = audioContextRef.current;
+    const filter = context.createBiquadFilter();
     filter.type = "highpass";
     filter.frequency.value = 200 + (100 - intensity) * 40; // Invert control
     filter.Q.value = 1;
@@ -403,13 +356,10 @@ const AudioEffects = ({ audioRef }) => {
             key={effect.id}
             style={{
               ...styles.effectButton,
-              backgroundColor:
-                activeEffect === effect.id ? effect.color : "#333",
+              backgroundColor: activeEffect === effect.id ? effect.color : "#333",
               color: activeEffect === effect.id ? "#111" : "#fff",
             }}
-            onClick={() =>
-              setActiveEffect(activeEffect === effect.id ? null : effect.id)
-            }
+            onClick={() => setActiveEffect(activeEffect === effect.id ? null : effect.id)}
           >
             {effect.name}
           </button>
@@ -424,9 +374,7 @@ const AudioEffects = ({ audioRef }) => {
               min={0}
               max={100}
               defaultValue={intensity}
-              color={
-                effects.find((e) => e.id === activeEffect)?.color || "#00c3ff"
-              }
+              color={effects.find((e) => e.id === activeEffect)?.color || "#00c3ff"}
               onChange={(value) => setIntensity(value)}
             />
 
@@ -435,9 +383,7 @@ const AudioEffects = ({ audioRef }) => {
               min={0}
               max={1}
               defaultValue={wet}
-              color={
-                effects.find((e) => e.id === activeEffect)?.color || "#00c3ff"
-              }
+              color={effects.find((e) => e.id === activeEffect)?.color || "#00c3ff"}
               onChange={(value) => setWet(value)}
             />
 
@@ -447,9 +393,7 @@ const AudioEffects = ({ audioRef }) => {
                 min={0}
                 max={0.9}
                 defaultValue={feedback}
-                color={
-                  effects.find((e) => e.id === activeEffect)?.color || "#00c3ff"
-                }
+                color={effects.find((e) => e.id === activeEffect)?.color || "#00c3ff"}
                 onChange={(value) => setFeedback(value)}
               />
             )}
