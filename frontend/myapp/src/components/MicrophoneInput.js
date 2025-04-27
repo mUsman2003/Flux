@@ -124,9 +124,8 @@ const MicrophoneInput = () => {
       }
     };
   }, [recordings]);
-
   return (
-    <div style={styles.container}>
+    <div style={{ ...styles.container, width: "100%", height: "100%" }}>
       <div style={styles.header}>
         <h3 style={styles.title}>MIC INPUT</h3>
       </div>
@@ -164,7 +163,7 @@ const MicrophoneInput = () => {
         </div>
       </div>
       
-      <div style={styles.recordingsList}>
+      <div style={{ ...styles.recordingsList, border: "1px solid #444" }}>
         <div style={styles.listHeader}>RECORDINGS</div>
         {recordings.length === 0 ? (
           <div style={styles.noRecordings}>No recordings yet</div>
@@ -204,14 +203,17 @@ const MicrophoneInput = () => {
 
 const styles = {
   container: {
-    backgroundColor: "#2a2a2a",
+    backgroundColor: "#222",
     borderRadius: "8px",
     padding: "15px",
-    border: "1px solid #444",
-    width: "220px",
-    height: "100%",
     display: "flex",
     flexDirection: "column",
+    gap: "10px",
+    border: "1px solid #444",
+    height: "100%", // Ensure full height without overflow
+    width: "100%",
+    overflow: "hidden", // Prevent scrollbars
+    boxSizing: "border-box", // Include padding and border in element size
   },
   header: {
     borderBottom: "1px solid #444",
@@ -273,11 +275,28 @@ const styles = {
   },
   recordingsList: {
     flex: 1,
-    overflow: "auto",
+    overflowY: "auto", // Allow vertical scrolling if necessary
     display: "flex",
     flexDirection: "column",
     gap: "5px",
+    maxHeight: "300px", // Set max height to prevent overflow
+    border: "1px solid #444", // Border added to the recordings container
+    scrollbarWidth: "none", // For Firefox
   },
+  
+  // Add these styles to hide the scrollbar in Webkit-based browsers
+  "::-webkit-scrollbar": {
+    display: "none", // Hide the scrollbar
+  },
+  
+  "::-webkit-scrollbar-thumb": {
+    backgroundColor: "transparent", // No color for the thumb
+  },
+  
+  "::-webkit-scrollbar-track": {
+    backgroundColor: "transparent", // No background for the track
+  },
+  
   listHeader: {
     fontSize: "12px",
     fontWeight: "600",
@@ -335,8 +354,8 @@ const styles = {
   },
   "@keyframes pulse": {
     "0%": { opacity: 0.6 },
-    "100%": { opacity: 1 }
-  }
+    "100%": { opacity: 1 },
+  },
 };
 
 export default MicrophoneInput;
