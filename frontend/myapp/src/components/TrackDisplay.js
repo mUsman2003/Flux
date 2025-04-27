@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import AddSongModal from "./AddSongModal";
 import TrackPlayback from "./TrackPlayback";
 import CuePointsManager from "./CuePointsManager";
+import useCrossfadeAudio from "./useCrossfadeAudio";
 
 const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
   const [showAddSong, setShowAddSong] = useState(false);
@@ -13,9 +14,10 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
   const [cuePoints, setCuePoints] = useState([]);
   const [selectedCue, setSelectedCue] = useState(null);
   const [isCrossfading, setIsCrossfading] = useState(false);
-  
+
   const audioRef = useRef(null);
-  
+  const { crossfadeTo } = useCrossfadeAudio(audioRef, fadeDuration);
+
   // Handle file selection from the modal
   const handleSelectFile = (file) => {
     const objectUrl = URL.createObjectURL(file);
@@ -102,34 +104,18 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
   const jumpToCuePoint = (time, index) => {
     if (audioRef.current) {
       setIsCrossfading(true);
-      const originalVolume = audioRef.current.volume;
-      const steps = 10; // Number of fade steps
-      const stepSize = originalVolume / steps;
-      
-      // Fade out
-      const fadeOutInterval = setInterval(() => {
-        if (audioRef.current.volume > 0.05) {
-          audioRef.current.volume -= stepSize;
-        } else {
-          clearInterval(fadeOutInterval);
-          audioRef.current.currentTime = time;
-          
-          // Fade in
-          const fadeInInterval = setInterval(() => {
-            if (audioRef.current.volume < originalVolume) {
-              audioRef.current.volume += stepSize;
-            } else {
-              clearInterval(fadeInInterval);
-              audioRef.current.volume = originalVolume;
-              setIsCrossfading(false);
-            }
-          }, (fadeDuration * 1000) / steps);
-        }
-      }, (fadeDuration * 1000) / steps);
-      
+      crossfadeTo(time);
       setSelectedCue(index);
+
+      // Ensure playback continues if it was playing
       if (!isPlaying) {
-        audioRef.current.play().then(() => setIsPlaying(true));
+        audioRef.current
+          .play()
+          .then(() => setIsPlaying(true))
+          .catch((e) => console.error("Play error:", e))
+          .finally(() => setIsCrossfading(false));
+      } else {
+        setTimeout(() => setIsCrossfading(false), fadeDuration * 1000);
       }
     }
   };
@@ -167,7 +153,7 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
             LOAD TRACK
           </button>
         </div>
-        
+
         {showAddSong && (
           <AddSongModal
             onClose={() => setShowAddSong(false)}
@@ -202,11 +188,13 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
 
       {cuePoints.length > 0 && (
         <CuePointsManager
+          audioRef={audioRef}
           cuePoints={cuePoints}
-          selectedCue={selectedCue}
-          jumpToCuePoint={jumpToCuePoint}
           setCuePoints={setCuePoints}
+          selectedCue={selectedCue}
           setSelectedCue={setSelectedCue}
+          jumpToCuePoint={jumpToCuePoint}
+          crossfadeTo={jumpToCuePoint} // Or implement useCrossfadeAudio properly
           formatTime={formatTime}
         />
       )}
