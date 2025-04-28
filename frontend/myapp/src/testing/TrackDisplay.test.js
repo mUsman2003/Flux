@@ -1,9 +1,9 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import TrackDisplay from "./TrackDisplay";
+import TrackDisplay from "../components/TrackDisplay";
 
 // Mock the necessary components or modules if needed
-jest.mock("./AddSongModal", () => {
+jest.mock("../components/AddSongModal", () => {
   return function MockAddSongModal({ onClose, onSelectFile, onSelectDatabaseSong }) {
     return (
       <div data-testid="add-song-modal">
