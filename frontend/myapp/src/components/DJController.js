@@ -7,8 +7,8 @@ import JogWheel from "./JogWheel";
 import AudioEffects from "./AudioEffects";
 import MicrophoneInput from "./MicrophoneInput";
 import TempoSlider from "./TempoSlider";
-import RecordingButton from "./RecordingButton"; // Import the new component
-import { useEQControls } from "./useEQControls"; 
+import RecordingButton from "./RecordingButton";
+import { useEQControls } from "./useEQControls";
 
 const DJController = () => {
   const [deckA, setDeckA] = useState(null);
@@ -36,23 +36,39 @@ const DJController = () => {
   const deckAEQ = useEQControls(deckA);
   const deckBEQ = useEQControls(deckB);
 
-  const handleTrackLoadedA = ({ audioRef, deck, fileName, audioSrc }) => {
+  const handleTrackLoadedA = ({
+    audioRef,
+    deck,
+    fileName,
+    audioSrc,
+    isInitial,
+  }) => {
     setDeckA(audioRef);
     if (audioRef?.current) {
       deckAOriginalVolume.current = audioRef.current.volume;
-      // Start with deck A at full volume if it's the first deck loaded
-      if (!deckB) {
+
+      // Don't adjust volume if the other deck is playing - let crossfader handle it
+      // Only adjust initial volume if there's no other deck or this isn't the first load
+      if (!deckB || !isInitial) {
         audioRef.current.volume = 1;
       }
     }
   };
 
-  const handleTrackLoadedB = ({ audioRef, deck, fileName, audioSrc }) => {
+  const handleTrackLoadedB = ({
+    audioRef,
+    deck,
+    fileName,
+    audioSrc,
+    isInitial,
+  }) => {
     setDeckB(audioRef);
     if (audioRef?.current) {
       deckBOriginalVolume.current = audioRef.current.volume;
-      // Start with deck B silent if deck A is already playing
-      if (deckA) {
+
+      // Don't adjust volume if the other deck is playing - let crossfader handle it
+      // Only adjust initial volume if there's no other deck or this isn't the first load
+      if (!deckA || !isInitial) {
         audioRef.current.volume = 1;
       }
     }
@@ -167,26 +183,6 @@ const DJController = () => {
             )}
           </div>
 
-          {/* MIXER SECTION */}
-          <div style={styles.mixer}>
-            <div style={styles.crossfaderContainer}>CROSSFADER</div>
-
-            <div style={styles.fadeControlContainer}>
-              <div style={styles.fadeControl}>
-                <input
-                  type="range"
-                  min="0.1"
-                  max="3"
-                  step="0.1"
-                  value={fadeDuration}
-                  onChange={(e) => setFadeDuration(parseFloat(e.target.value))}
-                  style={styles.fadeSlider}
-                />
-                <div style={styles.fadeValue}>{fadeDuration.toFixed(1)}s</div>
-              </div>
-            </div>
-          </div>
-
           {/* DECK B */}
           <div style={styles.deck}>
             <div style={styles.deckHeader}>
@@ -255,14 +251,34 @@ const DJController = () => {
 
         {/* Right side controls: Microphone and Recording */}
         <div style={styles.rightControls}>
-          {/* Microphone Input Panel */}
-          <div style={styles.micPanel}>
-            <MicrophoneInput />
-          </div>
-          
           {/* Recording Panel - Added below the microphone input */}
           <div style={styles.recordPanel}>
             <RecordingButton deckA={deckA} deckB={deckB} />
+          </div>
+
+          {/* MIXER SECTION */}
+          <div style={styles.mixer}>
+            <div style={styles.crossfaderContainer}>CROSSFADER</div>
+
+            <div style={styles.fadeControlContainer}>
+              <div style={styles.fadeControl}>
+                <input
+                  type="range"
+                  min="0.1"
+                  max="3"
+                  step="0.1"
+                  value={fadeDuration}
+                  onChange={(e) => setFadeDuration(parseFloat(e.target.value))}
+                  style={styles.fadeSlider}
+                />
+                <div style={styles.fadeValue}>{fadeDuration.toFixed(1)}s</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Microphone Input Panel */}
+          <div style={styles.micPanel}>
+            <MicrophoneInput />
           </div>
         </div>
       </div>
@@ -273,14 +289,17 @@ const DJController = () => {
 const styles = {
   container: {
     backgroundColor: "#1a1a1a",
+    justifyContent: "center",
+    flexWrap: "wrap",
     color: "#e0e0e0",
-    padding: "20px",
+    padding: "10px",
     borderRadius: "10px",
-    width: "100%",
+    width: "95%",
     maxWidth: "1600px",
     margin: "auto",
     boxShadow: "0 10px 25px rgba(0, 17, 255, 0.5)",
     border: "1px solid #333",
+    overflow: "hidden",
   },
   header: {
     display: "flex",
@@ -308,14 +327,15 @@ const styles = {
   mainContent: {
     display: "flex",
     gap: "20px",
-    overflow: "visible", // Ensure nested overflow is visible
+    overflow: "visible",
   },
   decksContainer: {
     display: "flex",
+    flex: "2",
+    flexWrap: "wrap",
     justifyContent: "space-between",
-    gap: "30px",
-    flex: 1,
-    overflow: "visible", // Allow content to expand
+    gap: "20px",
+    overflow: "visible",
   },
   deck: {
     flex: "1",
@@ -323,9 +343,9 @@ const styles = {
     borderRadius: "8px",
     padding: "15px",
     border: "1px solid #444",
-    minWidth: "400px", // Prevent decks from shrinking too much
-    overflow: "hidden", // Prevents content from protruding
-    position: "relative", // For child positioning context
+    minWidth: "400px",
+    overflow: "hidden",
+    position: "relative",
   },
   deckHeader: {
     borderBottom: "1px solid #444",
@@ -388,31 +408,48 @@ const styles = {
     gap: "10px",
   },
   mixer: {
-    width: "80px",
+    backgroundColor: "#222",
+    borderRadius: "8px",
+    padding: "15px",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: "20px",
+    gap: "15px",
+    border: "1px solid #444",
+    width: "100%",
+    boxSizing: "border-box",
   },
   crossfaderContainer: {
+    fontSize: "18px",
+    fontWeight: "bold",
+    color: "#ff3860",
+    borderBottom: "1px solid #444",
+    paddingBottom: "10px",
+    marginBottom: "10px",
+  },
+  fadeControlContainer: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    backgroundColor: "#333",
-    padding: "15px 5px",
-    borderRadius: "8px",
-    border: "1px solid #444",
-    boxShadow: "0 2px 10px rgba(168, 93, 12, 0.54)",
+    width: "100%",
   },
-  crossfaderLabel: {
-    color: "#fff",
-    fontSize: "10px",
-    fontWeight: "bold",
-    textAlign: "center",
-    letterSpacing: "1px",
-    marginBottom: "5px",
-    textTransform: "uppercase",
+  fadeControl: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+  },
+  fadeSlider: {
+    width: "100%",
+    height: "6px",
+    backgroundColor: "#444",
+    borderRadius: "5px",
+    cursor: "pointer",
+  },
+  fadeValue: {
+    fontSize: "14px",
+    color: "#ddd",
+    whiteSpace: "nowrap",
+    overflow: "clip",
+    textOverflow: "ellipsis",
   },
   deckLabel: {
     color: "#00c3ff",
@@ -420,48 +457,23 @@ const styles = {
     fontSize: "16px",
     margin: "5px 0",
   },
-  fadeControlContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    height: "200px",
-    justifyContent: "space-between",
-  },
-  fadeControl: {
-    backgroundColor: "#2a2a2a",
-    padding: "15px 10px",
-    borderRadius: "8px",
-    border: "1px solid #444",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    height: "100%",
-    justifyContent: "space-between",
-  },
-  fadeSlider: {
-    width: "6px",
-    height: "150px",
-    WebkitAppearance: "slider-vertical",
-    accentColor: "#00c3ff",
-    cursor: "pointer",
-  },
-  fadeValue: {
-    color: "#fff",
-    fontSize: "12px",
-    fontWeight: "bold",
-    marginTop: "10px",
-  },
   rightControls: {
     display: "flex",
     flexDirection: "column",
     gap: "20px",
-    width: "250px", // Fixed width for the right controls area
+    width: "250px",
+    flexShrink: "0",
   },
   micPanel: {
-    flex: "1", // Takes up proportional space
+    flex: "1",
+    overflow: "auto",
   },
   recordPanel: {
-    marginTop: "20px", // Add space between mic panel and recording panel
+    flex: "0.5",
+    overflow: "auto",
+    marginBottom: "15px",
+    scrollbarWidth: "none",
+    borderBottom: "1px solid #444",
   },
   tempoContainer: {
     marginTop: "15px",
@@ -471,5 +483,6 @@ const styles = {
     border: "1px solid #444",
   }
 };
+
 
 export default DJController;

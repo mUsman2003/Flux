@@ -78,11 +78,14 @@ const styles = {
   songLibraryContainer: {
     display: "flex",
     flexDirection: "column",
-    height: "400px",
+    height: "500px",
+    alignItems: "center", // This will center child elements horizontally
   },
   searchContainer: {
-    padding: "15px",
+    padding: "10px",
     borderBottom: "1px solid #333",
+    width: "80%", // Add some width so it's not full width
+    alignItems: "center",
   },
   searchInput: {
     width: "100%",
@@ -124,11 +127,12 @@ const styles = {
   backButton: {
     backgroundColor: "#333",
     color: "#fff",
-    border: "none",
+    border: "2px",
     padding: "10px",
     cursor: "pointer",
     borderTop: "1px solid #444",
     fontWeight: "500",
+    borderRadius: "10%",
   },
   loadingContainer: {
     display: "flex",

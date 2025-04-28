@@ -1,50 +1,79 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const pool = require("./db/db");
+const express = require('express');
+const cors = require('cors');
+const { pool, initializeDatabase } = require('./db/db');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(cors()); // Enable CORS
-app.use(express.json()); // Parse JSON requests
+app.use(cors({
+  origin: 'http://localhost:3000', // Your React app's origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
+  credentials: true // If you need cookies/auth
+}));
 
-// Sample API Route
-app.get("/users", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT * FROM users;");
-    console.log("Query Result:", result.rows); // Logs query output to console
-    res.json(result.rows);
-  } catch (err) {
-    console.error("Database Error:", err.message);
-    res.status(500).json({ error: "Database error" });
-  }
-});
-
-const fs = require("fs");
-const path = require("path");
-
-app.get("/api/songs", (req, res) => {
-  const musicDir = path.join(__dirname, "db/Music");
-  fs.readdir(musicDir, (err, files) => {
-    if (err) {
-      console.error("Error reading music folder:", err);
-      return res.status(500).json({ error: "Could not read music folder" });
-    }
-
-    const songs = files
-      .filter((file) => file.endsWith(".mp3")) // Only list .mp3 files
-      .map((file, index) => ({
-        id: index + 1,
-        name: file,
-        url: `/Music/${file}`,
-      }));
-
-    res.json(songs);
+// Initialize database when starting server
+initializeDatabase().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// API endpoint
+app.get('/api/songs', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT song_id as id, song_name as name, song_path as path
+      FROM songs 
+      ORDER BY song_name
+    `);
+    
+    // Format the response to match your frontend needs
+    const songs = result.rows.map(song => ({
+      id: song.id,
+      name: song.name,
+      path: song.path
+      // Add any other properties you need for filtering
+    }));
+    
+    res.json(songs); // Returns array directly to match your frontend expectation
+    
+  } catch (err) {
+    console.error('Database error:', err);
+    res.status(500).json({ 
+      error: 'Failed to fetch songs',
+      details: err.message 
+    });
+  }
+});
+
+// Add to your server.js
+const fs = require('fs');
+const path = require('path');
+
+app.get('/api/songs/:id/file', async (req, res) => {
+  try {
+    // Get song path from database
+    const result = await pool.query(
+      'SELECT song_path FROM songs WHERE song_id = $1', 
+      [req.params.id]
+    );
+    
+    if (result.rows.length === 0) {
+      return res.status(404).send('Song not found');
+    }
+
+    const filePath = result.rows[0].song_path;
+    
+    // Verify file exists
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).send('Audio file not found');
+    }
+
+    // Stream the file
+    res.sendFile(path.resolve(filePath));
+    
+  } catch (err) {
+    console.error('File serve error:', err);
+    res.status(500).send('Error serving audio file');
+  }
 });

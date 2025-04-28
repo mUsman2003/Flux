@@ -37,7 +37,7 @@ const AddSongModal = ({ onClose, onSelectFile, onSelectDatabaseSong }) => {
       // When value is 100, only deckB plays at original volume, deckA is silent
       const valueA = value < 50 ? 1 : 1 - (value - 50) / 50;
       const valueB = value > 50 ? 1 : value / 50;
-
+      console.log(deckA.current.time);
       deckA.current.volume = valueA * deckA.current.originalVolume;
       deckB.current.volume = valueB * deckB.current.originalVolume;
     }
@@ -93,8 +93,8 @@ const AddSongModal = ({ onClose, onSelectFile, onSelectDatabaseSong }) => {
             </button>
 
             {/* Cue Points Manager Component */}
-            <CuePointsManager 
-              cuePoints={cuePoints} 
+            <CuePointsManager
+              cuePoints={cuePoints}
               selectedCue={selectedCue}
               setSelectedCue={setSelectedCue}
               addCuePoint={addCuePoint}
@@ -103,7 +103,7 @@ const AddSongModal = ({ onClose, onSelectFile, onSelectDatabaseSong }) => {
             />
           </div>
         ) : (
-          <SongLibrary 
+          <SongLibrary
             onSelectDatabaseSong={onSelectDatabaseSong}
             onClose={onClose}
             goBack={() => {

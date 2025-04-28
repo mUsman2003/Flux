@@ -15,9 +15,18 @@ const SyncButton = ({ masterDeck, slaveDeck, tempoRef }) => {
       // Apply the master deck's rate to the slave deck
       slaveDeck.current.playbackRate = masterRate;
 
-      // If we have a tempo reference, update the displayed tempo
+      // Update the tempo slider if available
       if (tempoRef?.current) {
+        // Set both the value property and the displayed value
         tempoRef.current.value = masterRate;
+
+        // Dispatch an input event to trigger any listeners
+        const event = new Event("input", { bubbles: true });
+        tempoRef.current.dispatchEvent(event);
+
+        // Also dispatch a change event
+        const changeEvent = new Event("change", { bubbles: true });
+        tempoRef.current.dispatchEvent(changeEvent);
       }
 
       // Optionally start the playback of the slave deck if it's paused
@@ -42,7 +51,7 @@ const SyncButton = ({ masterDeck, slaveDeck, tempoRef }) => {
       <button
         style={{
           ...styles.button,
-          backgroundColor: active ? "#00c6ff" : "#1a1a1a",
+          backgroundColor: active ? "#00c6ff" : "#333",
           boxShadow: active ? "0 0 15px #00c6ff90" : "none",
         }}
         onClick={handleSync}
@@ -62,18 +71,18 @@ const styles = {
     margin: "10px 0",
   },
   button: {
-    backgroundColor: "#1a1a1a",
+    backgroundColor: "red",
+    fontWeight: "bold",
     color: "white",
-    borderRadius: "4px",
+    borderRadius: "10px",
     padding: "8px 16px",
     border: "1px solid #333",
     cursor: "pointer",
-    fontWeight: "bold",
     letterSpacing: "1px",
     transition: "all 0.2s ease",
     minWidth: "80px",
     textAlign: "center",
-    fontSize: "14px",
+    fontSize: "12px",
     fontFamily: "'Rajdhani', sans-serif",
   },
 };
