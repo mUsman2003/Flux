@@ -263,6 +263,8 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
           onClose={() => setShowAddSong(false)}
           onSelectFile={handleSelectFile}
           onSelectDatabaseSong={handleSelectDatabaseSong}
+          deck={deck}  // Add this line
+
         />
       )}
     </div>
