@@ -1,4 +1,4 @@
-// Modified TrackDisplay.js to fix the issue of songs restarting in the other deck
+// Fixed TrackDisplay.js to address test failures
 
 import React, { useState, useRef, useEffect } from "react";
 import AddSongModal from "./AddSongModal";
@@ -21,18 +21,67 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
   const audioRef = useRef(null);
   const { crossfadeTo } = useCrossfadeAudio(audioRef, fadeDuration);
 
+  // Initialize audio on component mount
+  useEffect(() => {
+    // Create audio element if it doesn't exist
+    if (!audioRef.current) {
+      audioRef.current = new Audio();
+    }
+
+    // Clean up on unmount
+    return () => {
+      if (audioSrc) {
+        URL.revokeObjectURL(audioSrc);
+      }
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = "";
+      }
+    };
+  }, []);
+
   // Handle file selection from the modal
   const handleSelectFile = (file) => {
     const objectUrl = URL.createObjectURL(file);
     setFileName(file.name);
     setAudioSrc(objectUrl);
-    console.log(objectUrl);
-
     setCuePoints([]); // Clear cues when new track loads
+    setSelectedCue(null);
 
     if (audioSrc) {
       URL.revokeObjectURL(audioSrc);
     }
+
+    // Make sure we have an audio element
+    if (!audioRef.current) {
+      audioRef.current = new Audio();
+    }
+
+    // Set up the audio element
+    audioRef.current.src = objectUrl;
+    audioRef.current.load();
+
+    // Set up the canplaythrough event listener
+    audioRef.current.oncanplaythrough = () => {
+      audioRef.current
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+          setIsInitialized(true);
+
+          // Notify parent component
+          onTrackLoaded({
+            audioRef,
+            deck,
+            fileName: file.name,
+            audioSrc: objectUrl,
+            isInitial: !isInitialized,
+          });
+        })
+        .catch((error) => {
+          console.error("Error playing audio:", error);
+        });
+    };
   };
 
   // Handle selection from the database - using object URL like file handling
@@ -62,6 +111,7 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
       setFileName(song.name);
       setAudioSrc(objectUrl);
       setCuePoints([]);
+      setSelectedCue(null);
 
       // Clean up previous URL if exists
       if (audioSrc) {
@@ -80,12 +130,23 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
       // Event listeners
       audioRef.current.oncanplaythrough = () => {
         console.log("Audio ready:", song.name);
-        onTrackLoaded({
-          audioRef,
-          deck,
-          fileName: song.name,
-          audioSrc: objectUrl,
-        });
+        audioRef.current
+          .play()
+          .then(() => {
+            setIsPlaying(true);
+            setIsInitialized(true);
+
+            onTrackLoaded({
+              audioRef,
+              deck,
+              fileName: song.name,
+              audioSrc: objectUrl,
+              isInitial: !isInitialized,
+            });
+          })
+          .catch((error) => {
+            console.error("Error playing audio:", error);
+          });
       };
 
       audioRef.current.onerror = (e) => {
@@ -100,49 +161,18 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
     }
   };
 
-  // Effect to manage audio loading and notification to parent
-  useEffect(() => {
-    if (audioSrc && audioRef.current) {
-      // Set the source if it's not already set correctly
-      if (audioRef.current.src !== audioSrc) {
-        audioRef.current.src = audioSrc;
-        // Load the audio
-        audioRef.current.load();
-      }
-
-      // Wait for it to be ready
-      audioRef.current.oncanplaythrough = () => {
-        audioRef.current
-          .play()
-          .then(() => {
-            setIsPlaying(true);
-            setIsInitialized(true); // Mark deck as initialized
-
-            // Notify parent component that track is loaded and ready
-            onTrackLoaded({
-              audioRef,
-              deck,
-              fileName: fileName,
-              audioSrc: audioSrc,
-              isInitial: !isInitialized, // Flag indicating if this is first load
-            });
-          })
-          .catch((error) => {
-            console.error("Error playing audio:", error);
-          });
-      };
-    }
-  }, [audioSrc, fileName, deck, onTrackLoaded, isInitialized]);
-
   // Handle play/pause toggle
   const togglePlay = () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        setIsPlaying(false);
       } else {
-        audioRef.current.play();
+        audioRef.current
+          .play()
+          .then(() => setIsPlaying(true))
+          .catch((error) => console.error("Error playing audio:", error));
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
@@ -155,7 +185,7 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
         label: `CUE ${cuePoints.length + 1}`,
       };
       setCuePoints([...cuePoints, newCue]);
-      setSelectedCue(cuePoints.length);
+      setSelectedCue(cuePoints.length); // Set selected cue to the new cue
     }
   };
 
@@ -163,19 +193,22 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
   const jumpToCuePoint = (time, index) => {
     if (audioRef.current) {
       setIsCrossfading(true);
+
+      // Make sure audio is paused first to ensure the pause event is triggered
+      audioRef.current.pause();
+
+      // Set current time and crossfade
       crossfadeTo(time);
       setSelectedCue(index);
 
-      // Ensure playback continues if it was playing
-      if (!isPlaying) {
-        audioRef.current
-          .play()
-          .then(() => setIsPlaying(true))
-          .catch((e) => console.error("Play error:", e))
-          .finally(() => setIsCrossfading(false));
-      } else {
-        setTimeout(() => setIsCrossfading(false), fadeDuration * 1000);
-      }
+      // Ensure playback continues
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch((e) => console.error("Play error:", e))
+        .finally(() => {
+          setTimeout(() => setIsCrossfading(false), fadeDuration * 1000);
+        });
     }
   };
 
@@ -218,6 +251,7 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
             onClose={() => setShowAddSong(false)}
             onSelectFile={handleSelectFile}
             onSelectDatabaseSong={handleSelectDatabaseSong}
+            deck={deck}
           />
         )}
       </div>
@@ -245,6 +279,7 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
         handleMetadataLoaded={handleMetadataLoaded}
       />
 
+      {/* Always render CuePointsManager when there are cue points */}
       {cuePoints.length > 0 && (
         <CuePointsManager
           audioRef={audioRef}
@@ -263,6 +298,7 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
           onClose={() => setShowAddSong(false)}
           onSelectFile={handleSelectFile}
           onSelectDatabaseSong={handleSelectDatabaseSong}
+          deck={deck}
         />
       )}
     </div>

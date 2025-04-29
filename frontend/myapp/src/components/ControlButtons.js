@@ -60,11 +60,15 @@ const ControlButtons = ({ audioRef }) => {
     <div style={styles.controlPanel}>
       {/* Transport Controls */}
       <div style={styles.transportControls}>
-        <button style={styles.playButton} onClick={handlePlayPause}>
+        <button
+          style={styles.playButton}
+          onClick={handlePlayPause}
+          data-testid="play-button"
+        >
           {isPlaying ? "⏸" : "▶"}
         </button>
 
-        <CuePointsManager 
+        <CuePointsManager
           audioRef={audioRef}
           cuePoints={cuePoints}
           setCuePoints={setCuePoints}
@@ -93,9 +97,9 @@ const ControlButtons = ({ audioRef }) => {
 
       {/* Crossfade Controls - shown when toggled */}
       {showCrossfadeControls && (
-        <CrossfadeControls 
-          fadeDuration={fadeDuration} 
-          setFadeDuration={setFadeDuration} 
+        <CrossfadeControls
+          fadeDuration={fadeDuration}
+          setFadeDuration={setFadeDuration}
         />
       )}
 

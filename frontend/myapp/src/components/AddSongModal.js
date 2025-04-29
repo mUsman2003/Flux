@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SongLibrary from "./SongLibrary";
 import CuePointsManager from "./CuePointsManager";
 
-const AddSongModal = ({ onClose, onSelectFile, onSelectDatabaseSong }) => {
+const AddSongModal = ({ onClose, onSelectFile, onSelectDatabaseSong, deck  }) => {
   const [showList, setShowList] = useState(false);
   const [cuePoints, setCuePoints] = useState([]);
   const [selectedCue, setSelectedCue] = useState(null);
@@ -44,6 +44,7 @@ const AddSongModal = ({ onClose, onSelectFile, onSelectDatabaseSong }) => {
   };
 
   return (
+    
     <div style={styles.modalOverlay}>
       <div style={styles.modal}>
         <div style={styles.modalHeader}>
@@ -65,11 +66,11 @@ const AddSongModal = ({ onClose, onSelectFile, onSelectDatabaseSong }) => {
                 <span style={styles.optionDescription}>From your computer</span>
               </div>
             </button>
-
             <input
               id="fileInput"
               type="file"
               accept="audio/*"
+              data-testid="file-input" 
               style={{ display: "none" }}
               onChange={(e) => {
                 if (e.target.files.length > 0) {

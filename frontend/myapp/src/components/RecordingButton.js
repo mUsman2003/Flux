@@ -17,6 +17,23 @@ const RecordingButton = ({ deckA, deckB }) => {
     return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
   };
 
+  // Safe method to close AudioContext
+  const safeCloseAudioContext = () => {
+    if (audioContextRef.current) {
+      try {
+        // Handle both Promise-based and synchronous implementations
+        const closeResult = audioContextRef.current.close();
+        if (closeResult && typeof closeResult.catch === "function") {
+          closeResult.catch((err) =>
+            console.warn("Error closing audio context:", err)
+          );
+        }
+      } catch (err) {
+        console.warn("Error closing audio context:", err);
+      }
+    }
+  };
+
   // Clean up when component unmounts
   useEffect(() => {
     return () => {

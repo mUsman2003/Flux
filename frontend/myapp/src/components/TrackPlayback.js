@@ -23,29 +23,31 @@ const TrackPlayback = ({
   // Handle click on progress bar to jump to position
   const handleProgressBarClick = (e) => {
     if (!audioRef.current || !progressBarRef.current || !duration) return;
-    
+
     const rect = progressBarRef.current.getBoundingClientRect();
     const clickPosition = e.clientX - rect.left;
     const progressBarWidth = rect.width;
-    
+
     // Calculate the corresponding time in the track
     const clickRatio = clickPosition / progressBarWidth;
     const seekTime = clickRatio * duration;
-    
-    // Use the crossfade functionality to jump
+
+    // Update the current time directly first (for immediate feedback)
+    audioRef.current.currentTime = seekTime;
+
+    // Use the crossfade functionality to smooth the transition
     const originalVolume = audioRef.current.volume;
     const steps = 10;
     const stepSize = originalVolume / steps;
     const fadeDuration = 1; // Default fade duration
-    
-    // Fade out
+
+    // Fade out and in for smoother transition
     const fadeOutInterval = setInterval(() => {
       if (audioRef.current.volume > 0.05) {
         audioRef.current.volume -= stepSize;
       } else {
         clearInterval(fadeOutInterval);
-        audioRef.current.currentTime = seekTime;
-        
+
         // Fade in
         const fadeInInterval = setInterval(() => {
           if (audioRef.current.volume < originalVolume) {
@@ -54,12 +56,15 @@ const TrackPlayback = ({
             clearInterval(fadeInInterval);
             audioRef.current.volume = originalVolume;
           }
-        }, (fadeDuration / 2 * 1000) / steps); // Slightly faster fade-in
+        }, ((fadeDuration / 2) * 1000) / steps); // Slightly faster fade-in
       }
-    }, (fadeDuration / 2 * 1000) / steps); // Slightly faster fade-out
-    
+    }, ((fadeDuration / 2) * 1000) / steps); // Slightly faster fade-out
+
     if (!isPlaying) {
-      audioRef.current.play().then(() => {});
+      audioRef.current.play().catch((error) => {
+        console.error("Error playing audio:", error);
+        // Optionally provide feedback to the user here
+      });
     }
   };
 
@@ -74,32 +79,38 @@ const TrackPlayback = ({
       </div>
 
       <div style={styles.waveform}>
-        <div 
+        <div
           ref={progressBarRef}
           style={styles.progressBar}
           onClick={handleProgressBarClick}
+          data-testid="progress-bar"
         >
-          <div 
+          <div
             style={{
               ...styles.progress,
               width: `${(currentTime / duration) * 100}%`,
-              opacity: isCrossfading ? 0.7 : 1
+              opacity: isCrossfading ? 0.7 : 1,
             }}
+            data-testid="progress-indicator"
           ></div>
-          <div 
+          <div
             style={{
               ...styles.crossfadeOverlay,
-              opacity: isCrossfading ? 0.5 : 0
+              opacity: isCrossfading ? 0.5 : 0,
             }}
+            data-testid="crossfade-overlay"
           ></div>
           {cuePoints.map((cue, index) => (
             <div
               key={cue.id}
+              data-testid={`cue-marker-${index}`}
               style={{
                 ...styles.cueMarker,
                 ...(selectedCue === index && styles.activeCueMarker),
-                ...(selectedCue === index && isCrossfading && styles.crossfadingCueMarker),
-                left: `${(cue.time / duration) * 100}%`
+                ...(selectedCue === index &&
+                  isCrossfading &&
+                  styles.crossfadingCueMarker),
+                left: `${(cue.time / duration) * 100}%`,
               }}
               onClick={(e) => {
                 e.stopPropagation(); // Prevent triggering progressBar click
@@ -116,11 +127,10 @@ const TrackPlayback = ({
             style={{
               ...styles.playButton,
               backgroundColor: isPlaying ? "#00c3ff" : "#333",
-              boxShadow: isPlaying
-                ? "0 0 10px rgba(0, 195, 255, 0.5)"
-                : "none",
+              boxShadow: isPlaying ? "0 0 10px rgba(0, 195, 255, 0.5)" : "none",
             }}
             onClick={togglePlay}
+            data-testid="play-button"
           >
             {isPlaying ? (
               <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
@@ -133,7 +143,11 @@ const TrackPlayback = ({
               </svg>
             )}
           </button>
-          <button style={styles.cueButton} onClick={addCuePoint}>
+          <button
+            style={styles.cueButton}
+            onClick={addCuePoint}
+            data-testid="cue-button"
+          >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
               <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
             </svg>
@@ -142,6 +156,7 @@ const TrackPlayback = ({
         <button
           style={styles.loadButton}
           onClick={() => setShowAddSong(true)}
+          data-testid="load-button"
         >
           LOAD
         </button>
@@ -153,6 +168,7 @@ const TrackPlayback = ({
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleMetadataLoaded}
         onEnded={() => {}}
+        data-testid="audio-element"
       />
     </>
   );
@@ -206,9 +222,9 @@ const styles = {
   progress: {
     height: "100%",
     background: "linear-gradient(90deg, #00c3ff30, #00c3ff80)",
-    transition: "width 0.1s linear",
+    width: "0%", // Default value
     opacity: 1,
-    transition: "opacity 0.3s ease",
+    transition: "width 0.1s linear, opacity 0.3s ease",
     pointerEvents: "none",
   },
   crossfadeOverlay: {
