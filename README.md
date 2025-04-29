@@ -30,12 +30,13 @@ Welcome to **FLUX**, an advanced DJing application designed for professionals an
 - **Manual Beat Matching** – Fine-tune synchronization.
 - **Microphone Input** – Add live voice input during performances.
 
-## 🏗 **Tech Stack**
-- **Frontend:** React.js (for UI design)
-- **Backend:** Node.js (Express.js for API handling)
-- **Database:** MongoDB (for playlist & track storage)
-- **State Management:** Redux (for UI state management)
-- **Audio Engine:** Web Audio API / Tone.js (for mixing & effects)
+## 🏗 Tech Stack
+
+- **Frontend:** React.js  
+- **Backend:** Node.js with Express.js  
+- **Database:** PostgreSQL  
+- **Audio Engine:** Web Audio API / Tone.js  
+- **State Management:** React Context / useState (No Redux)
 
 ## 👥 **Team Members**
 | Role | Name |
