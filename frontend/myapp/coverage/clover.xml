@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1745938155914" clover="3.2.0">
-  <project timestamp="1745938155914" name="All files">
-    <metrics statements="914" coveredstatements="371" conditionals="500" coveredconditionals="179" methods="182" coveredmethods="72" elements="1596" coveredelements="622" complexity="0" loc="914" ncloc="914" packages="2" files="19" classes="19"/>
+<coverage generated="1745939776761" clover="3.2.0">
+  <project timestamp="1745939776762" name="All files">
+    <metrics statements="914" coveredstatements="416" conditionals="500" coveredconditionals="219" methods="182" coveredmethods="79" elements="1596" coveredelements="714" complexity="0" loc="914" ncloc="914" packages="2" files="19" classes="19"/>
     <package name="src">
       <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="App.js" path="D:\Study Material\Semester 6\Software Engineering\Project_2\Flux\frontend\myapp\src\App.js">
@@ -10,7 +10,7 @@
       </file>
     </package>
     <package name="src.components">
-      <metrics statements="913" coveredstatements="370" conditionals="500" coveredconditionals="179" methods="181" coveredmethods="71"/>
+      <metrics statements="913" coveredstatements="415" conditionals="500" coveredconditionals="219" methods="181" coveredmethods="78"/>
       <file name="AddSongModal.js" path="D:\Study Material\Semester 6\Software Engineering\Project_2\Flux\frontend\myapp\src\components\AddSongModal.js">
         <metrics statements="29" coveredstatements="12" conditionals="16" coveredconditionals="2" methods="7" coveredmethods="2"/>
         <line num="5" count="2" type="stmt"/>
@@ -366,72 +366,72 @@
         <line num="289" count="2" type="stmt"/>
       </file>
       <file name="JogWheel.js" path="D:\Study Material\Semester 6\Software Engineering\Project_2\Flux\frontend\myapp\src\components\JogWheel.js">
-        <metrics statements="65" coveredstatements="19" conditionals="53" coveredconditionals="11" methods="10" coveredmethods="2"/>
-        <line num="3" count="2" type="stmt"/>
-        <line num="9" count="14" type="stmt"/>
-        <line num="10" count="14" type="stmt"/>
-        <line num="11" count="14" type="stmt"/>
-        <line num="12" count="14" type="stmt"/>
-        <line num="14" count="14" type="stmt"/>
-        <line num="15" count="14" type="stmt"/>
-        <line num="16" count="14" type="stmt"/>
-        <line num="17" count="14" type="stmt"/>
-        <line num="18" count="14" type="stmt"/>
-        <line num="21" count="14" type="cond" truecount="2" falsecount="0"/>
-        <line num="24" count="14" type="stmt"/>
-        <line num="25" count="10" type="cond" truecount="1" falsecount="1"/>
-        <line num="27" count="0" type="stmt"/>
-        <line num="28" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="30" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="32" count="0" type="stmt"/>
-        <line num="35" count="0" type="stmt"/>
-        <line num="39" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="40" count="0" type="stmt"/>
-        <line num="41" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="42" count="0" type="stmt"/>
-        <line num="45" count="0" type="stmt"/>
-        <line num="46" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="47" count="0" type="stmt"/>
-        <line num="52" count="14" type="stmt"/>
-        <line num="53" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="55" count="0" type="stmt"/>
-        <line num="56" count="0" type="stmt"/>
-        <line num="57" count="0" type="stmt"/>
-        <line num="60" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="61" count="0" type="stmt"/>
-        <line num="62" count="0" type="stmt"/>
-        <line num="63" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="64" count="0" type="stmt"/>
-        <line num="69" count="14" type="stmt"/>
-        <line num="70" count="0" type="stmt"/>
-        <line num="73" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="74" count="0" type="stmt"/>
-        <line num="75" count="0" type="stmt"/>
-        <line num="76" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="77" count="0" type="stmt"/>
+        <metrics statements="65" coveredstatements="64" conditionals="53" coveredconditionals="51" methods="10" coveredmethods="9"/>
+        <line num="3" count="3" type="stmt"/>
+        <line num="9" count="48" type="stmt"/>
+        <line num="10" count="48" type="stmt"/>
+        <line num="11" count="48" type="stmt"/>
+        <line num="12" count="48" type="stmt"/>
+        <line num="14" count="48" type="stmt"/>
+        <line num="15" count="48" type="stmt"/>
+        <line num="16" count="48" type="stmt"/>
+        <line num="17" count="48" type="stmt"/>
+        <line num="18" count="48" type="stmt"/>
+        <line num="21" count="48" type="cond" truecount="2" falsecount="0"/>
+        <line num="24" count="48" type="stmt"/>
+        <line num="25" count="32" type="cond" truecount="2" falsecount="0"/>
+        <line num="27" count="21" type="stmt"/>
+        <line num="28" count="1" type="cond" truecount="3" falsecount="1"/>
+        <line num="30" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="39" count="21" type="cond" truecount="2" falsecount="0"/>
+        <line num="40" count="3" type="stmt"/>
+        <line num="41" count="18" type="cond" truecount="2" falsecount="0"/>
+        <line num="42" count="3" type="stmt"/>
+        <line num="45" count="21" type="stmt"/>
+        <line num="46" count="21" type="cond" truecount="2" falsecount="0"/>
+        <line num="47" count="6" type="stmt"/>
+        <line num="52" count="48" type="stmt"/>
+        <line num="53" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="55" count="7" type="stmt"/>
+        <line num="56" count="7" type="stmt"/>
+        <line num="57" count="7" type="stmt"/>
+        <line num="60" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="61" count="3" type="stmt"/>
+        <line num="62" count="3" type="stmt"/>
+        <line num="63" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="64" count="1" type="stmt"/>
+        <line num="69" count="48" type="stmt"/>
+        <line num="70" count="8" type="stmt"/>
+        <line num="73" count="8" type="cond" truecount="4" falsecount="0"/>
+        <line num="74" count="3" type="stmt"/>
+        <line num="75" count="3" type="stmt"/>
+        <line num="76" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="77" count="1" type="stmt"/>
         <line num="79" count="0" type="stmt"/>
-        <line num="84" count="14" type="stmt"/>
-        <line num="85" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="87" count="0" type="stmt"/>
-        <line num="88" count="0" type="stmt"/>
-        <line num="89" count="0" type="stmt"/>
-        <line num="90" count="0" type="stmt"/>
-        <line num="94" count="0" type="stmt"/>
-        <line num="95" count="0" type="stmt"/>
-        <line num="98" count="0" type="stmt"/>
-        <line num="99" count="0" type="stmt"/>
-        <line num="102" count="0" type="stmt"/>
-        <line num="103" count="0" type="stmt"/>
-        <line num="104" count="0" type="stmt"/>
-        <line num="105" count="0" type="stmt"/>
-        <line num="108" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="110" count="0" type="stmt"/>
-        <line num="113" count="0" type="stmt"/>
-        <line num="114" count="0" type="stmt"/>
-        <line num="117" count="14" type="stmt"/>
-        <line num="118" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="121" count="14" type="stmt"/>
-        <line num="166" count="2" type="stmt"/>
+        <line num="84" count="48" type="stmt"/>
+        <line num="85" count="5" type="cond" truecount="4" falsecount="0"/>
+        <line num="87" count="4" type="stmt"/>
+        <line num="88" count="4" type="stmt"/>
+        <line num="89" count="4" type="stmt"/>
+        <line num="90" count="4" type="stmt"/>
+        <line num="94" count="4" type="stmt"/>
+        <line num="95" count="4" type="stmt"/>
+        <line num="98" count="4" type="stmt"/>
+        <line num="99" count="4" type="stmt"/>
+        <line num="102" count="4" type="stmt"/>
+        <line num="103" count="4" type="stmt"/>
+        <line num="104" count="4" type="stmt"/>
+        <line num="105" count="4" type="stmt"/>
+        <line num="108" count="4" type="cond" truecount="4" falsecount="0"/>
+        <line num="110" count="2" type="stmt"/>
+        <line num="113" count="4" type="stmt"/>
+        <line num="114" count="4" type="stmt"/>
+        <line num="117" count="48" type="stmt"/>
+        <line num="118" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="121" count="48" type="stmt"/>
+        <line num="166" count="3" type="stmt"/>
       </file>
       <file name="Knob.js" path="D:\Study Material\Semester 6\Software Engineering\Project_2\Flux\frontend\myapp\src\components\Knob.js">
         <metrics statements="24" coveredstatements="11" conditionals="8" coveredconditionals="1" methods="4" coveredmethods="1"/>
