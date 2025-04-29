@@ -36,7 +36,6 @@ Welcome to **FLUX**, an advanced DJing application designed for professionals an
 - **Backend:** Node.js with Express.js  
 - **Database:** PostgreSQL  
 - **Audio Engine:** Web Audio API / Tone.js  
-- **State Management:** React Context / useState (No Redux)
 
 ## 👥 **Team Members**
 | Role | Name |
