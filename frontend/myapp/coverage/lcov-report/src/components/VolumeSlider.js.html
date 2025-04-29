@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/15</span>
+                <span class='fraction'>15/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">42.85% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/7</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/15</span>
+                <span class='fraction'>15/15</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -166,33 +166,35 @@
 <a name='L101'></a><a href='#L101'>101</a>
 <a name='L102'></a><a href='#L102'>102</a>
 <a name='L103'></a><a href='#L103'>103</a>
-<a name='L104'></a><a href='#L104'>104</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">31x</span>
+<span class="cline-any cline-yes">31x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">31x</span>
+<span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">31x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">31x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">31x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -219,8 +221,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -269,41 +271,44 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, useEffect } from 'react';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, useEffect } from "react";
 &nbsp;
-const VolumeSlider = ({ audioRef, side = <span class="branch-0 cbranch-no" title="branch not covered" >"left" </span>}) =&gt; {
+const VolumeSlider = ({ audioRef, side = "left" }) =&gt; {
   const [originalVolume, setOriginalVolume] = useState(1);
   const [volume, setVolume] = useState(20);
-  
+&nbsp;
   useEffect(() =&gt; {
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (audioRef?.current) {
+    if (audioRef?.current) {
       // Preserve original volume but force initial volume to 20%
-<span class="cstat-no" title="statement not covered" >      setOriginalVolume(audioRef.current.volume);</span>
-<span class="cstat-no" title="statement not covered" >      audioRef.current.volume = (20 / 100) * audioRef.current.volume;</span>
+      setOriginalVolume(audioRef.current.volume);
+      audioRef.current.volume = (20 / 100) * audioRef.current.volume;
     }
   }, [audioRef]);
-  
-  const handleVolumeChange = <span class="fstat-no" title="function not covered" >(e</span>) =&gt; {
-    const newVolume = <span class="cstat-no" title="statement not covered" >parseInt(e.target.value);</span>
-<span class="cstat-no" title="statement not covered" >    setVolume(newVolume);</span>
-    
-<span class="cstat-no" title="statement not covered" >    if (audioRef?.current) {</span>
-<span class="cstat-no" title="statement not covered" >      audioRef.current.volume = (newVolume / 100) * originalVolume;</span>
+&nbsp;
+  const handleVolumeChange = (e) =&gt; {
+    const newVolume = parseInt(e.target.value);
+    setVolume(newVolume);
+&nbsp;
+    if (audioRef?.current) {
+      audioRef.current.volume = (newVolume / 100) * originalVolume;
     }
   };
 &nbsp;
   // Color theme based on side (left/right for deck A/B)
   const accentColor = side === "left" ? "#4095e5" : "#e5405e";
-  
+&nbsp;
   return (
     &lt;div style={styles.container}&gt;
       &lt;div style={styles.volumeContainer}&gt;
         &lt;div style={styles.faderBackground}&gt;
-          &lt;div 
+          &lt;div
+            data-testid="fader-fill"
             style={{
               ...styles.faderFill,
               height: `${volume}%`,
-              backgroundColor: accentColor
+              backgroundColor: accentColor,
             }}
           &gt;&lt;/div&gt;
         &lt;/div&gt;
@@ -324,62 +329,63 @@ const VolumeSlider = ({ audioRef, side = <span class="branch-0 cbranch-no" title
 &nbsp;
 const styles = {
   container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    height: '150px',
-    marginTop: '15px',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    height: "150px",
+    marginTop: "15px",
   },
   volumeContainer: {
-    position: 'relative',
-    height: '120px',
-    width: '40px',
-    display: 'flex',
-    justifyContent: 'center',
+    position: "relative",
+    height: "120px",
+    width: "40px",
+    display: "flex",
+    justifyContent: "center",
   },
   faderBackground: {
-    position: 'absolute',
-    top: '0',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    height: '100%',
-    width: '6px',
-    backgroundColor: '#151515',
-    borderRadius: '3px',
-    overflow: 'hidden',
+    position: "absolute",
+    top: "0",
+    left: "50%",
+    transform: "translateX(-50%)",
+    height: "100%",
+    width: "6px",
+    backgroundColor: "#151515",
+    borderRadius: "3px",
+    overflow: "hidden",
   },
   faderFill: {
-    position: 'absolute',
-    bottom: '0',
-    width: '100%',
-    backgroundColor: '#4095e5',
-    transition: 'height 0.1s ease',
+    position: "absolute",
+    bottom: "0",
+    width: "100%",
+    backgroundColor: "#4095e5",
+    transition: "height 0.1s ease",
   },
   slider: {
-    WebkitAppearance: 'slider-vertical',
-    width: '30px',
-    height: '120px',
-    background: 'transparent',
-    cursor: 'pointer',
-    zIndex: '1',
+    WebkitAppearance: "slider-vertical",
+    width: "30px",
+    height: "120px",
+    background: "transparent",
+    cursor: "pointer",
+    zIndex: "1",
   },
   label: {
-    marginTop: '5px',
-    fontSize: '12px',
-    fontWeight: 'bold',
-    color: '#888',
-    letterSpacing: '1px',
-  }
+    marginTop: "5px",
+    fontSize: "12px",
+    fontWeight: "bold",
+    color: "#888",
+    letterSpacing: "1px",
+  },
 };
 &nbsp;
-export default VolumeSlider;</pre></td></tr></table></pre>
+export default VolumeSlider;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-29T15:16:16.568Z
+                at 2025-04-29T16:16:57.291Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
