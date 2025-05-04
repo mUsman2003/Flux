@@ -1,0 +1,8 @@
+# flux-namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: flux
+
+#kubectl apply -f namespace.yml
+
