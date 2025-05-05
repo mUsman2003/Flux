@@ -14,42 +14,41 @@ spec:
         app: backend
     spec:
       containers:
-        - name: backend
-          image: your-backend-image  # Replace with your actual image name
-          ports:
-            - containerPort: 5000
-          env:
-            - name: PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: PORT
-            - name: DB_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: DB_HOST
-            - name: DB_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: DB_PORT
-            - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: POSTGRES_USER
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: POSTGRES_PASSWORD
-            - name: DB_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: DB_DATABASE
-
+      - name: backend
+        image: musman2003/flux-backend:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: PORT
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_HOST
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_PORT
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: POSTGRES_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: POSTGRES_PASSWORD
+        - name: DB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: DB_DATABASE
 ---
 
 apiVersion: v1
@@ -61,5 +60,5 @@ spec:
   selector:
     app: backend
   ports:
-    - port: 5000
-      targetPort: 5000
+  - port: 5000
+    targetPort: 5000
