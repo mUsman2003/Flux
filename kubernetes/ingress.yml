@@ -11,6 +11,13 @@ spec:
   - host: flux.local
     http:
       paths:
+      - path: /api(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: backend
+            port:
+              number: 5000
       - path: /
         pathType: Prefix
         backend:
@@ -18,10 +25,3 @@ spec:
             name: frontend
             port:
               number: 80
-      - path: /backend
-        pathType: Prefix
-        backend:
-          service:
-            name: backend
-            port:
-              number: 5000

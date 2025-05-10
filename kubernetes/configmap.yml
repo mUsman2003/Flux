@@ -7,3 +7,4 @@ data:
   DB_HOST: db
   DB_PORT: "5432"
   PORT: "5000"
+  REACT_APP_API_BASE: "http://backend:5000"

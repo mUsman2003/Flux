@@ -18,6 +18,12 @@ spec:
         image: musman2003/flux-frontend:latest
         ports:
         - containerPort: 80
+        env:
+        - name: REACT_APP_API_BASE
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: REACT_APP_API_BASE
 ---
 apiVersion: v1
 kind: Service

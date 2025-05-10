@@ -96,7 +96,7 @@ const TrackDisplay = ({ onTrackLoaded, deck, fadeDuration = 1 }) => {
 
       // First fetch the audio file from the backend
       const response = await fetch(
-        `http://localhost:5000/api/songs/${song.id}/file`
+        `http://flux.local:31500/api/songs/${song.id}/file`
       );
 
       if (!response.ok) {

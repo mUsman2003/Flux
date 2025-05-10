@@ -6,18 +6,19 @@ const SongLibrary = ({ onSelectDatabaseSong, onClose, goBack }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    setLoading(true);
-    fetch("http://localhost:5000/api/songs")
-      .then((res) => res.json())
-      .then((data) => {
-        setSongs(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching songs:", err);
-        setLoading(false);
-      });
-  }, []);
+  setLoading(true);
+  fetch("http://flux.local:31500/api/songs")  // Matches backend NodePort
+    .then((res) => res.json())
+    .then((data) => {
+      setSongs(data);
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.error("Error fetching songs:", err);
+      setLoading(false);
+    });
+}, []);
+
 
   // Filter songs based on search term
   const filteredSongs = songs.filter((song) =>
