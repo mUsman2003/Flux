@@ -1,0 +1,7 @@
+backend:
+  image: musman2003/flux-backend
+  tag: latest
+
+frontend:
+  image: musman2003/flux-frontend
+  tag: latest
