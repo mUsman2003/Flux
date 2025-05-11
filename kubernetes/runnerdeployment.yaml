@@ -1,0 +1,9 @@
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: RunnerDeployment
+metadata:
+  name: self-hosted-runner
+spec:
+  replicas: 1
+  template:
+    spec:
+      repository: musman2003/flux
