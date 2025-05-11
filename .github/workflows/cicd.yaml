@@ -12,7 +12,7 @@ jobs:
       image_tag: ${{ steps.set-tag.outputs.tag }}
 
     env:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
 
     steps:
     - name: Checkout source code
@@ -30,14 +30,14 @@ jobs:
       with:
         context: ./backend
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/flux-backend:${{ steps.set-tag.outputs.tag }}
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/flux-backend:${{ steps.set-tag.outputs.tag }}
 
     - name: Build and push frontend image
       uses: docker/build-push-action@v6
       with:
         context: ./frontend/myapp
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/flux-frontend:${{ steps.set-tag.outputs.tag }}
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/flux-frontend:${{ steps.set-tag.outputs.tag }}
 
   cd:
     name: Deploy Application using ArgoCD
