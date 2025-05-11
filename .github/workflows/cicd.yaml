@@ -6,7 +6,8 @@ on:
     - main
 
 jobs:
-  build-and-deploy:
+  ci:
+    name: Build Docker Image and Push
     runs-on: ubuntu-latest
     outputs:
       image_tag: ${{ steps.set-tag.outputs.tag }}
@@ -45,7 +46,7 @@ jobs:
   cd:
     name: Deploy Application using ArgoCD
     needs: build-and-deploy
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout the Repo
