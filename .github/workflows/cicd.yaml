@@ -60,5 +60,9 @@ jobs:
     - name: Commit changes
       uses: EndBug/add-and-commit@v9
       with:
+        author_name: mUsman2003
+        author_email: mUsman2003@users.noreply.github.com
         message: 'Update image tag to ${{ needs.build-and-deploy.outputs.image_tag }}'
-        add: 'myapp/values.yaml'
+        add: 'charts/python-app/values.yaml'
+        push: true
+        github_token: ${{ secrets.PAT }}
