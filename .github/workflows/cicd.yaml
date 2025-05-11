@@ -45,7 +45,7 @@ jobs:
   cd:
     name: Deploy Application using ArgoCD
     needs: build-and-deploy
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout the Repo
