@@ -76,17 +76,15 @@ jobs:
         github_token: ${{ secrets.PAT }}
 
     - name: Install argocd
-      shell: pwsh
+      shell: cmd
       run: |
-        Invoke-WebRequest -Uri "https://github.com/argoproj/argo-cd/releases/latest/download/argocd-windows-amd64.exe" -OutFile "argocd.exe"
-        Move-Item -Force .\argocd.exe "C:\Windows\System32\argocd.exe"
+        curl -L -o argocd.exe https://github.com/argoproj/argo-cd/releases/latest/download/argocd-windows-amd64.exe
+        move /Y argocd.exe C:\Windows\System32\argocd.exe
 
     - name: Argocd app sync
-      shell: bash
+      shell: cmd
       run: |
-        argocd login my-argocd-server.argocd \
-        --insecure  \
-        --grpc-web \
-        --username admin \
-        --password  ${{ secrets.ARGOCD_PASSWORD }}
+        argocd login my-argocd-server.argocd --insecure --grpc-web --username admin --password %ARGOCD_PASSWORD%
         argocd app sync python-app
+      env:
+        ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }}

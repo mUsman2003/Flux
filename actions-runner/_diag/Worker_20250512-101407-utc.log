@@ -1,0 +1,4340 @@
+[2025-05-12 10:14:07Z INFO HostContext] No proxy settings were found based on environmental variables (http_proxy/https_proxy/HTTP_PROXY/HTTPS_PROXY)
+[2025-05-12 10:14:07Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:07Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:07Z INFO HostContext] Well known config file 'Credentials': 'D:\BS(CS)\Flux\actions-runner\.credentials'
+[2025-05-12 10:14:07Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:07Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:07Z INFO HostContext] Well known config file 'Runner': 'D:\BS(CS)\Flux\actions-runner\.runner'
+[2025-05-12 10:14:07Z INFO Worker] Version: 2.317.0
+[2025-05-12 10:14:07Z INFO Worker] Commit: 6dc005ee3690a0303e0d7269b6f60295d22dcfad
+[2025-05-12 10:14:07Z INFO Worker] Culture: en-PK
+[2025-05-12 10:14:07Z INFO Worker] UI Culture: en-US
+[2025-05-12 10:14:07Z INFO Worker] Waiting to receive the job message from the channel.
+[2025-05-12 10:14:07Z INFO ProcessChannel] Receiving message of length 21162, with hash 'eefb4cb32b9e147a9ba1d9edb2b720c066694e0b3cb8f106ed427b3c389ca26a'
+[2025-05-12 10:14:07Z INFO Worker] Message received.
+[2025-05-12 10:14:08Z INFO Worker] Job message:
+ {
+  "fileTable": [
+    ".github/workflows/cicd.yaml"
+  ],
+  "mask": [
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    }
+  ],
+  "steps": [
+    {
+      "type": "action",
+      "reference": {
+        "type": "repository",
+        "name": "actions/checkout",
+        "ref": "v3",
+        "repositoryType": "GitHub"
+      },
+      "displayNameToken": {
+        "type": 0,
+        "file": 1,
+        "line": 52,
+        "col": 13,
+        "lit": "Checkout the Repo"
+      },
+      "contextName": "__actions_checkout",
+      "condition": "success()",
+      "id": "853db9f9-3011-4236-b59f-50133f590503",
+      "name": "__actions_checkout"
+    },
+    {
+      "type": "action",
+      "reference": {
+        "type": "script"
+      },
+      "displayNameToken": {
+        "type": 0,
+        "file": 1,
+        "line": 55,
+        "col": 13,
+        "lit": "Update image tag in values.yaml"
+      },
+      "contextName": "__run",
+      "inputs": {
+        "type": 2,
+        "map": [
+          {
+            "key": "script",
+            "value": {
+              "type": 3,
+              "file": 1,
+              "line": 56,
+              "col": 12,
+              "expr": "format('pip install yq\npython -c \"\nimport yaml\nwith open(''myapp/values.yaml'', ''r'') as f:\n    values = yaml.safe_load(f)\nvalues[''backend''][''tag''] = ''{0}''\nvalues[''frontend''][''tag''] = ''{1}''\nwith open(''myapp/values.yaml'', ''w'') as f:\n    yaml.dump(values, f)\n\"\n', needs.ci.outputs.image_tag, needs.ci.outputs.image_tag)"
+            }
+          }
+        ]
+      },
+      "condition": "success()",
+      "id": "67b5f76b-2098-4c5c-a725-69fdc7818646",
+      "name": "__run"
+    },
+    {
+      "type": "action",
+      "reference": {
+        "type": "repository",
+        "name": "EndBug/add-and-commit",
+        "ref": "v9",
+        "repositoryType": "GitHub"
+      },
+      "displayNameToken": {
+        "type": 0,
+        "file": 1,
+        "line": 68,
+        "col": 13,
+        "lit": "Commit changes"
+      },
+      "contextName": "__EndBug_add-and-commit",
+      "inputs": {
+        "type": 2,
+        "file": 1,
+        "line": 71,
+        "col": 9,
+        "map": [
+          {
+            "key": {
+              "type": 0,
+              "file": 1,
+              "line": 71,
+              "col": 9,
+              "lit": "author_name"
+            },
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 71,
+              "col": 22,
+              "lit": "mUsman2003"
+            }
+          },
+          {
+            "key": {
+              "type": 0,
+              "file": 1,
+              "line": 72,
+              "col": 9,
+              "lit": "author_email"
+            },
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 72,
+              "col": 23,
+              "lit": "mUsman2003@users.noreply.github.com"
+            }
+          },
+          {
+            "key": {
+              "type": 0,
+              "file": 1,
+              "line": 73,
+              "col": 9,
+              "lit": "message"
+            },
+            "value": {
+              "type": 3,
+              "file": 1,
+              "line": 73,
+              "col": 18,
+              "expr": "format('Update image tag to {0}', needs.ci.outputs.image_tag)"
+            }
+          },
+          {
+            "key": {
+              "type": 0,
+              "file": 1,
+              "line": 74,
+              "col": 9,
+              "lit": "add"
+            },
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 74,
+              "col": 14,
+              "lit": "charts/python-app/values.yaml"
+            }
+          },
+          {
+            "key": {
+              "type": 0,
+              "file": 1,
+              "line": 75,
+              "col": 9,
+              "lit": "push"
+            },
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 75,
+              "col": 15,
+              "lit": "true"
+            }
+          },
+          {
+            "key": {
+              "type": 0,
+              "file": 1,
+              "line": 76,
+              "col": 9,
+              "lit": "github_token"
+            },
+            "value": {
+              "type": 3,
+              "file": 1,
+              "line": 76,
+              "col": 23,
+              "expr": "secrets.PAT"
+            }
+          }
+        ]
+      },
+      "condition": "success()",
+      "id": "4ff94ce9-c757-453d-9432-270d6ca4a6b3",
+      "name": "__EndBug_add-and-commit"
+    },
+    {
+      "type": "action",
+      "reference": {
+        "type": "script"
+      },
+      "displayNameToken": {
+        "type": 0,
+        "file": 1,
+        "line": 78,
+        "col": 13,
+        "lit": "Install argocd"
+      },
+      "contextName": "__run_2",
+      "inputs": {
+        "type": 2,
+        "map": [
+          {
+            "key": "script",
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 80,
+              "col": 12,
+              "lit": "Invoke-WebRequest -Uri \"https://github.com/argoproj/argo-cd/releases/latest/download/argocd-windows-amd64.exe\" -OutFile \"argocd.exe\"\nMove-Item -Force .\\argocd.exe \"C:\\Windows\\System32\\argocd.exe\"\n"
+            }
+          },
+          {
+            "key": "shell",
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 79,
+              "col": 14,
+              "lit": "pwsh"
+            }
+          }
+        ]
+      },
+      "condition": "success()",
+      "id": "599799f9-0a3c-4cfe-ad81-ebed1a3c966c",
+      "name": "__run_2"
+    },
+    {
+      "type": "action",
+      "reference": {
+        "type": "script"
+      },
+      "displayNameToken": {
+        "type": 0,
+        "file": 1,
+        "line": 84,
+        "col": 13,
+        "lit": "Argocd app sync"
+      },
+      "contextName": "__run_3",
+      "inputs": {
+        "type": 2,
+        "map": [
+          {
+            "key": "script",
+            "value": {
+              "type": 3,
+              "file": 1,
+              "line": 86,
+              "col": 12,
+              "expr": "format('argocd login my-argocd-server.argocd \\\n--insecure  \\\n--grpc-web \\\n--username admin \\\n--password  {0}\nargocd app sync python-app\n', secrets.ARGOCD_PASSWORD)"
+            }
+          },
+          {
+            "key": "shell",
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 85,
+              "col": 14,
+              "lit": "bash"
+            }
+          }
+        ]
+      },
+      "condition": "success()",
+      "id": "ea67ab0f-23ac-4722-82f1-c3c5dd9ca348",
+      "name": "__run_3"
+    }
+  ],
+  "variables": {
+    "ARGOCD_PASSWORD": {
+      "value": "***",
+      "isSecret": true
+    },
+    "Actions.EnableHttpRedirects": {
+      "value": "true"
+    },
+    "DistributedTask.AddWarningToNode12Action": {
+      "value": "true"
+    },
+    "DistributedTask.AddWarningToNode16Action": {
+      "value": "true"
+    },
+    "DistributedTask.AllowRunnerContainerHooks": {
+      "value": "true"
+    },
+    "DistributedTask.DeprecateStepOutputCommands": {
+      "value": "true"
+    },
+    "DistributedTask.DetailUntarFailure": {
+      "value": "true"
+    },
+    "DistributedTask.EnableCompositeActions": {
+      "value": "true"
+    },
+    "DistributedTask.EnableJobServerQueueTelemetry": {
+      "value": "true"
+    },
+    "DistributedTask.EnhancedAnnotations": {
+      "value": "true"
+    },
+    "DistributedTask.ForceGithubJavascriptActionsToNode16": {
+      "value": "true"
+    },
+    "DistributedTask.ForceGithubJavascriptActionsToNode20": {
+      "value": "true"
+    },
+    "DistributedTask.LogTemplateErrorsAsDebugMessages": {
+      "value": "true"
+    },
+    "DistributedTask.MarkJobAsFailedOnWorkerCrash": {
+      "value": "true"
+    },
+    "DistributedTask.NewActionMetadata": {
+      "value": "true"
+    },
+    "DistributedTask.UploadStepSummary": {
+      "value": "true"
+    },
+    "DistributedTask.UseActionArchiveCache": {
+      "value": "true"
+    },
+    "DistributedTask.UseWhich2": {
+      "value": "true"
+    },
+    "PAT": {
+      "value": "***",
+      "isSecret": true
+    },
+    "RunService.FixEmbeddedIssues": {
+      "value": "true"
+    },
+    "actions_add_check_run_id_to_job_context": {
+      "value": "false"
+    },
+    "actions_skip_retry_complete_job_upon_known_errors": {
+      "value": "true"
+    },
+    "actions_uses_cache_service_v2": {
+      "value": "true"
+    },
+    "github_token": {
+      "value": "***",
+      "isSecret": true
+    },
+    "system.from_run_service": {
+      "value": "true"
+    },
+    "system.github.job": {
+      "value": "cd"
+    },
+    "system.github.launch_endpoint": {
+      "value": "https://launch.actions.githubusercontent.com"
+    },
+    "system.github.results_endpoint": {
+      "value": "https://results-receiver.actions.githubusercontent.com/"
+    },
+    "system.github.results_upload_with_sdk": {
+      "value": "true"
+    },
+    "system.github.token": {
+      "value": "***",
+      "isSecret": true
+    },
+    "system.github.token.permissions": {
+      "value": "{\"Contents\":\"read\",\"Metadata\":\"read\",\"Packages\":\"read\"}"
+    },
+    "system.orchestrationId": {
+      "value": "82c1943f-855d-4f97-94f5-5d248a141fae.cd.__default"
+    },
+    "system.phaseDisplayName": {
+      "value": "Deploy Application using ArgoCD"
+    },
+    "system.runner.lowdiskspacethreshold": {
+      "value": "100"
+    },
+    "system.runnerEnvironment": {
+      "value": "self-hosted"
+    }
+  },
+  "messageType": "RunnerJobRequest",
+  "plan": {
+    "scopeIdentifier": "00000000-0000-0000-0000-000000000000",
+    "planType": "actions",
+    "version": 0,
+    "planId": "82c1943f-855d-4f97-94f5-5d248a141fae",
+    "planGroup": null,
+    "artifactUri": null,
+    "artifactLocation": null,
+    "definition": null,
+    "owner": null
+  },
+  "timeline": {
+    "id": "82c1943f-855d-4f97-94f5-5d248a141fae",
+    "changeId": 0,
+    "location": null
+  },
+  "jobId": "268f81ab-9504-52ad-b66d-097c39cc976f",
+  "jobDisplayName": "Deploy Application using ArgoCD",
+  "jobName": "__default",
+  "requestId": 0,
+  "lockedUntil": "0001-01-01T00:00:00",
+  "resources": {
+    "endpoints": [
+      {
+        "data": {
+          "ServerId": "",
+          "ServerName": "",
+          "CacheServerUrl": "https://acghubeus2.actions.githubusercontent.com/Tj8oyLxS2V68oiAJ5roUiyLEH828d1rIBuV9k9I67M0dMiqWfk/",
+          "FeedStreamUrl": "wss://results-receiver.actions.githubusercontent.com/_ws/ingest.sock",
+          "ResultsServiceUrl": "https://results-receiver.actions.githubusercontent.com/",
+          "PipelinesServiceUrl": "https://pipelinesghubeus2.actions.githubusercontent.com/Tj8oyLxS2V68oiAJ5roUiyLEH828d1rIBuV9k9I67M0dMiqWfk/",
+          "GenerateIdTokenUrl": ""
+        },
+        "name": "SystemVssConnection",
+        "url": "https://run-actions-1-azure-eastus.actions.githubusercontent.com/20/",
+        "authorization": {
+          "parameters": {
+            "AccessToken": "***"
+          },
+          "scheme": "OAuth"
+        },
+        "isShared": false,
+        "isReady": true
+      }
+    ]
+  },
+  "contextData": {
+    "github": {
+      "t": 2,
+      "d": [
+        {
+          "k": "ref",
+          "v": "refs/heads/main"
+        },
+        {
+          "k": "sha",
+          "v": "a8e0e3735f6dc853da9ad4234fe959e20f2c2809"
+        },
+        {
+          "k": "repository",
+          "v": "mUsman2003/Flux"
+        },
+        {
+          "k": "repository_owner",
+          "v": "mUsman2003"
+        },
+        {
+          "k": "repository_owner_id",
+          "v": "152609188"
+        },
+        {
+          "k": "repositoryUrl",
+          "v": "git://github.com/mUsman2003/Flux.git"
+        },
+        {
+          "k": "run_id",
+          "v": "14969584970"
+        },
+        {
+          "k": "run_number",
+          "v": "18"
+        },
+        {
+          "k": "retention_days",
+          "v": "90"
+        },
+        {
+          "k": "run_attempt",
+          "v": "1"
+        },
+        {
+          "k": "artifact_cache_size_limit",
+          "v": "10"
+        },
+        {
+          "k": "repository_visibility",
+          "v": "public"
+        },
+        {
+          "k": "actor_id",
+          "v": "152609188"
+        },
+        {
+          "k": "actor",
+          "v": "mUsman2003"
+        },
+        {
+          "k": "workflow",
+          "v": "CI/CD to Docker Hub and ArgoCD"
+        },
+        {
+          "k": "head_ref",
+          "v": ""
+        },
+        {
+          "k": "base_ref",
+          "v": ""
+        },
+        {
+          "k": "event_name",
+          "v": "push"
+        },
+        {
+          "k": "server_url",
+          "v": "https://github.com"
+        },
+        {
+          "k": "api_url",
+          "v": "https://api.github.com"
+        },
+        {
+          "k": "graphql_url",
+          "v": "https://api.github.com/graphql"
+        },
+        {
+          "k": "ref_name",
+          "v": "main"
+        },
+        {
+          "k": "ref_protected",
+          "v": false
+        },
+        {
+          "k": "ref_type",
+          "v": "branch"
+        },
+        {
+          "k": "secret_source",
+          "v": "Actions"
+        },
+        {
+          "k": "event",
+          "v": {
+            "t": 2,
+            "d": [
+              {
+                "k": "after",
+                "v": "a8e0e3735f6dc853da9ad4234fe959e20f2c2809"
+              },
+              {
+                "k": "base_ref",
+                "v": null
+              },
+              {
+                "k": "before",
+                "v": "9e09edb2d5d85512ddfb24c800ec7ede4d5db265"
+              },
+              {
+                "k": "commits",
+                "v": {
+                  "t": 1,
+                  "a": [
+                    {
+                      "t": 2,
+                      "d": [
+                        {
+                          "k": "author",
+                          "v": {
+                            "t": 2,
+                            "d": [
+                              {
+                                "k": "email",
+                                "v": "musman2003.fb@gmail.com"
+                              },
+                              {
+                                "k": "name",
+                                "v": "mUsman2003"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "k": "committer",
+                          "v": {
+                            "t": 2,
+                            "d": [
+                              {
+                                "k": "email",
+                                "v": "musman2003.fb@gmail.com"
+                              },
+                              {
+                                "k": "name",
+                                "v": "mUsman2003"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "k": "distinct",
+                          "v": true
+                        },
+                        {
+                          "k": "id",
+                          "v": "a8e0e3735f6dc853da9ad4234fe959e20f2c2809"
+                        },
+                        {
+                          "k": "message",
+                          "v": "changed argo from linux to window"
+                        },
+                        {
+                          "k": "timestamp",
+                          "v": "2025-05-12T15:12:05+05:00"
+                        },
+                        {
+                          "k": "tree_id",
+                          "v": "bf597f46d0fedb68561f84bcb1b4ef0ffb2ba6fc"
+                        },
+                        {
+                          "k": "url",
+                          "v": "https://github.com/mUsman2003/Flux/commit/a8e0e3735f6dc853da9ad4234fe959e20f2c2809"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "k": "compare",
+                "v": "https://github.com/mUsman2003/Flux/compare/9e09edb2d5d8...a8e0e3735f6d"
+              },
+              {
+                "k": "created",
+                "v": false
+              },
+              {
+                "k": "deleted",
+                "v": false
+              },
+              {
+                "k": "forced",
+                "v": false
+              },
+              {
+                "k": "head_commit",
+                "v": {
+                  "t": 2,
+                  "d": [
+                    {
+                      "k": "author",
+                      "v": {
+                        "t": 2,
+                        "d": [
+                          {
+                            "k": "email",
+                            "v": "musman2003.fb@gmail.com"
+                          },
+                          {
+                            "k": "name",
+                            "v": "mUsman2003"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "k": "committer",
+                      "v": {
+                        "t": 2,
+                        "d": [
+                          {
+                            "k": "email",
+                            "v": "musman2003.fb@gmail.com"
+                          },
+                          {
+                            "k": "name",
+                            "v": "mUsman2003"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "k": "distinct",
+                      "v": true
+                    },
+                    {
+                      "k": "id",
+                      "v": "a8e0e3735f6dc853da9ad4234fe959e20f2c2809"
+                    },
+                    {
+                      "k": "message",
+                      "v": "changed argo from linux to window"
+                    },
+                    {
+                      "k": "timestamp",
+                      "v": "2025-05-12T15:12:05+05:00"
+                    },
+                    {
+                      "k": "tree_id",
+                      "v": "bf597f46d0fedb68561f84bcb1b4ef0ffb2ba6fc"
+                    },
+                    {
+                      "k": "url",
+                      "v": "https://github.com/mUsman2003/Flux/commit/a8e0e3735f6dc853da9ad4234fe959e20f2c2809"
+                    }
+                  ]
+                }
+              },
+              {
+                "k": "pusher",
+                "v": {
+                  "t": 2,
+                  "d": [
+                    {
+                      "k": "email",
+                      "v": "152609188+mUsman2003@users.noreply.github.com"
+                    },
+                    {
+                      "k": "name",
+                      "v": "mUsman2003"
+                    }
+                  ]
+                }
+              },
+              {
+                "k": "ref",
+                "v": "refs/heads/main"
+              },
+              {
+                "k": "repository",
+                "v": {
+                  "t": 2,
+                  "d": [
+                    {
+                      "k": "allow_forking",
+                      "v": true
+                    },
+                    {
+                      "k": "archive_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/{archive_format}{/ref}"
+                    },
+                    {
+                      "k": "archived",
+                      "v": false
+                    },
+                    {
+                      "k": "assignees_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/assignees{/user}"
+                    },
+                    {
+                      "k": "blobs_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/git/blobs{/sha}"
+                    },
+                    {
+                      "k": "branches_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/branches{/branch}"
+                    },
+                    {
+                      "k": "clone_url",
+                      "v": "https://github.com/mUsman2003/Flux.git"
+                    },
+                    {
+                      "k": "collaborators_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/collaborators{/collaborator}"
+                    },
+                    {
+                      "k": "comments_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/comments{/number}"
+                    },
+                    {
+                      "k": "commits_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/commits{/sha}"
+                    },
+                    {
+                      "k": "compare_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/compare/{base}...{head}"
+                    },
+                    {
+                      "k": "contents_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/contents/{+path}"
+                    },
+                    {
+                      "k": "contributors_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/contributors"
+                    },
+                    {
+                      "k": "created_at",
+                      "v": 1740833638.0
+                    },
+                    {
+                      "k": "default_branch",
+                      "v": "main"
+                    },
+                    {
+                      "k": "deployments_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/deployments"
+                    },
+                    {
+                      "k": "description",
+                      "v": null
+                    },
+                    {
+                      "k": "disabled",
+                      "v": false
+                    },
+                    {
+                      "k": "downloads_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/downloads"
+                    },
+                    {
+                      "k": "events_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/events"
+                    },
+                    {
+                      "k": "fork",
+                      "v": false
+                    },
+                    {
+                      "k": "forks",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "forks_count",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "forks_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/forks"
+                    },
+                    {
+                      "k": "full_name",
+                      "v": "mUsman2003/Flux"
+                    },
+                    {
+                      "k": "git_commits_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/git/commits{/sha}"
+                    },
+                    {
+                      "k": "git_refs_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/git/refs{/sha}"
+                    },
+                    {
+                      "k": "git_tags_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/git/tags{/sha}"
+                    },
+                    {
+                      "k": "git_url",
+                      "v": "git://github.com/mUsman2003/Flux.git"
+                    },
+                    {
+                      "k": "has_discussions",
+                      "v": false
+                    },
+                    {
+                      "k": "has_downloads",
+                      "v": true
+                    },
+                    {
+                      "k": "has_issues",
+                      "v": true
+                    },
+                    {
+                      "k": "has_pages",
+                      "v": false
+                    },
+                    {
+                      "k": "has_projects",
+                      "v": true
+                    },
+                    {
+                      "k": "has_wiki",
+                      "v": true
+                    },
+                    {
+                      "k": "homepage",
+                      "v": null
+                    },
+                    {
+                      "k": "hooks_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/hooks"
+                    },
+                    {
+                      "k": "html_url",
+                      "v": "https://github.com/mUsman2003/Flux"
+                    },
+                    {
+                      "k": "id",
+                      "v": 941083119.0
+                    },
+                    {
+                      "k": "is_template",
+                      "v": false
+                    },
+                    {
+                      "k": "issue_comment_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/issues/comments{/number}"
+                    },
+                    {
+                      "k": "issue_events_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/issues/events{/number}"
+                    },
+                    {
+                      "k": "issues_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/issues{/number}"
+                    },
+                    {
+                      "k": "keys_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/keys{/key_id}"
+                    },
+                    {
+                      "k": "labels_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/labels{/name}"
+                    },
+                    {
+                      "k": "language",
+                      "v": "JavaScript"
+                    },
+                    {
+                      "k": "languages_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/languages"
+                    },
+                    {
+                      "k": "license",
+                      "v": null
+                    },
+                    {
+                      "k": "master_branch",
+                      "v": "main"
+                    },
+                    {
+                      "k": "merges_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/merges"
+                    },
+                    {
+                      "k": "milestones_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/milestones{/number}"
+                    },
+                    {
+                      "k": "mirror_url",
+                      "v": null
+                    },
+                    {
+                      "k": "name",
+                      "v": "Flux"
+                    },
+                    {
+                      "k": "node_id",
+                      "v": "R_kgDOOBfJ7w"
+                    },
+                    {
+                      "k": "notifications_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/notifications{?since,all,participating}"
+                    },
+                    {
+                      "k": "open_issues",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "open_issues_count",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "owner",
+                      "v": {
+                        "t": 2,
+                        "d": [
+                          {
+                            "k": "avatar_url",
+                            "v": "https://avatars.githubusercontent.com/u/152609188?v=4"
+                          },
+                          {
+                            "k": "email",
+                            "v": "152609188+mUsman2003@users.noreply.github.com"
+                          },
+                          {
+                            "k": "events_url",
+                            "v": "https://api.github.com/users/mUsman2003/events{/privacy}"
+                          },
+                          {
+                            "k": "followers_url",
+                            "v": "https://api.github.com/users/mUsman2003/followers"
+                          },
+                          {
+                            "k": "following_url",
+                            "v": "https://api.github.com/users/mUsman2003/following{/other_user}"
+                          },
+                          {
+                            "k": "gists_url",
+                            "v": "https://api.github.com/users/mUsman2003/gists{/gist_id}"
+                          },
+                          {
+                            "k": "gravatar_id",
+                            "v": ""
+                          },
+                          {
+                            "k": "html_url",
+                            "v": "https://github.com/mUsman2003"
+                          },
+                          {
+                            "k": "id",
+                            "v": 152609188.0
+                          },
+                          {
+                            "k": "login",
+                            "v": "mUsman2003"
+                          },
+                          {
+                            "k": "name",
+                            "v": "mUsman2003"
+                          },
+                          {
+                            "k": "node_id",
+                            "v": "U_kgDOCRihpA"
+                          },
+                          {
+                            "k": "organizations_url",
+                            "v": "https://api.github.com/users/mUsman2003/orgs"
+                          },
+                          {
+                            "k": "received_events_url",
+                            "v": "https://api.github.com/users/mUsman2003/received_events"
+                          },
+                          {
+                            "k": "repos_url",
+                            "v": "https://api.github.com/users/mUsman2003/repos"
+                          },
+                          {
+                            "k": "site_admin",
+                            "v": false
+                          },
+                          {
+                            "k": "starred_url",
+                            "v": "https://api.github.com/users/mUsman2003/starred{/owner}{/repo}"
+                          },
+                          {
+                            "k": "subscriptions_url",
+                            "v": "https://api.github.com/users/mUsman2003/subscriptions"
+                          },
+                          {
+                            "k": "type",
+                            "v": "User"
+                          },
+                          {
+                            "k": "url",
+                            "v": "https://api.github.com/users/mUsman2003"
+                          },
+                          {
+                            "k": "user_view_type",
+                            "v": "public"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "k": "private",
+                      "v": false
+                    },
+                    {
+                      "k": "pulls_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/pulls{/number}"
+                    },
+                    {
+                      "k": "pushed_at",
+                      "v": 1747044731.0
+                    },
+                    {
+                      "k": "releases_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/releases{/id}"
+                    },
+                    {
+                      "k": "size",
+                      "v": 528468.0
+                    },
+                    {
+                      "k": "ssh_url",
+                      "v": "git@github.com:mUsman2003/Flux.git"
+                    },
+                    {
+                      "k": "stargazers",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "stargazers_count",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "stargazers_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/stargazers"
+                    },
+                    {
+                      "k": "statuses_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/statuses/{sha}"
+                    },
+                    {
+                      "k": "subscribers_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/subscribers"
+                    },
+                    {
+                      "k": "subscription_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/subscription"
+                    },
+                    {
+                      "k": "svn_url",
+                      "v": "https://github.com/mUsman2003/Flux"
+                    },
+                    {
+                      "k": "tags_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/tags"
+                    },
+                    {
+                      "k": "teams_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/teams"
+                    },
+                    {
+                      "k": "topics",
+                      "v": {
+                        "t": 1
+                      }
+                    },
+                    {
+                      "k": "trees_url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux/git/trees{/sha}"
+                    },
+                    {
+                      "k": "updated_at",
+                      "v": "2025-05-12T10:04:18Z"
+                    },
+                    {
+                      "k": "url",
+                      "v": "https://api.github.com/repos/mUsman2003/Flux"
+                    },
+                    {
+                      "k": "visibility",
+                      "v": "public"
+                    },
+                    {
+                      "k": "watchers",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "watchers_count",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "web_commit_signoff_required",
+                      "v": false
+                    }
+                  ]
+                }
+              },
+              {
+                "k": "sender",
+                "v": {
+                  "t": 2,
+                  "d": [
+                    {
+                      "k": "avatar_url",
+                      "v": "https://avatars.githubusercontent.com/u/152609188?v=4"
+                    },
+                    {
+                      "k": "events_url",
+                      "v": "https://api.github.com/users/mUsman2003/events{/privacy}"
+                    },
+                    {
+                      "k": "followers_url",
+                      "v": "https://api.github.com/users/mUsman2003/followers"
+                    },
+                    {
+                      "k": "following_url",
+                      "v": "https://api.github.com/users/mUsman2003/following{/other_user}"
+                    },
+                    {
+                      "k": "gists_url",
+                      "v": "https://api.github.com/users/mUsman2003/gists{/gist_id}"
+                    },
+                    {
+                      "k": "gravatar_id",
+                      "v": ""
+                    },
+                    {
+                      "k": "html_url",
+                      "v": "https://github.com/mUsman2003"
+                    },
+                    {
+                      "k": "id",
+                      "v": 152609188.0
+                    },
+                    {
+                      "k": "login",
+                      "v": "mUsman2003"
+                    },
+                    {
+                      "k": "node_id",
+                      "v": "U_kgDOCRihpA"
+                    },
+                    {
+                      "k": "organizations_url",
+                      "v": "https://api.github.com/users/mUsman2003/orgs"
+                    },
+                    {
+                      "k": "received_events_url",
+                      "v": "https://api.github.com/users/mUsman2003/received_events"
+                    },
+                    {
+                      "k": "repos_url",
+                      "v": "https://api.github.com/users/mUsman2003/repos"
+                    },
+                    {
+                      "k": "site_admin",
+                      "v": false
+                    },
+                    {
+                      "k": "starred_url",
+                      "v": "https://api.github.com/users/mUsman2003/starred{/owner}{/repo}"
+                    },
+                    {
+                      "k": "subscriptions_url",
+                      "v": "https://api.github.com/users/mUsman2003/subscriptions"
+                    },
+                    {
+                      "k": "type",
+                      "v": "User"
+                    },
+                    {
+                      "k": "url",
+                      "v": "https://api.github.com/users/mUsman2003"
+                    },
+                    {
+                      "k": "user_view_type",
+                      "v": "public"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "k": "workflow_ref",
+          "v": "mUsman2003/Flux/.github/workflows/cicd.yaml@refs/heads/main"
+        },
+        {
+          "k": "workflow_sha",
+          "v": "a8e0e3735f6dc853da9ad4234fe959e20f2c2809"
+        },
+        {
+          "k": "repository_id",
+          "v": "941083119"
+        },
+        {
+          "k": "triggering_actor",
+          "v": "mUsman2003"
+        }
+      ]
+    },
+    "inputs": {
+      "t": 2
+    },
+    "matrix": null,
+    "needs": {
+      "t": 2,
+      "d": [
+        {
+          "k": "ci",
+          "v": {
+            "t": 2,
+            "d": [
+              {
+                "k": "result",
+                "v": "success"
+              },
+              {
+                "k": "outputs",
+                "v": {
+                  "t": 2,
+                  "d": [
+                    {
+                      "k": "image_tag",
+                      "v": "a8e0e37"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "strategy": {
+      "t": 2,
+      "d": [
+        {
+          "k": "fail-fast",
+          "v": true
+        },
+        {
+          "k": "job-index",
+          "v": 0.0
+        },
+        {
+          "k": "job-total",
+          "v": 1.0
+        },
+        {
+          "k": "max-parallel",
+          "v": 1.0
+        }
+      ]
+    },
+    "vars": {
+      "t": 2
+    }
+  }
+}
+[2025-05-12 10:14:08Z INFO JobRunner] Job ID 268f81ab-9504-52ad-b66d-097c39cc976f
+[2025-05-12 10:14:08Z INFO ConfigurationStore] currentAssemblyLocation: D:\BS(CS)\Flux\actions-runner\bin\Runner.Worker.dll
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:08Z INFO ConfigurationStore] binPath: D:\BS(CS)\Flux\actions-runner\bin
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:08Z INFO ConfigurationStore] RootFolder: D:\BS(CS)\Flux\actions-runner
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:08Z INFO HostContext] Well known config file 'Runner': 'D:\BS(CS)\Flux\actions-runner\.runner'
+[2025-05-12 10:14:08Z INFO ConfigurationStore] ConfigFilePath: D:\BS(CS)\Flux\actions-runner\.runner
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:08Z INFO HostContext] Well known config file 'Credentials': 'D:\BS(CS)\Flux\actions-runner\.credentials'
+[2025-05-12 10:14:08Z INFO ConfigurationStore] CredFilePath: D:\BS(CS)\Flux\actions-runner\.credentials
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:08Z INFO HostContext] Well known config file 'MigratedCredentials': 'D:\BS(CS)\Flux\actions-runner\.credentials_migrated'
+[2025-05-12 10:14:08Z INFO ConfigurationStore] MigratedCredFilePath: D:\BS(CS)\Flux\actions-runner\.credentials_migrated
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:08Z INFO HostContext] Well known config file 'Service': 'D:\BS(CS)\Flux\actions-runner\.service'
+[2025-05-12 10:14:08Z INFO ConfigurationStore] ServiceConfigFilePath: D:\BS(CS)\Flux\actions-runner\.service
+[2025-05-12 10:14:08Z INFO ConfigurationStore] Read setting file: 305 chars
+[2025-05-12 10:14:08Z INFO JobRunner] Initializing launch client
+[2025-05-12 10:14:08Z INFO JobServerQueue] Initializing results client
+[2025-05-12 10:14:08Z INFO ResultServer] Creating websocket client ...wss://results-receiver.actions.githubusercontent.com/_ws/ingest.sock
+[2025-05-12 10:14:08Z INFO ResultServer] Attempting to start websocket client with delay 00:00:00.
+[2025-05-12 10:14:08Z INFO JobServerQueue] Start process web console line queue.
+[2025-05-12 10:14:08Z INFO JobServerQueue] Start process file upload queue.
+[2025-05-12 10:14:08Z INFO JobServerQueue] Start results file upload queue.
+[2025-05-12 10:14:08Z INFO JobServerQueue] Starting results-based upload queue...
+[2025-05-12 10:14:08Z INFO JobServerQueue] Start process timeline update queue.
+[2025-05-12 10:14:08Z INFO ExecutionContext] Initialize GitHub context
+[2025-05-12 10:14:08Z INFO ExecutionContext] Initialize Env context
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Diag': 'D:\BS(CS)\Flux\actions-runner\_diag'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Diag': 'D:\BS(CS)\Flux\actions-runner\_diag'
+[2025-05-12 10:14:08Z INFO JobRunner] Starting the job execution context.
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:08Z INFO JobRunner] Validating directory permissions for: 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Tools': 'D:\BS(CS)\Flux\actions-runner\_work\_tool'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Temp': 'D:\BS(CS)\Flux\actions-runner\_work\_temp'
+[2025-05-12 10:14:08Z INFO JobRunner] Getting job extension.
+[2025-05-12 10:14:08Z INFO JobRunner] Initialize job. Getting all job steps.
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Diag': 'D:\BS(CS)\Flux\actions-runner\_diag'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Diag': 'D:\BS(CS)\Flux\actions-runner\_diag'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:08Z INFO HostContext] Well known config file 'Credentials': 'D:\BS(CS)\Flux\actions-runner\.credentials'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:08Z INFO HostContext] Well known config file 'SetupInfo': 'D:\BS(CS)\Flux\actions-runner\.setup_info'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:08Z INFO PipelineDirectoryManager] Loading tracking config if exists: D:\BS(CS)\Flux\actions-runner\_work\_PipelineMapping\mUsman2003/Flux\PipelineFolder.json
+[2025-05-12 10:14:08Z INFO PipelineDirectoryManager] Updating job run properties.
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:08Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:09Z INFO JobExtension] Downloading actions
+[2025-05-12 10:14:09Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:09Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:09Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:09Z INFO HostContext] Well known directory 'Actions': 'D:\BS(CS)\Flux\actions-runner\_work\_actions'
+[2025-05-12 10:14:09Z INFO Worker] Listening for cancel message from the channel.
+[2025-05-12 10:14:09Z INFO Worker] Waiting for the job to complete or for a cancel message from the channel.
+[2025-05-12 10:14:09Z INFO ResultServer] Successfully started websocket client.
+[2025-05-12 10:14:09Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'dc51aafb-04c5-4742-9448-18e1a09d199d', success rate: 1/1.
+[2025-05-12 10:14:09Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'dc51aafb-04c5-4742-9448-18e1a09d199d', success rate: 1/1.
+[2025-05-12 10:14:10Z INFO JobServerQueue] Job timeline record has been updated for the first time.
+[2025-05-12 10:14:10Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:10Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:10Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:10Z INFO HostContext] Well known directory 'Actions': 'D:\BS(CS)\Flux\actions-runner\_work\_actions'
+[2025-05-12 10:14:10Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:10Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:10Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:10Z INFO HostContext] Well known directory 'Actions': 'D:\BS(CS)\Flux\actions-runner\_work\_actions'
+[2025-05-12 10:14:10Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'dc51aafb-04c5-4742-9448-18e1a09d199d', success rate: 1/1.
+[2025-05-12 10:14:10Z INFO ActionManager] Save archive 'https://api.github.com/repos/actions/checkout/zipball/f43a0e5ff2bd294095638e18286ca9a3d1956744' into D:\BS(CS)\Flux\actions-runner\_work\_actions\_temp_64a76a3f-963e-4276-b3de-0d686b96f9e7\78b6d80b-f0bb-487c-a5cb-7092f16827e4.zip.
+[2025-05-12 10:14:12Z INFO ActionManager] Request URL: https://api.github.com/repos/actions/checkout/zipball/f43a0e5ff2bd294095638e18286ca9a3d1956744 X-GitHub-Request-Id: D5DF:2280B9:31C77:1FAAF8:6821C9F2 Http Status: OK
+[2025-05-12 10:14:12Z INFO ActionManager] Finished getting action repository.
+[2025-05-12 10:14:12Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:12Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:12Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:12Z INFO HostContext] Well known directory 'Actions': 'D:\BS(CS)\Flux\actions-runner\_work\_actions'
+[2025-05-12 10:14:12Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:12Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:12Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:12Z INFO HostContext] Well known directory 'Actions': 'D:\BS(CS)\Flux\actions-runner\_work\_actions'
+[2025-05-12 10:14:12Z INFO ActionManager] Save archive 'https://api.github.com/repos/EndBug/add-and-commit/zipball/a94899bca583c204427a224a7af87c02f9b325d5' into D:\BS(CS)\Flux\actions-runner\_work\_actions\_temp_e899a85d-734e-4dc9-b4b2-088183c6e543\8468dfc2-32c5-4ff9-827d-9bb4982e4b1a.zip.
+[2025-05-12 10:14:12Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'dc51aafb-04c5-4742-9448-18e1a09d199d', success rate: 1/1.
+[2025-05-12 10:14:14Z INFO ActionManager] Request URL: https://api.github.com/repos/EndBug/add-and-commit/zipball/a94899bca583c204427a224a7af87c02f9b325d5 X-GitHub-Request-Id: D5E4:1BB3C8:35166:1FDFB8:6821C9F4 Http Status: OK
+[2025-05-12 10:14:14Z INFO ActionManager] Finished getting action repository.
+[2025-05-12 10:14:14Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:14Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:14Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:14Z INFO HostContext] Well known directory 'Actions': 'D:\BS(CS)\Flux\actions-runner\_work\_actions'
+[2025-05-12 10:14:14Z INFO ActionManifestManager] Load schema file with definitions: [
+  "null",
+  "boolean",
+  "number",
+  "string",
+  "sequence",
+  "mapping",
+  "any",
+  "action-root",
+  "inputs",
+  "input",
+  "outputs",
+  "output-definition",
+  "runs",
+  "container-runs",
+  "container-runs-args",
+  "container-runs-env",
+  "node-runs",
+  "plugin-runs",
+  "composite-runs",
+  "composite-steps",
+  "composite-step",
+  "run-step",
+  "uses-step",
+  "container-runs-context",
+  "output-value",
+  "input-default-context",
+  "non-empty-string",
+  "string-steps-context",
+  "boolean-steps-context",
+  "step-env",
+  "step-if",
+  "step-with"
+]
+[2025-05-12 10:14:14Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:14Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:14Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:14Z INFO HostContext] Well known directory 'Actions': 'D:\BS(CS)\Flux\actions-runner\_work\_actions'
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Loaded action.yml file: {
+  "name": "Checkout",
+  "description": "Checkout a Git repository at a particular version",
+  "inputs": {
+    "type": 2,
+    "map": [
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 4,
+          "col": 3,
+          "lit": "repository"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 6,
+          "col": 14,
+          "expr": "github.repository"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 7,
+          "col": 3,
+          "lit": "ref"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 12,
+          "col": 3,
+          "lit": "token"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 24,
+          "col": 14,
+          "expr": "github.token"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 25,
+          "col": 3,
+          "lit": "ssh-key"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 37,
+          "col": 3,
+          "lit": "ssh-known-hosts"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 42,
+          "col": 3,
+          "lit": "ssh-strict"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 47,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 48,
+          "col": 3,
+          "lit": "persist-credentials"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 50,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 51,
+          "col": 3,
+          "lit": "path"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 53,
+          "col": 3,
+          "lit": "clean"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 55,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 56,
+          "col": 3,
+          "lit": "sparse-checkout"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 60,
+          "col": 14,
+          "lit": ""
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 61,
+          "col": 3,
+          "lit": "sparse-checkout-cone-mode"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 64,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 65,
+          "col": 3,
+          "lit": "fetch-depth"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 67,
+          "col": 14,
+          "lit": "1"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 68,
+          "col": 3,
+          "lit": "fetch-tags"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 70,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 71,
+          "col": 3,
+          "lit": "lfs"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 73,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 74,
+          "col": 3,
+          "lit": "submodules"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 82,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 83,
+          "col": 3,
+          "lit": "set-safe-directory"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 85,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 86,
+          "col": 3,
+          "lit": "github-server-url"
+        },
+        "value": ""
+      }
+    ]
+  },
+  "execution": {
+    "executionType": "nodeJS",
+    "hasPre": false,
+    "hasPost": true,
+    "script": "dist/index.js",
+    "pre": null,
+    "post": "dist/index.js",
+    "nodeVersion": "node16",
+    "cleanupCondition": "always()",
+    "initCondition": "always()"
+  },
+  "deprecated": null
+}
+[2025-05-12 10:14:15Z INFO ActionManager] Action node.js file: dist/index.js, no more preparation.
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Actions': 'D:\BS(CS)\Flux\actions-runner\_work\_actions'
+[2025-05-12 10:14:15Z INFO ActionManager] Load action that reference repository from 'D:\BS(CS)\Flux\actions-runner\_work\_actions\actions\checkout\v3'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Actions': 'D:\BS(CS)\Flux\actions-runner\_work\_actions'
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Loaded action.yml file: {
+  "name": "Checkout",
+  "description": "Checkout a Git repository at a particular version",
+  "inputs": {
+    "type": 2,
+    "map": [
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 4,
+          "col": 3,
+          "lit": "repository"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 6,
+          "col": 14,
+          "expr": "github.repository"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 7,
+          "col": 3,
+          "lit": "ref"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 12,
+          "col": 3,
+          "lit": "token"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 24,
+          "col": 14,
+          "expr": "github.token"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 25,
+          "col": 3,
+          "lit": "ssh-key"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 37,
+          "col": 3,
+          "lit": "ssh-known-hosts"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 42,
+          "col": 3,
+          "lit": "ssh-strict"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 47,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 48,
+          "col": 3,
+          "lit": "persist-credentials"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 50,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 51,
+          "col": 3,
+          "lit": "path"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 53,
+          "col": 3,
+          "lit": "clean"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 55,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 56,
+          "col": 3,
+          "lit": "sparse-checkout"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 60,
+          "col": 14,
+          "lit": ""
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 61,
+          "col": 3,
+          "lit": "sparse-checkout-cone-mode"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 64,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 65,
+          "col": 3,
+          "lit": "fetch-depth"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 67,
+          "col": 14,
+          "lit": "1"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 68,
+          "col": 3,
+          "lit": "fetch-tags"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 70,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 71,
+          "col": 3,
+          "lit": "lfs"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 73,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 74,
+          "col": 3,
+          "lit": "submodules"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 82,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 83,
+          "col": 3,
+          "lit": "set-safe-directory"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 85,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 86,
+          "col": 3,
+          "lit": "github-server-url"
+        },
+        "value": ""
+      }
+    ]
+  },
+  "execution": {
+    "executionType": "nodeJS",
+    "hasPre": false,
+    "hasPost": true,
+    "script": "dist/index.js",
+    "pre": null,
+    "post": "dist/index.js",
+    "nodeVersion": "node16",
+    "cleanupCondition": "always()",
+    "initCondition": "always()"
+  },
+  "deprecated": null
+}
+[2025-05-12 10:14:15Z INFO ActionManager] Action pre node.js file: N/A.
+[2025-05-12 10:14:15Z INFO ActionManager] Action node.js file: dist/index.js.
+[2025-05-12 10:14:15Z INFO ActionManager] Action post node.js file: dist/index.js.
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Actions': 'D:\BS(CS)\Flux\actions-runner\_work\_actions'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Actions': 'D:\BS(CS)\Flux\actions-runner\_work\_actions'
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Ignore action property branding.
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Loaded action.yml file: {
+  "name": "Add & Commit",
+  "description": "Automatically commit changes made in your workflow run directly to your repo",
+  "inputs": {
+    "type": 2,
+    "map": [
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 5,
+          "col": 3,
+          "lit": "add"
+        },
+        "value": {
+          "type": 0,
+          "file": 3,
+          "line": 8,
+          "col": 14,
+          "lit": "."
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 9,
+          "col": 3,
+          "lit": "author_name"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 12,
+          "col": 3,
+          "lit": "author_email"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 15,
+          "col": 3,
+          "lit": "commit"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 18,
+          "col": 3,
+          "lit": "committer_name"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 21,
+          "col": 3,
+          "lit": "committer_email"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 24,
+          "col": 3,
+          "lit": "cwd"
+        },
+        "value": {
+          "type": 0,
+          "file": 3,
+          "line": 27,
+          "col": 14,
+          "lit": "."
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 28,
+          "col": 3,
+          "lit": "default_author"
+        },
+        "value": {
+          "type": 0,
+          "file": 3,
+          "line": 31,
+          "col": 14,
+          "lit": "github_actor"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 32,
+          "col": 3,
+          "lit": "fetch"
+        },
+        "value": {
+          "type": 0,
+          "file": 3,
+          "line": 35,
+          "col": 14,
+          "lit": "--tags --force"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 36,
+          "col": 3,
+          "lit": "message"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 39,
+          "col": 3,
+          "lit": "new_branch"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 42,
+          "col": 3,
+          "lit": "pathspec_error_handling"
+        },
+        "value": {
+          "type": 0,
+          "file": 3,
+          "line": 45,
+          "col": 14,
+          "lit": "ignore"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 46,
+          "col": 3,
+          "lit": "pull"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 49,
+          "col": 3,
+          "lit": "push"
+        },
+        "value": {
+          "type": 0,
+          "file": 3,
+          "line": 52,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 53,
+          "col": 3,
+          "lit": "remove"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 56,
+          "col": 3,
+          "lit": "tag"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 59,
+          "col": 3,
+          "lit": "tag_push"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 64,
+          "col": 3,
+          "lit": "github_token"
+        },
+        "value": {
+          "type": 3,
+          "file": 3,
+          "line": 67,
+          "col": 14,
+          "expr": "github.token"
+        }
+      }
+    ]
+  },
+  "execution": {
+    "executionType": "nodeJS",
+    "hasPre": false,
+    "hasPost": false,
+    "script": "lib/index.js",
+    "pre": null,
+    "post": null,
+    "nodeVersion": "node20",
+    "cleanupCondition": "always()",
+    "initCondition": "always()"
+  },
+  "deprecated": null
+}
+[2025-05-12 10:14:15Z INFO ActionManager] Action node.js file: lib/index.js, no more preparation.
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Actions': 'D:\BS(CS)\Flux\actions-runner\_work\_actions'
+[2025-05-12 10:14:15Z INFO ActionManager] Load action that reference repository from 'D:\BS(CS)\Flux\actions-runner\_work\_actions\EndBug\add-and-commit\v9'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Actions': 'D:\BS(CS)\Flux\actions-runner\_work\_actions'
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Ignore action property branding.
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Loaded action.yml file: {
+  "name": "Add & Commit",
+  "description": "Automatically commit changes made in your workflow run directly to your repo",
+  "inputs": {
+    "type": 2,
+    "map": [
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 5,
+          "col": 3,
+          "lit": "add"
+        },
+        "value": {
+          "type": 0,
+          "file": 3,
+          "line": 8,
+          "col": 14,
+          "lit": "."
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 9,
+          "col": 3,
+          "lit": "author_name"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 12,
+          "col": 3,
+          "lit": "author_email"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 15,
+          "col": 3,
+          "lit": "commit"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 18,
+          "col": 3,
+          "lit": "committer_name"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 21,
+          "col": 3,
+          "lit": "committer_email"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 24,
+          "col": 3,
+          "lit": "cwd"
+        },
+        "value": {
+          "type": 0,
+          "file": 3,
+          "line": 27,
+          "col": 14,
+          "lit": "."
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 28,
+          "col": 3,
+          "lit": "default_author"
+        },
+        "value": {
+          "type": 0,
+          "file": 3,
+          "line": 31,
+          "col": 14,
+          "lit": "github_actor"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 32,
+          "col": 3,
+          "lit": "fetch"
+        },
+        "value": {
+          "type": 0,
+          "file": 3,
+          "line": 35,
+          "col": 14,
+          "lit": "--tags --force"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 36,
+          "col": 3,
+          "lit": "message"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 39,
+          "col": 3,
+          "lit": "new_branch"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 42,
+          "col": 3,
+          "lit": "pathspec_error_handling"
+        },
+        "value": {
+          "type": 0,
+          "file": 3,
+          "line": 45,
+          "col": 14,
+          "lit": "ignore"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 46,
+          "col": 3,
+          "lit": "pull"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 49,
+          "col": 3,
+          "lit": "push"
+        },
+        "value": {
+          "type": 0,
+          "file": 3,
+          "line": 52,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 53,
+          "col": 3,
+          "lit": "remove"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 56,
+          "col": 3,
+          "lit": "tag"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 59,
+          "col": 3,
+          "lit": "tag_push"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 64,
+          "col": 3,
+          "lit": "github_token"
+        },
+        "value": {
+          "type": 3,
+          "file": 3,
+          "line": 67,
+          "col": 14,
+          "expr": "github.token"
+        }
+      }
+    ]
+  },
+  "execution": {
+    "executionType": "nodeJS",
+    "hasPre": false,
+    "hasPost": false,
+    "script": "lib/index.js",
+    "pre": null,
+    "post": null,
+    "nodeVersion": "node20",
+    "cleanupCondition": "always()",
+    "initCondition": "always()"
+  },
+  "deprecated": null
+}
+[2025-05-12 10:14:15Z INFO ActionManager] Action pre node.js file: N/A.
+[2025-05-12 10:14:15Z INFO ActionManager] Action node.js file: lib/index.js.
+[2025-05-12 10:14:15Z INFO ActionManager] Action post node.js file: N/A.
+[2025-05-12 10:14:15Z INFO JobExtension] Adding .
+[2025-05-12 10:14:15Z INFO JobExtension] Adding .
+[2025-05-12 10:14:15Z INFO JobExtension] Adding .
+[2025-05-12 10:14:15Z INFO JobExtension] Adding .
+[2025-05-12 10:14:15Z INFO JobExtension] Adding .
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Diag': 'D:\BS(CS)\Flux\actions-runner\_diag'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Diag': 'D:\BS(CS)\Flux\actions-runner\_diag'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Diag': 'D:\BS(CS)\Flux\actions-runner\_diag'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Diag': 'D:\BS(CS)\Flux\actions-runner\_diag'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Diag': 'D:\BS(CS)\Flux\actions-runner\_diag'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Diag': 'D:\BS(CS)\Flux\actions-runner\_diag'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Diag': 'D:\BS(CS)\Flux\actions-runner\_diag'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Diag': 'D:\BS(CS)\Flux\actions-runner\_diag'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Diag': 'D:\BS(CS)\Flux\actions-runner\_diag'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Diag': 'D:\BS(CS)\Flux\actions-runner\_diag'
+[2025-05-12 10:14:15Z INFO JobExtension] Total accessible running process: 268.
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:15Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "setup_job",
+  "type": "runner",
+  "stage": "Pre",
+  "stepId": "dc51aafb-04c5-4742-9448-18e1a09d199d",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 7,
+  "startTime": "2025-05-12T10:14:08.79934Z",
+  "finishTime": "2025-05-12T10:14:15.2618872Z"
+}.
+[2025-05-12 10:14:15Z INFO JobRunner] Total job steps: 5.
+[2025-05-12 10:14:15Z INFO JobRunner] Run all job steps.
+[2025-05-12 10:14:15Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'dc51aafb-04c5-4742-9448-18e1a09d199d', success rate: 1/1.
+[2025-05-12 10:14:15Z INFO StepsRunner] Processing step: DisplayName='Checkout the Repo'
+[2025-05-12 10:14:15Z INFO StepsRunner] Evaluating: success()
+[2025-05-12 10:14:15Z INFO StepsRunner] Result: true
+[2025-05-12 10:14:15Z INFO StepsRunner] Starting the step.
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:15Z INFO StepsRunner] Which2: 'chcp'
+[2025-05-12 10:14:15Z INFO StepsRunner] Location: 'C:\WINDOWS\system32\chcp.COM'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper] Starting process:
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\system32\chcp.COM'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   Working directory: 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper] Process started with process id 18220, waiting for process exit.
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper] Finished process 18220 with exit code 0, and elapsed time 00:00:00.0804093.
+[2025-05-12 10:14:15Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Actions': 'D:\BS(CS)\Flux\actions-runner\_work\_actions'
+[2025-05-12 10:14:15Z INFO ActionManager] Load action that reference repository from 'D:\BS(CS)\Flux\actions-runner\_work\_actions\actions\checkout\v3'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Actions': 'D:\BS(CS)\Flux\actions-runner\_work\_actions'
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Loaded action.yml file: {
+  "name": "Checkout",
+  "description": "Checkout a Git repository at a particular version",
+  "inputs": {
+    "type": 2,
+    "map": [
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 4,
+          "col": 3,
+          "lit": "repository"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 6,
+          "col": 14,
+          "expr": "github.repository"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 7,
+          "col": 3,
+          "lit": "ref"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 12,
+          "col": 3,
+          "lit": "token"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 24,
+          "col": 14,
+          "expr": "github.token"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 25,
+          "col": 3,
+          "lit": "ssh-key"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 37,
+          "col": 3,
+          "lit": "ssh-known-hosts"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 42,
+          "col": 3,
+          "lit": "ssh-strict"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 47,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 48,
+          "col": 3,
+          "lit": "persist-credentials"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 50,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 51,
+          "col": 3,
+          "lit": "path"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 53,
+          "col": 3,
+          "lit": "clean"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 55,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 56,
+          "col": 3,
+          "lit": "sparse-checkout"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 60,
+          "col": 14,
+          "lit": ""
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 61,
+          "col": 3,
+          "lit": "sparse-checkout-cone-mode"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 64,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 65,
+          "col": 3,
+          "lit": "fetch-depth"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 67,
+          "col": 14,
+          "lit": "1"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 68,
+          "col": 3,
+          "lit": "fetch-tags"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 70,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 71,
+          "col": 3,
+          "lit": "lfs"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 73,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 74,
+          "col": 3,
+          "lit": "submodules"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 82,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 83,
+          "col": 3,
+          "lit": "set-safe-directory"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 85,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 86,
+          "col": 3,
+          "lit": "github-server-url"
+        },
+        "value": ""
+      }
+    ]
+  },
+  "execution": {
+    "executionType": "nodeJS",
+    "hasPre": false,
+    "hasPost": true,
+    "script": "dist/index.js",
+    "pre": null,
+    "post": "dist/index.js",
+    "nodeVersion": "node16",
+    "cleanupCondition": "always()",
+    "initCondition": "always()"
+  },
+  "deprecated": null
+}
+[2025-05-12 10:14:15Z INFO ActionManager] Action pre node.js file: N/A.
+[2025-05-12 10:14:15Z INFO ActionManager] Action node.js file: dist/index.js.
+[2025-05-12 10:14:15Z INFO ActionManager] Action post node.js file: dist/index.js.
+[2025-05-12 10:14:15Z INFO ExecutionContext] Reserve record order 7 to 12 for post job actions.
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Diag': 'D:\BS(CS)\Flux\actions-runner\_diag'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Diag': 'D:\BS(CS)\Flux\actions-runner\_diag'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Temp': 'D:\BS(CS)\Flux\actions-runner\_work\_temp'
+[2025-05-12 10:14:15Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-05-12 10:14:15Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, D:\BS(CS)\Flux\actions-runner\_diag\blocks\82c1943f-855d-4f97-94f5-5d248a141fae_dc51aafb-04c5-4742-9448-18e1a09d199d.1
+[2025-05-12 10:14:15Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2025-05-12 10:14:15Z INFO ExecutionContext] Write event payload to D:\BS(CS)\Flux\actions-runner\_work\_temp\_github_workflow\event.json
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Temp': 'D:\BS(CS)\Flux\actions-runner\_work\_temp'
+[2025-05-12 10:14:15Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.AddPathFileCommand, Runner.Worker
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SetEnvFileCommand, Runner.Worker
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.CreateStepSummaryCommand, Runner.Worker
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SaveStateFileCommand, Runner.Worker
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SetOutputFileCommand, Runner.Worker
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Input 'repository': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 6,
+  "col": 14,
+  "lit": "mUsman2003/Flux"
+}
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Input 'ref': default value evaluate result: ""
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Input 'token': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 24,
+  "col": 14,
+  "lit": "***"
+}
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Input 'ssh-key': default value evaluate result: ""
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Input 'ssh-known-hosts': default value evaluate result: ""
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Input 'ssh-strict': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 47,
+  "col": 14,
+  "lit": "true"
+}
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Input 'persist-credentials': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 50,
+  "col": 14,
+  "lit": "true"
+}
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Input 'path': default value evaluate result: ""
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Input 'clean': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 55,
+  "col": 14,
+  "lit": "true"
+}
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Input 'sparse-checkout': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 60,
+  "col": 14,
+  "lit": ""
+}
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Input 'sparse-checkout-cone-mode': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 64,
+  "col": 14,
+  "lit": "true"
+}
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Input 'fetch-depth': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 67,
+  "col": 14,
+  "lit": "1"
+}
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Input 'fetch-tags': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 70,
+  "col": 14,
+  "lit": "false"
+}
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Input 'lfs': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 73,
+  "col": 14,
+  "lit": "false"
+}
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Input 'submodules': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 82,
+  "col": 14,
+  "lit": "false"
+}
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Input 'set-safe-directory': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 85,
+  "col": 14,
+  "lit": "true"
+}
+[2025-05-12 10:14:15Z INFO ActionManifestManager] Input 'github-server-url': default value evaluate result: ""
+[2025-05-12 10:14:15Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.InternalPluginSetRepoPathCommandExtension, Runner.Worker
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SetEnvCommandExtension, Runner.Worker
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SetOutputCommandExtension, Runner.Worker
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SaveStateCommandExtension, Runner.Worker
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.AddPathCommandExtension, Runner.Worker
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.AddMaskCommandExtension, Runner.Worker
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.AddMatcherCommandExtension, Runner.Worker
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.RemoveMatcherCommandExtension, Runner.Worker
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.WarningCommandExtension, Runner.Worker
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.ErrorCommandExtension, Runner.Worker
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.NoticeCommandExtension, Runner.Worker
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.DebugCommandExtension, Runner.Worker
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.GroupCommandExtension, Runner.Worker
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.EndGroupCommandExtension, Runner.Worker
+[2025-05-12 10:14:15Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.EchoCommandExtension, Runner.Worker
+[2025-05-12 10:14:15Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2025-05-12 10:14:15Z INFO ActionCommandManager] Register action command extension for command set-env
+[2025-05-12 10:14:15Z INFO ActionCommandManager] Register action command extension for command set-output
+[2025-05-12 10:14:15Z INFO ActionCommandManager] Register action command extension for command save-state
+[2025-05-12 10:14:15Z INFO ActionCommandManager] Register action command extension for command add-path
+[2025-05-12 10:14:15Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2025-05-12 10:14:15Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2025-05-12 10:14:15Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2025-05-12 10:14:15Z INFO ActionCommandManager] Register action command extension for command warning
+[2025-05-12 10:14:15Z INFO ActionCommandManager] Register action command extension for command error
+[2025-05-12 10:14:15Z INFO ActionCommandManager] Register action command extension for command notice
+[2025-05-12 10:14:15Z INFO ActionCommandManager] Register action command extension for command debug
+[2025-05-12 10:14:15Z INFO ActionCommandManager] Register action command extension for command group
+[2025-05-12 10:14:15Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2025-05-12 10:14:15Z INFO ActionCommandManager] Register action command extension for command echo
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:15Z INFO HostContext] Well known directory 'Externals': 'D:\BS(CS)\Flux\actions-runner\externals'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper] Starting process:
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   File name: 'D:\BS(CS)\Flux\actions-runner\externals\node20\bin\node.exe'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   Arguments: '"D:\BS(CS)\Flux\actions-runner\_work\_actions\actions\checkout\v3\dist/index.js"'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   Working directory: 'D:\BS(CS)\Flux\actions-runner\_work\Flux\Flux'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   Encoding web name: utf-8 ; code page: '65001'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-05-12 10:14:15Z INFO ProcessInvokerWrapper] Process started with process id 18612, waiting for process exit.
+[2025-05-12 10:14:16Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:16Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:17Z INFO AddMaskCommandExtension] Add new secret mask with length of 76
+[2025-05-12 10:14:17Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:17Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:17Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:17Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2025-05-12 10:14:17Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:18Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:20Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:21Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:21Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:24Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:24Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:25Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:25Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:25Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:26Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:26Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:28Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:30Z INFO JobServerQueue] Try to append 2 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 2/2.
+[2025-05-12 10:14:30Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:31Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:31Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:32Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:34Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:35Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:35Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:35Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:35Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:36Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:37Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:38Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:39Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:40Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:41Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:42Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:43Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:43Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:44Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:45Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:45Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:45Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:45Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:46Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:47Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:48Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:49Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:50Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:51Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:52Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:53Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:53Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:54Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:54Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:54Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:54Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:55Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:55Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:55Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:14:55Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:14:55Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:55Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:56Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:57Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:57Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:58Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:58Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:58Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:14:59Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:01Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:02Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:05Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:05Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:05Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:05Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:07Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:08Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:09Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:09Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:10Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:10Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:11Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:11Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:12Z INFO JobServerQueue] Stop aggressive process web console line queue.
+[2025-05-12 10:15:13Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:15Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:15Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:15Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:15Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:17Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:17Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:18Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:18Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:19Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:19Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:20Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:20Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:21Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:21Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:22Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:22Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:23Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:23Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:24Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:24Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:25Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:25Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:25Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:25Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:25Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:26Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:26Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:27Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:27Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:28Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:28Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper] Finished process 18612 with exit code 0, and elapsed time 00:01:13.4656108.
+[2025-05-12 10:15:29Z INFO JobServerQueue] Try to append 1 batches web console lines for record '853db9f9-3011-4236-b59f-50133f590503', success rate: 1/1.
+[2025-05-12 10:15:29Z INFO CreateStepSummaryCommand] Step Summary file (D:\BS(CS)\Flux\actions-runner\_work\_temp\_runner_file_commands\step_summary_17be3f91-6f7e-46ce-ae49-968a44afc451) is empty; skipping attachment upload
+[2025-05-12 10:15:29Z INFO StepsRunner] Step result: 
+[2025-05-12 10:15:29Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "actions/checkout",
+  "ref": "v3",
+  "type": "node20",
+  "stage": "Main",
+  "stepId": "853db9f9-3011-4236-b59f-50133f590503",
+  "stepContextName": "__actions_checkout",
+  "hasPreStep": false,
+  "hasPostStep": true,
+  "result": "succeeded",
+  "errorMessages": [
+    "no submodule mapping found in .gitmodules for path 'actions-runner/_work/Flux/Flux'",
+    "Unable to clean or reset the repository. The repository will be recreated instead."
+  ],
+  "executionTimeInSeconds": 75,
+  "startTime": "2025-05-12T10:14:15.3738321Z",
+  "finishTime": "2025-05-12T10:15:29.4779552Z"
+}.
+[2025-05-12 10:15:29Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2025-05-12 10:15:29Z INFO StepsRunner] Current state: job state = ''
+[2025-05-12 10:15:29Z INFO StepsRunner] Processing step: DisplayName='Update image tag in values.yaml'
+[2025-05-12 10:15:29Z INFO StepsRunner] Evaluating: success()
+[2025-05-12 10:15:29Z INFO StepsRunner] Result: true
+[2025-05-12 10:15:29Z INFO StepsRunner] Starting the step.
+[2025-05-12 10:15:29Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:29Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:29Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:29Z INFO StepsRunner] Which2: 'chcp'
+[2025-05-12 10:15:29Z INFO StepsRunner] Location: 'C:\WINDOWS\system32\chcp.COM'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper] Starting process:
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\system32\chcp.COM'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   Working directory: 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper] Process started with process id 20520, waiting for process exit.
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper] Finished process 20520 with exit code 0, and elapsed time 00:00:00.0458870.
+[2025-05-12 10:15:29Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2025-05-12 10:15:29Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:29Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:29Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:29Z INFO HostContext] Well known directory 'Temp': 'D:\BS(CS)\Flux\actions-runner\_work\_temp'
+[2025-05-12 10:15:29Z INFO ExecutionContext] Write event payload to D:\BS(CS)\Flux\actions-runner\_work\_temp\_github_workflow\event.json
+[2025-05-12 10:15:29Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:29Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:29Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:29Z INFO HostContext] Well known directory 'Temp': 'D:\BS(CS)\Flux\actions-runner\_work\_temp'
+[2025-05-12 10:15:29Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2025-05-12 10:15:29Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2025-05-12 10:15:29Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2025-05-12 10:15:29Z INFO ActionCommandManager] Register action command extension for command set-env
+[2025-05-12 10:15:29Z INFO ActionCommandManager] Register action command extension for command set-output
+[2025-05-12 10:15:29Z INFO ActionCommandManager] Register action command extension for command save-state
+[2025-05-12 10:15:29Z INFO ActionCommandManager] Register action command extension for command add-path
+[2025-05-12 10:15:29Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2025-05-12 10:15:29Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2025-05-12 10:15:29Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2025-05-12 10:15:29Z INFO ActionCommandManager] Register action command extension for command warning
+[2025-05-12 10:15:29Z INFO ActionCommandManager] Register action command extension for command error
+[2025-05-12 10:15:29Z INFO ActionCommandManager] Register action command extension for command notice
+[2025-05-12 10:15:29Z INFO ActionCommandManager] Register action command extension for command debug
+[2025-05-12 10:15:29Z INFO ActionCommandManager] Register action command extension for command group
+[2025-05-12 10:15:29Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2025-05-12 10:15:29Z INFO ActionCommandManager] Register action command extension for command echo
+[2025-05-12 10:15:29Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2025-05-12 10:15:29Z INFO ScriptHandler] Which2: 'pwsh'
+[2025-05-12 10:15:29Z INFO ScriptHandler] pwsh: command not found. Make sure 'pwsh' is installed and its location included in the 'Path' environment variable.
+[2025-05-12 10:15:29Z INFO ScriptHandler] Defaulting to powershell
+[2025-05-12 10:15:29Z INFO ScriptHandler] Which2: 'powershell'
+[2025-05-12 10:15:29Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-05-12 10:15:29Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-05-12 10:15:29Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, D:\BS(CS)\Flux\actions-runner\_diag\blocks\82c1943f-855d-4f97-94f5-5d248a141fae_853db9f9-3011-4236-b59f-50133f590503.1
+[2025-05-12 10:15:29Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:29Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:29Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:29Z INFO HostContext] Well known directory 'Temp': 'D:\BS(CS)\Flux\actions-runner\_work\_temp'
+[2025-05-12 10:15:29Z INFO ScriptHandler] Which2: 'pwsh'
+[2025-05-12 10:15:29Z INFO ScriptHandler] pwsh: command not found. Make sure 'pwsh' is installed and its location included in the 'Path' environment variable.
+[2025-05-12 10:15:29Z INFO ScriptHandler] Defaulting to powershell
+[2025-05-12 10:15:29Z INFO ScriptHandler] Which2: 'powershell'
+[2025-05-12 10:15:29Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper] Starting process:
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   Arguments: '-command ". 'D:\BS(CS)\Flux\actions-runner\_work\_temp\4e54a77d-7a0c-42f0-bb3b-d880e068d4dc.ps1'"'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   Working directory: 'D:\BS(CS)\Flux\actions-runner\_work\Flux\Flux'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-05-12 10:15:29Z INFO ProcessInvokerWrapper] Process started with process id 22092, waiting for process exit.
+[2025-05-12 10:15:29Z INFO JobServerQueue] Try to append 1 batches web console lines for record '67b5f76b-2098-4c5c-a725-69fdc7818646', success rate: 1/1.
+[2025-05-12 10:15:31Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2025-05-12 10:15:35Z INFO JobServerQueue] Try to append 1 batches web console lines for record '67b5f76b-2098-4c5c-a725-69fdc7818646', success rate: 1/1.
+[2025-05-12 10:15:35Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:35Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:35Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper] Finished process 22092 with exit code 0, and elapsed time 00:00:07.0321797.
+[2025-05-12 10:15:36Z INFO CreateStepSummaryCommand] Step Summary file (D:\BS(CS)\Flux\actions-runner\_work\_temp\_runner_file_commands\step_summary_d20a2a43-4efa-41c1-844c-2d900c5975d8) is empty; skipping attachment upload
+[2025-05-12 10:15:36Z INFO StepsRunner] Step result: 
+[2025-05-12 10:15:36Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "powershell",
+  "type": "run",
+  "stage": "Main",
+  "stepId": "67b5f76b-2098-4c5c-a725-69fdc7818646",
+  "stepContextName": "__run",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 8,
+  "startTime": "2025-05-12T10:15:29.4943999Z",
+  "finishTime": "2025-05-12T10:15:36.8283486Z"
+}.
+[2025-05-12 10:15:36Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2025-05-12 10:15:36Z INFO StepsRunner] Current state: job state = ''
+[2025-05-12 10:15:36Z INFO StepsRunner] Processing step: DisplayName='Commit changes'
+[2025-05-12 10:15:36Z INFO StepsRunner] Evaluating: success()
+[2025-05-12 10:15:36Z INFO StepsRunner] Result: true
+[2025-05-12 10:15:36Z INFO StepsRunner] Starting the step.
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:36Z INFO StepsRunner] Which2: 'chcp'
+[2025-05-12 10:15:36Z INFO StepsRunner] Location: 'C:\WINDOWS\system32\chcp.COM'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper] Starting process:
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\system32\chcp.COM'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   Working directory: 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper] Process started with process id 16584, waiting for process exit.
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper] Finished process 16584 with exit code 0, and elapsed time 00:00:00.0643206.
+[2025-05-12 10:15:36Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Actions': 'D:\BS(CS)\Flux\actions-runner\_work\_actions'
+[2025-05-12 10:15:36Z INFO ActionManager] Load action that reference repository from 'D:\BS(CS)\Flux\actions-runner\_work\_actions\EndBug\add-and-commit\v9'
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Actions': 'D:\BS(CS)\Flux\actions-runner\_work\_actions'
+[2025-05-12 10:15:36Z INFO ActionManifestManager] Ignore action property branding.
+[2025-05-12 10:15:36Z INFO ActionManifestManager] Loaded action.yml file: {
+  "name": "Add & Commit",
+  "description": "Automatically commit changes made in your workflow run directly to your repo",
+  "inputs": {
+    "type": 2,
+    "map": [
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 5,
+          "col": 3,
+          "lit": "add"
+        },
+        "value": {
+          "type": 0,
+          "file": 3,
+          "line": 8,
+          "col": 14,
+          "lit": "."
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 9,
+          "col": 3,
+          "lit": "author_name"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 12,
+          "col": 3,
+          "lit": "author_email"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 15,
+          "col": 3,
+          "lit": "commit"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 18,
+          "col": 3,
+          "lit": "committer_name"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 21,
+          "col": 3,
+          "lit": "committer_email"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 24,
+          "col": 3,
+          "lit": "cwd"
+        },
+        "value": {
+          "type": 0,
+          "file": 3,
+          "line": 27,
+          "col": 14,
+          "lit": "."
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 28,
+          "col": 3,
+          "lit": "default_author"
+        },
+        "value": {
+          "type": 0,
+          "file": 3,
+          "line": 31,
+          "col": 14,
+          "lit": "github_actor"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 32,
+          "col": 3,
+          "lit": "fetch"
+        },
+        "value": {
+          "type": 0,
+          "file": 3,
+          "line": 35,
+          "col": 14,
+          "lit": "--tags --force"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 36,
+          "col": 3,
+          "lit": "message"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 39,
+          "col": 3,
+          "lit": "new_branch"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 42,
+          "col": 3,
+          "lit": "pathspec_error_handling"
+        },
+        "value": {
+          "type": 0,
+          "file": 3,
+          "line": 45,
+          "col": 14,
+          "lit": "ignore"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 46,
+          "col": 3,
+          "lit": "pull"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 49,
+          "col": 3,
+          "lit": "push"
+        },
+        "value": {
+          "type": 0,
+          "file": 3,
+          "line": 52,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 53,
+          "col": 3,
+          "lit": "remove"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 56,
+          "col": 3,
+          "lit": "tag"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 59,
+          "col": 3,
+          "lit": "tag_push"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 3,
+          "line": 64,
+          "col": 3,
+          "lit": "github_token"
+        },
+        "value": {
+          "type": 3,
+          "file": 3,
+          "line": 67,
+          "col": 14,
+          "expr": "github.token"
+        }
+      }
+    ]
+  },
+  "execution": {
+    "executionType": "nodeJS",
+    "hasPre": false,
+    "hasPost": false,
+    "script": "lib/index.js",
+    "pre": null,
+    "post": null,
+    "nodeVersion": "node20",
+    "cleanupCondition": "always()",
+    "initCondition": "always()"
+  },
+  "deprecated": null
+}
+[2025-05-12 10:15:36Z INFO ActionManager] Action pre node.js file: N/A.
+[2025-05-12 10:15:36Z INFO ActionManager] Action node.js file: lib/index.js.
+[2025-05-12 10:15:36Z INFO ActionManager] Action post node.js file: N/A.
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Temp': 'D:\BS(CS)\Flux\actions-runner\_work\_temp'
+[2025-05-12 10:15:36Z INFO ExecutionContext] Write event payload to D:\BS(CS)\Flux\actions-runner\_work\_temp\_github_workflow\event.json
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Temp': 'D:\BS(CS)\Flux\actions-runner\_work\_temp'
+[2025-05-12 10:15:36Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2025-05-12 10:15:36Z INFO ActionManifestManager] Input 'commit': default value evaluate result: ""
+[2025-05-12 10:15:36Z INFO ActionManifestManager] Input 'committer_name': default value evaluate result: ""
+[2025-05-12 10:15:36Z INFO ActionManifestManager] Input 'committer_email': default value evaluate result: ""
+[2025-05-12 10:15:36Z INFO ActionManifestManager] Input 'cwd': default value evaluate result: {
+  "type": 0,
+  "file": 3,
+  "line": 27,
+  "col": 14,
+  "lit": "."
+}
+[2025-05-12 10:15:36Z INFO ActionManifestManager] Input 'default_author': default value evaluate result: {
+  "type": 0,
+  "file": 3,
+  "line": 31,
+  "col": 14,
+  "lit": "github_actor"
+}
+[2025-05-12 10:15:36Z INFO ActionManifestManager] Input 'fetch': default value evaluate result: {
+  "type": 0,
+  "file": 3,
+  "line": 35,
+  "col": 14,
+  "lit": "--tags --force"
+}
+[2025-05-12 10:15:36Z INFO ActionManifestManager] Input 'new_branch': default value evaluate result: ""
+[2025-05-12 10:15:36Z INFO ActionManifestManager] Input 'pathspec_error_handling': default value evaluate result: {
+  "type": 0,
+  "file": 3,
+  "line": 45,
+  "col": 14,
+  "lit": "ignore"
+}
+[2025-05-12 10:15:36Z INFO ActionManifestManager] Input 'pull': default value evaluate result: ""
+[2025-05-12 10:15:36Z INFO ActionManifestManager] Input 'remove': default value evaluate result: ""
+[2025-05-12 10:15:36Z INFO ActionManifestManager] Input 'tag': default value evaluate result: ""
+[2025-05-12 10:15:36Z INFO ActionManifestManager] Input 'tag_push': default value evaluate result: ""
+[2025-05-12 10:15:36Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2025-05-12 10:15:36Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2025-05-12 10:15:36Z INFO ActionCommandManager] Register action command extension for command set-env
+[2025-05-12 10:15:36Z INFO ActionCommandManager] Register action command extension for command set-output
+[2025-05-12 10:15:36Z INFO ActionCommandManager] Register action command extension for command save-state
+[2025-05-12 10:15:36Z INFO ActionCommandManager] Register action command extension for command add-path
+[2025-05-12 10:15:36Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2025-05-12 10:15:36Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2025-05-12 10:15:36Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2025-05-12 10:15:36Z INFO ActionCommandManager] Register action command extension for command warning
+[2025-05-12 10:15:36Z INFO ActionCommandManager] Register action command extension for command error
+[2025-05-12 10:15:36Z INFO ActionCommandManager] Register action command extension for command notice
+[2025-05-12 10:15:36Z INFO ActionCommandManager] Register action command extension for command debug
+[2025-05-12 10:15:36Z INFO ActionCommandManager] Register action command extension for command group
+[2025-05-12 10:15:36Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2025-05-12 10:15:36Z INFO ActionCommandManager] Register action command extension for command echo
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:36Z INFO HostContext] Well known directory 'Externals': 'D:\BS(CS)\Flux\actions-runner\externals'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper] Starting process:
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   File name: 'D:\BS(CS)\Flux\actions-runner\externals\node20\bin\node.exe'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   Arguments: '"D:\BS(CS)\Flux\actions-runner\_work\_actions\EndBug\add-and-commit\v9\lib/index.js"'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   Working directory: 'D:\BS(CS)\Flux\actions-runner\_work\Flux\Flux'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   Encoding web name: utf-8 ; code page: '65001'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-05-12 10:15:36Z INFO ProcessInvokerWrapper] Process started with process id 13896, waiting for process exit.
+[2025-05-12 10:15:37Z INFO JobServerQueue] Try to append 1 batches web console lines for record '4ff94ce9-c757-453d-9432-270d6ca4a6b3', success rate: 1/1.
+[2025-05-12 10:15:37Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2025-05-12 10:15:37Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-05-12 10:15:37Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, D:\BS(CS)\Flux\actions-runner\_diag\blocks\82c1943f-855d-4f97-94f5-5d248a141fae_67b5f76b-2098-4c5c-a725-69fdc7818646.1
+[2025-05-12 10:15:38Z INFO JobServerQueue] Try to append 1 batches web console lines for record '4ff94ce9-c757-453d-9432-270d6ca4a6b3', success rate: 1/1.
+[2025-05-12 10:15:38Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2025-05-12 10:15:38Z INFO JobServerQueue] Try to append 1 batches web console lines for record '4ff94ce9-c757-453d-9432-270d6ca4a6b3', success rate: 1/1.
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper] Finished process 13896 with exit code 0, and elapsed time 00:00:01.6859866.
+[2025-05-12 10:15:38Z INFO CreateStepSummaryCommand] Step Summary file (D:\BS(CS)\Flux\actions-runner\_work\_temp\_runner_file_commands\step_summary_e8ccae46-2c76-4bee-925c-33ce16775bc3) is empty; skipping attachment upload
+[2025-05-12 10:15:38Z INFO StepsRunner] Step result: 
+[2025-05-12 10:15:38Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "EndBug/add-and-commit",
+  "ref": "v9",
+  "type": "node20",
+  "stage": "Main",
+  "stepId": "4ff94ce9-c757-453d-9432-270d6ca4a6b3",
+  "stepContextName": "__EndBug_add-and-commit",
+  "hasPreStep": false,
+  "hasPostStep": false,
+  "result": "succeeded",
+  "errorMessages": [
+    "There are environment variables missing from this runtime, but would be present on GitHub.",
+    "Error: fatal: pathspec 'charts/python-app/values.yaml' did not match any files\n"
+  ],
+  "executionTimeInSeconds": 2,
+  "startTime": "2025-05-12T10:15:36.8365573Z",
+  "finishTime": "2025-05-12T10:15:38.6427715Z"
+}.
+[2025-05-12 10:15:38Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2025-05-12 10:15:38Z INFO StepsRunner] Current state: job state = ''
+[2025-05-12 10:15:38Z INFO StepsRunner] Processing step: DisplayName='Install argocd'
+[2025-05-12 10:15:38Z INFO StepsRunner] Evaluating: success()
+[2025-05-12 10:15:38Z INFO StepsRunner] Result: true
+[2025-05-12 10:15:38Z INFO StepsRunner] Starting the step.
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:38Z INFO StepsRunner] Which2: 'chcp'
+[2025-05-12 10:15:38Z INFO StepsRunner] Location: 'C:\WINDOWS\system32\chcp.COM'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper] Starting process:
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\system32\chcp.COM'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Working directory: 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper] Process started with process id 5944, waiting for process exit.
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper] Finished process 5944 with exit code 0, and elapsed time 00:00:00.0277080.
+[2025-05-12 10:15:38Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Temp': 'D:\BS(CS)\Flux\actions-runner\_work\_temp'
+[2025-05-12 10:15:38Z INFO ExecutionContext] Write event payload to D:\BS(CS)\Flux\actions-runner\_work\_temp\_github_workflow\event.json
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Temp': 'D:\BS(CS)\Flux\actions-runner\_work\_temp'
+[2025-05-12 10:15:38Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2025-05-12 10:15:38Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command set-env
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command set-output
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command save-state
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command add-path
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command warning
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command error
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command notice
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command debug
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command group
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command echo
+[2025-05-12 10:15:38Z INFO ScriptHandler] Which2: 'pwsh'
+[2025-05-12 10:15:38Z INFO ScriptHandler] pwsh: command not found. Make sure 'pwsh' is installed and its location included in the 'Path' environment variable.
+[2025-05-12 10:15:38Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2025-05-12 10:15:38Z ERR  StepsRunner] Caught exception from step: System.IO.FileNotFoundException: pwsh: command not found
+File name: 'pwsh'
+   at GitHub.Runner.Sdk.WhichUtil.Which(String command, Boolean require, ITraceWriter trace, String prependPath)
+   at GitHub.Runner.Worker.Handlers.ScriptHandler.PrintActionDetails(ActionRunStage stage)
+   at GitHub.Runner.Worker.Handlers.Handler.PrepareExecution(ActionRunStage stage)
+   at GitHub.Runner.Worker.ActionRunner.RunAsync()
+   at GitHub.Runner.Worker.StepsRunner.RunStepAsync(IStep step, CancellationToken jobCancellationToken)
+[2025-05-12 10:15:38Z INFO StepsRunner] Step result: Failed
+[2025-05-12 10:15:38Z INFO StepsRunner] Update job result with current step result 'Failed'.
+[2025-05-12 10:15:38Z INFO StepsRunner] Current state: job state = 'Failed'
+[2025-05-12 10:15:38Z INFO StepsRunner] Processing step: DisplayName='Argocd app sync'
+[2025-05-12 10:15:38Z INFO StepsRunner] Evaluating: success()
+[2025-05-12 10:15:38Z INFO StepsRunner] Result: false
+[2025-05-12 10:15:38Z INFO StepsRunner] Skipping step due to condition evaluation.
+[2025-05-12 10:15:38Z INFO StepsRunner] No need for updating job result with current step result 'Skipped'.
+[2025-05-12 10:15:38Z INFO StepsRunner] Current state: job state = 'Failed'
+[2025-05-12 10:15:38Z INFO StepsRunner] Processing step: DisplayName='Post Checkout the Repo'
+[2025-05-12 10:15:38Z INFO StepsRunner] Evaluating: always()
+[2025-05-12 10:15:38Z INFO StepsRunner] Result: true
+[2025-05-12 10:15:38Z INFO StepsRunner] Starting the step.
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:38Z INFO StepsRunner] Which2: 'chcp'
+[2025-05-12 10:15:38Z INFO StepsRunner] Location: 'C:\WINDOWS\system32\chcp.COM'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper] Starting process:
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\system32\chcp.COM'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Working directory: 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper] Process started with process id 7444, waiting for process exit.
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper] Finished process 7444 with exit code 0, and elapsed time 00:00:00.0327684.
+[2025-05-12 10:15:38Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Actions': 'D:\BS(CS)\Flux\actions-runner\_work\_actions'
+[2025-05-12 10:15:38Z INFO ActionManager] Load action that reference repository from 'D:\BS(CS)\Flux\actions-runner\_work\_actions\actions\checkout\v3'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Actions': 'D:\BS(CS)\Flux\actions-runner\_work\_actions'
+[2025-05-12 10:15:38Z INFO ActionManifestManager] Loaded action.yml file: {
+  "name": "Checkout",
+  "description": "Checkout a Git repository at a particular version",
+  "inputs": {
+    "type": 2,
+    "map": [
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 4,
+          "col": 3,
+          "lit": "repository"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 6,
+          "col": 14,
+          "expr": "github.repository"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 7,
+          "col": 3,
+          "lit": "ref"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 12,
+          "col": 3,
+          "lit": "token"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 24,
+          "col": 14,
+          "expr": "github.token"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 25,
+          "col": 3,
+          "lit": "ssh-key"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 37,
+          "col": 3,
+          "lit": "ssh-known-hosts"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 42,
+          "col": 3,
+          "lit": "ssh-strict"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 47,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 48,
+          "col": 3,
+          "lit": "persist-credentials"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 50,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 51,
+          "col": 3,
+          "lit": "path"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 53,
+          "col": 3,
+          "lit": "clean"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 55,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 56,
+          "col": 3,
+          "lit": "sparse-checkout"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 60,
+          "col": 14,
+          "lit": ""
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 61,
+          "col": 3,
+          "lit": "sparse-checkout-cone-mode"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 64,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 65,
+          "col": 3,
+          "lit": "fetch-depth"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 67,
+          "col": 14,
+          "lit": "1"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 68,
+          "col": 3,
+          "lit": "fetch-tags"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 70,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 71,
+          "col": 3,
+          "lit": "lfs"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 73,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 74,
+          "col": 3,
+          "lit": "submodules"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 82,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 83,
+          "col": 3,
+          "lit": "set-safe-directory"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 85,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 86,
+          "col": 3,
+          "lit": "github-server-url"
+        },
+        "value": ""
+      }
+    ]
+  },
+  "execution": {
+    "executionType": "nodeJS",
+    "hasPre": false,
+    "hasPost": true,
+    "script": "dist/index.js",
+    "pre": null,
+    "post": "dist/index.js",
+    "nodeVersion": "node16",
+    "cleanupCondition": "always()",
+    "initCondition": "always()"
+  },
+  "deprecated": null
+}
+[2025-05-12 10:15:38Z INFO ActionManager] Action pre node.js file: N/A.
+[2025-05-12 10:15:38Z INFO ActionManager] Action node.js file: dist/index.js.
+[2025-05-12 10:15:38Z INFO ActionManager] Action post node.js file: dist/index.js.
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Temp': 'D:\BS(CS)\Flux\actions-runner\_work\_temp'
+[2025-05-12 10:15:38Z INFO ExecutionContext] Write event payload to D:\BS(CS)\Flux\actions-runner\_work\_temp\_github_workflow\event.json
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Work': 'D:\BS(CS)\Flux\actions-runner\_work'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Temp': 'D:\BS(CS)\Flux\actions-runner\_work\_temp'
+[2025-05-12 10:15:38Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2025-05-12 10:15:38Z INFO ActionManifestManager] Input 'repository': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 6,
+  "col": 14,
+  "lit": "mUsman2003/Flux"
+}
+[2025-05-12 10:15:38Z INFO ActionManifestManager] Input 'ref': default value evaluate result: ""
+[2025-05-12 10:15:38Z INFO ActionManifestManager] Input 'token': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 24,
+  "col": 14,
+  "lit": "***"
+}
+[2025-05-12 10:15:38Z INFO ActionManifestManager] Input 'ssh-key': default value evaluate result: ""
+[2025-05-12 10:15:38Z INFO ActionManifestManager] Input 'ssh-known-hosts': default value evaluate result: ""
+[2025-05-12 10:15:38Z INFO ActionManifestManager] Input 'ssh-strict': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 47,
+  "col": 14,
+  "lit": "true"
+}
+[2025-05-12 10:15:38Z INFO ActionManifestManager] Input 'persist-credentials': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 50,
+  "col": 14,
+  "lit": "true"
+}
+[2025-05-12 10:15:38Z INFO ActionManifestManager] Input 'path': default value evaluate result: ""
+[2025-05-12 10:15:38Z INFO ActionManifestManager] Input 'clean': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 55,
+  "col": 14,
+  "lit": "true"
+}
+[2025-05-12 10:15:38Z INFO ActionManifestManager] Input 'sparse-checkout': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 60,
+  "col": 14,
+  "lit": ""
+}
+[2025-05-12 10:15:38Z INFO ActionManifestManager] Input 'sparse-checkout-cone-mode': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 64,
+  "col": 14,
+  "lit": "true"
+}
+[2025-05-12 10:15:38Z INFO ActionManifestManager] Input 'fetch-depth': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 67,
+  "col": 14,
+  "lit": "1"
+}
+[2025-05-12 10:15:38Z INFO ActionManifestManager] Input 'fetch-tags': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 70,
+  "col": 14,
+  "lit": "false"
+}
+[2025-05-12 10:15:38Z INFO ActionManifestManager] Input 'lfs': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 73,
+  "col": 14,
+  "lit": "false"
+}
+[2025-05-12 10:15:38Z INFO ActionManifestManager] Input 'submodules': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 82,
+  "col": 14,
+  "lit": "false"
+}
+[2025-05-12 10:15:38Z INFO ActionManifestManager] Input 'set-safe-directory': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 85,
+  "col": 14,
+  "lit": "true"
+}
+[2025-05-12 10:15:38Z INFO ActionManifestManager] Input 'github-server-url': default value evaluate result: ""
+[2025-05-12 10:15:38Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command set-env
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command set-output
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command save-state
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command add-path
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command warning
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command error
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command notice
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command debug
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command group
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2025-05-12 10:15:38Z INFO ActionCommandManager] Register action command extension for command echo
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:38Z INFO HostContext] Well known directory 'Externals': 'D:\BS(CS)\Flux\actions-runner\externals'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper] Starting process:
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   File name: 'D:\BS(CS)\Flux\actions-runner\externals\node20\bin\node.exe'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Arguments: '"D:\BS(CS)\Flux\actions-runner\_work\_actions\actions\checkout\v3\dist/index.js"'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Working directory: 'D:\BS(CS)\Flux\actions-runner\_work\Flux\Flux'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Encoding web name: utf-8 ; code page: '65001'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-05-12 10:15:38Z INFO ProcessInvokerWrapper] Process started with process id 9068, waiting for process exit.
+[2025-05-12 10:15:39Z INFO JobServerQueue] Try to append 1 batches web console lines for record '599799f9-0a3c-4cfe-ad81-ebed1a3c966c', success rate: 1/1.
+[2025-05-12 10:15:39Z INFO JobServerQueue] Try to append 1 batches web console lines for record '119087d9-7319-4241-ba96-56232bfab8d9', success rate: 1/1.
+[2025-05-12 10:15:39Z INFO AddMaskCommandExtension] Add new secret mask with length of 32
+[2025-05-12 10:15:39Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-05-12 10:15:39Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, D:\BS(CS)\Flux\actions-runner\_diag\blocks\82c1943f-855d-4f97-94f5-5d248a141fae_4ff94ce9-c757-453d-9432-270d6ca4a6b3.1
+[2025-05-12 10:15:39Z INFO JobServerQueue] Try to append 1 batches web console lines for record '119087d9-7319-4241-ba96-56232bfab8d9', success rate: 1/1.
+[2025-05-12 10:15:39Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2025-05-12 10:15:40Z INFO JobServerQueue] Try to append 1 batches web console lines for record '119087d9-7319-4241-ba96-56232bfab8d9', success rate: 1/1.
+[2025-05-12 10:15:40Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-05-12 10:15:40Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, D:\BS(CS)\Flux\actions-runner\_diag\blocks\82c1943f-855d-4f97-94f5-5d248a141fae_599799f9-0a3c-4cfe-ad81-ebed1a3c966c.1
+[2025-05-12 10:15:41Z INFO JobServerQueue] Tried to upload 2 file(s) to results, success rate: 2/2.
+[2025-05-12 10:15:41Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:15:41Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:15:41Z INFO ProcessInvokerWrapper] Finished process 9068 with exit code 0, and elapsed time 00:00:02.9783969.
+[2025-05-12 10:15:41Z INFO CreateStepSummaryCommand] Step Summary file (D:\BS(CS)\Flux\actions-runner\_work\_temp\_runner_file_commands\step_summary_a475ecef-ab9e-45d1-8edf-2f46cf866881) is empty; skipping attachment upload
+[2025-05-12 10:15:41Z INFO StepsRunner] Step result: 
+[2025-05-12 10:15:41Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "actions/checkout",
+  "ref": "v3",
+  "type": "node20",
+  "stage": "Post",
+  "stepId": "119087d9-7319-4241-ba96-56232bfab8d9",
+  "result": "succeeded",
+  "errorMessages": [
+    "The process 'C:\\Program Files\\Git\\cmd\\git.exe' failed with exit code 128"
+  ],
+  "executionTimeInSeconds": 4,
+  "startTime": "2025-05-12T10:15:38.7850923Z",
+  "finishTime": "2025-05-12T10:15:41.8440628Z"
+}.
+[2025-05-12 10:15:41Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2025-05-12 10:15:41Z INFO StepsRunner] Current state: job state = 'Failed'
+[2025-05-12 10:15:41Z INFO JobRunner] Finalize job.
+[2025-05-12 10:15:41Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:41Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:41Z INFO HostContext] Well known directory 'Diag': 'D:\BS(CS)\Flux\actions-runner\_diag'
+[2025-05-12 10:15:41Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:41Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:41Z INFO HostContext] Well known directory 'Diag': 'D:\BS(CS)\Flux\actions-runner\_diag'
+[2025-05-12 10:15:41Z INFO JobExtension] Initialize Env context
+[2025-05-12 10:15:41Z INFO JobExtension] Initialize steps context
+[2025-05-12 10:15:41Z INFO JobExtension] Total accessible running process: 269.
+[2025-05-12 10:15:41Z INFO JobExtension] Inspecting process environment variables. PID: 13676 (WmiPrvSE)
+[2025-05-12 10:15:41Z WARN JobExtension] Ignore exception during read process environment variables: Access is denied.
+[2025-05-12 10:15:41Z INFO JobExtension] Inspecting process environment variables. PID: 728 (taskhostw)
+[2025-05-12 10:15:41Z WARN JobExtension] Ignore exception during read process environment variables: Access is denied.
+[2025-05-12 10:15:41Z INFO JobExtension] Inspecting process environment variables. PID: 4804 (RuntimeBroker)
+[2025-05-12 10:15:41Z INFO JobExtension] Inspecting process environment variables. PID: 18912 (sppsvc)
+[2025-05-12 10:15:41Z WARN JobExtension] Ignore exception during read process environment variables: Access is denied.
+[2025-05-12 10:15:41Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "complete_job",
+  "type": "runner",
+  "stage": "Post",
+  "stepId": "75b4105e-cbfb-4ca3-91be-fc4ab5d5b051",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 1,
+  "startTime": "2025-05-12T10:15:41.9202317Z",
+  "finishTime": "2025-05-12T10:15:41.9861148Z"
+}.
+[2025-05-12 10:15:41Z INFO JobRunner] Job result after all job steps finish: Failed
+[2025-05-12 10:15:41Z INFO JobRunner] Completing the job execution context.
+[2025-05-12 10:15:42Z INFO JobRunner] Shutting down the job server queue.
+[2025-05-12 10:15:42Z INFO JobServerQueue] Fire signal to shutdown all queues.
+[2025-05-12 10:15:42Z INFO JobServerQueue] All queue process task stopped.
+[2025-05-12 10:15:42Z INFO JobServerQueue] Try to append 1 batches web console lines for record '119087d9-7319-4241-ba96-56232bfab8d9', success rate: 1/1.
+[2025-05-12 10:15:42Z INFO JobServerQueue] Try to append 1 batches web console lines for record '75b4105e-cbfb-4ca3-91be-fc4ab5d5b051', success rate: 1/1.
+[2025-05-12 10:15:42Z INFO JobServerQueue] Try to append 1 batches web console lines for record '268f81ab-9504-52ad-b66d-097c39cc976f', success rate: 1/1.
+[2025-05-12 10:15:42Z INFO JobServerQueue] Web console line queue drained.
+[2025-05-12 10:15:42Z INFO JobServerQueue] Uploading 3 files in one shot.
+[2025-05-12 10:15:42Z INFO JobServerQueue] Try to upload 3 log files or attachments, success rate: 3/3.
+[2025-05-12 10:15:42Z INFO JobServerQueue] File upload queue drained.
+[2025-05-12 10:15:42Z INFO JobServerQueue] Starting results-based upload queue...
+[2025-05-12 10:15:42Z INFO JobServerQueue] Uploading 3 file(s) in one shot through results service.
+[2025-05-12 10:15:42Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-05-12 10:15:42Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, D:\BS(CS)\Flux\actions-runner\_diag\blocks\82c1943f-855d-4f97-94f5-5d248a141fae_119087d9-7319-4241-ba96-56232bfab8d9.1
+[2025-05-12 10:15:43Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-05-12 10:15:43Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, D:\BS(CS)\Flux\actions-runner\_diag\blocks\82c1943f-855d-4f97-94f5-5d248a141fae_75b4105e-cbfb-4ca3-91be-fc4ab5d5b051.1
+[2025-05-12 10:15:44Z INFO JobServerQueue] Got a job log file to send to results service.
+[2025-05-12 10:15:44Z INFO JobServerQueue] Starting upload of job log file to results service ResultsLog, D:\BS(CS)\Flux\actions-runner\_diag\blocks\82c1943f-855d-4f97-94f5-5d248a141fae_268f81ab-9504-52ad-b66d-097c39cc976f.1
+[2025-05-12 10:15:45Z INFO JobServerQueue] Tried to upload 3 file(s) to results, success rate: 3/3.
+[2025-05-12 10:15:45Z INFO JobServerQueue] Results upload queue drained.
+[2025-05-12 10:15:45Z INFO JobServerQueue] Timeline update queue drained.
+[2025-05-12 10:15:45Z INFO JobServerQueue] Disposing job server ...
+[2025-05-12 10:15:45Z INFO JobServerQueue] Disposing results server ...
+[2025-05-12 10:15:45Z INFO JobServerQueue] All queue process tasks have been stopped, and all queues are drained.
+[2025-05-12 10:15:45Z INFO TempDirectoryManager] Cleaning runner temp folder: D:\BS(CS)\Flux\actions-runner\_work\_temp
+[2025-05-12 10:15:45Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:15:45Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:15:45Z INFO HostContext] Well known directory 'Diag': 'D:\BS(CS)\Flux\actions-runner\_diag'
+[2025-05-12 10:15:45Z INFO HostContext] Well known config file 'Telemetry': 'D:\BS(CS)\Flux\actions-runner\_diag\.telemetry'
+[2025-05-12 10:15:45Z INFO JobRunner] Raising job completed against run service
+[2025-05-12 10:15:46Z INFO Worker] Job completed.

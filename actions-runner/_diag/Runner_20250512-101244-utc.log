@@ -1,0 +1,170 @@
+[2025-05-12 10:12:44Z INFO HostContext] No proxy settings were found based on environmental variables (http_proxy/https_proxy/HTTP_PROXY/HTTPS_PROXY)
+[2025-05-12 10:12:44Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:12:44Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:12:44Z INFO HostContext] Well known config file 'Credentials': 'D:\BS(CS)\Flux\actions-runner\.credentials'
+[2025-05-12 10:12:44Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:12:44Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:12:44Z INFO HostContext] Well known config file 'Runner': 'D:\BS(CS)\Flux\actions-runner\.runner'
+[2025-05-12 10:12:44Z INFO Listener] Runner is built for Windows (X64) - win-x64.
+[2025-05-12 10:12:44Z INFO Listener] RuntimeInformation: Microsoft Windows 10.0.26100.
+[2025-05-12 10:12:44Z INFO Listener] Version: 2.317.0
+[2025-05-12 10:12:44Z INFO Listener] Commit: 6dc005ee3690a0303e0d7269b6f60295d22dcfad
+[2025-05-12 10:12:44Z INFO Listener] Culture: en-PK
+[2025-05-12 10:12:44Z INFO Listener] UI Culture: en-US
+[2025-05-12 10:12:44Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:12:44Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:12:44Z INFO Listener] Validating directory permissions for: 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:12:44Z INFO CommandLineParser] Parse
+[2025-05-12 10:12:44Z INFO CommandLineParser] Parsing 1 args
+[2025-05-12 10:12:44Z INFO CommandLineParser] parsing argument
+[2025-05-12 10:12:44Z INFO CommandLineParser] HasArgs: False
+[2025-05-12 10:12:44Z INFO CommandLineParser] Adding Command: run
+[2025-05-12 10:12:44Z INFO Listener] Arguments parsed
+[2025-05-12 10:12:44Z INFO Runner] ExecuteCommand
+[2025-05-12 10:12:44Z INFO ConfigurationStore] currentAssemblyLocation: D:\BS(CS)\Flux\actions-runner\bin\Runner.Listener.dll
+[2025-05-12 10:12:44Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:12:44Z INFO ConfigurationStore] binPath: D:\BS(CS)\Flux\actions-runner\bin
+[2025-05-12 10:12:44Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:12:44Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:12:44Z INFO ConfigurationStore] RootFolder: D:\BS(CS)\Flux\actions-runner
+[2025-05-12 10:12:44Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:12:44Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:12:44Z INFO HostContext] Well known config file 'Runner': 'D:\BS(CS)\Flux\actions-runner\.runner'
+[2025-05-12 10:12:44Z INFO ConfigurationStore] ConfigFilePath: D:\BS(CS)\Flux\actions-runner\.runner
+[2025-05-12 10:12:44Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:12:44Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:12:44Z INFO HostContext] Well known config file 'Credentials': 'D:\BS(CS)\Flux\actions-runner\.credentials'
+[2025-05-12 10:12:44Z INFO ConfigurationStore] CredFilePath: D:\BS(CS)\Flux\actions-runner\.credentials
+[2025-05-12 10:12:44Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:12:44Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:12:44Z INFO HostContext] Well known config file 'MigratedCredentials': 'D:\BS(CS)\Flux\actions-runner\.credentials_migrated'
+[2025-05-12 10:12:44Z INFO ConfigurationStore] MigratedCredFilePath: D:\BS(CS)\Flux\actions-runner\.credentials_migrated
+[2025-05-12 10:12:44Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:12:44Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:12:44Z INFO HostContext] Well known config file 'Service': 'D:\BS(CS)\Flux\actions-runner\.service'
+[2025-05-12 10:12:44Z INFO ConfigurationStore] ServiceConfigFilePath: D:\BS(CS)\Flux\actions-runner\.service
+[2025-05-12 10:12:44Z INFO CommandSettings] Flag 'help': 'False'
+[2025-05-12 10:12:44Z INFO CommandSettings] Flag 'version': 'False'
+[2025-05-12 10:12:44Z INFO CommandSettings] Flag 'commit': 'False'
+[2025-05-12 10:12:44Z INFO CommandSettings] Flag 'check': 'False'
+[2025-05-12 10:12:44Z INFO CommandSettings] Command 'configure': 'False'
+[2025-05-12 10:12:44Z INFO CommandSettings] Command 'remove': 'False'
+[2025-05-12 10:12:44Z INFO CommandSettings] Command 'warmup': 'False'
+[2025-05-12 10:12:44Z INFO ConfigurationManager] LoadSettings
+[2025-05-12 10:12:44Z INFO ConfigurationStore] IsConfigured()
+[2025-05-12 10:12:44Z INFO ConfigurationStore] IsConfigured: True
+[2025-05-12 10:12:44Z INFO ConfigurationManager] Is configured: True
+[2025-05-12 10:12:44Z INFO ConfigurationStore] Read setting file: 305 chars
+[2025-05-12 10:12:44Z INFO ConfigurationManager] Settings Loaded
+[2025-05-12 10:12:44Z INFO ConfigurationStore] IsServiceConfigured()
+[2025-05-12 10:12:44Z INFO ConfigurationStore] IsServiceConfigured: False
+[2025-05-12 10:12:44Z INFO CommandSettings] Command 'run': 'True'
+[2025-05-12 10:12:44Z INFO ConfigurationStore] IsConfigured()
+[2025-05-12 10:12:44Z INFO ConfigurationStore] IsConfigured: True
+[2025-05-12 10:12:44Z INFO ConfigurationManager] Is configured: True
+[2025-05-12 10:12:44Z INFO Runner] Could not parse the argument value '' for StartupType. Defaulting to Manual
+[2025-05-12 10:12:44Z INFO Runner] Set runner startup type - Manual
+[2025-05-12 10:12:44Z INFO CommandSettings] Flag 'once': 'False'
+[2025-05-12 10:12:44Z INFO CommandSettings] Flag 'once': 'False'
+[2025-05-12 10:12:44Z INFO Runner] RunAsync
+[2025-05-12 10:12:44Z INFO ConfigurationManager] LoadSettings
+[2025-05-12 10:12:44Z INFO ConfigurationStore] IsConfigured()
+[2025-05-12 10:12:44Z INFO ConfigurationStore] IsConfigured: True
+[2025-05-12 10:12:44Z INFO ConfigurationManager] Is configured: True
+[2025-05-12 10:12:44Z INFO ConfigurationManager] Settings Loaded
+[2025-05-12 10:12:44Z INFO MessageListener] {
+  "AgentId": 21,
+  "AgentName": "DESKTOP-J3BA5A9",
+  "PoolId": 1,
+  "PoolName": "Default",
+  "ServerUrl": "https://pipelinesghubeus2.actions.githubusercontent.com/Tj8oyLxS2V68oiAJ5roUiyLEH828d1rIBuV9k9I67M0dMiqWfk/",
+  "GitHubUrl": "https://github.com/mUsman2003/Flux",
+  "WorkFolder": "_work"
+}
+[2025-05-12 10:12:44Z INFO MessageListener] Loading Credentials
+[2025-05-12 10:12:44Z INFO ConfigurationStore] HasCredentials()
+[2025-05-12 10:12:44Z INFO ConfigurationStore] stored True
+[2025-05-12 10:12:44Z INFO CredentialManager] GetCredentialProvider
+[2025-05-12 10:12:44Z INFO CredentialManager] Creating type OAuth
+[2025-05-12 10:12:44Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-12 10:12:44Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:12:44Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 10:12:44Z INFO HostContext] Well known config file 'RSACredentials': 'D:\BS(CS)\Flux\actions-runner\.credentials_rsaparams'
+[2025-05-12 10:12:44Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\BS(CS)\Flux\actions-runner\.credentials_rsaparams
+[2025-05-12 10:12:44Z INFO MessageListener] Attempt to create session.
+[2025-05-12 10:12:44Z INFO MessageListener] Connecting to the Runner Server...
+[2025-05-12 10:12:44Z INFO RunnerServer] EstablishVssConnection
+[2025-05-12 10:12:44Z INFO RunnerServer] Establish connection with 100 seconds timeout.
+[2025-05-12 10:12:44Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-05-12 10:12:45Z INFO RunnerServer] EstablishVssConnection
+[2025-05-12 10:12:45Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2025-05-12 10:12:45Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-05-12 10:12:45Z INFO RunnerServer] EstablishVssConnection
+[2025-05-12 10:12:45Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2025-05-12 10:12:45Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-05-12 10:12:46Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-05-12 10:12:46Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-05-12 10:12:46Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-05-12 10:12:46Z INFO MessageListener] VssConnection created
+[2025-05-12 10:12:46Z INFO Terminal] WRITE LINE: 
+[2025-05-12 10:12:46Z INFO Terminal] WRITE LINE: 
+[2025-05-12 10:12:47Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\BS(CS)\Flux\actions-runner\.credentials_rsaparams
+[2025-05-12 10:12:47Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\BS(CS)\Flux\actions-runner\.credentials_rsaparams
+[2025-05-12 10:12:48Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-05-12 10:12:49Z INFO MessageListener] Session created.
+[2025-05-12 10:12:49Z INFO Terminal] WRITE LINE: Current runner version: '2.317.0'
+[2025-05-12 10:12:49Z INFO Terminal] WRITE LINE: 2025-05-12 10:12:49Z: Listening for Jobs
+[2025-05-12 10:12:49Z INFO JobDispatcher] Set runner/worker IPC timeout to 30 seconds.
+[2025-05-12 10:12:49Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-05-12 10:12:49Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\BS(CS)\Flux\actions-runner\.credentials_rsaparams
+[2025-05-12 10:12:50Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-05-12 10:13:41Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-05-12 10:14:02Z INFO MessageListener] Message '7722676569603850726' received from session 'c955b842-26ca-4718-b691-e14fba10ef64'.
+[2025-05-12 10:14:02Z INFO ConfigurationStore] HasCredentials()
+[2025-05-12 10:14:02Z INFO ConfigurationStore] stored True
+[2025-05-12 10:14:02Z INFO CredentialManager] GetCredentialProvider
+[2025-05-12 10:14:02Z INFO CredentialManager] Creating type OAuth
+[2025-05-12 10:14:02Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-12 10:14:02Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\BS(CS)\Flux\actions-runner\.credentials_rsaparams
+[2025-05-12 10:14:02Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\BS(CS)\Flux\actions-runner\.credentials_rsaparams
+[2025-05-12 10:14:02Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\BS(CS)\Flux\actions-runner\.credentials_rsaparams
+[2025-05-12 10:14:03Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-05-12 10:14:05Z INFO JobDispatcher] Job request 0 for plan 82c1943f-855d-4f97-94f5-5d248a141fae job 268f81ab-9504-52ad-b66d-097c39cc976f received.
+[2025-05-12 10:14:05Z INFO MessageListener] Received job status event. JobState: Busy
+[2025-05-12 10:14:05Z INFO MessageListener] _getMessagesTokenSource is already disposed.
+[2025-05-12 10:14:05Z INFO Terminal] WRITE LINE: 2025-05-12 10:14:05Z: Running job: Deploy Application using ArgoCD
+[2025-05-12 10:14:05Z INFO JobDispatcher] Start renew job request 0 for job 268f81ab-9504-52ad-b66d-097c39cc976f.
+[2025-05-12 10:14:06Z INFO JobDispatcher] Successfully renew job 268f81ab-9504-52ad-b66d-097c39cc976f, job is valid till 12/05/2025 10:24:05 am
+[2025-05-12 10:14:06Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:06Z INFO ProcessInvokerWrapper] Starting process:
+[2025-05-12 10:14:06Z INFO ProcessInvokerWrapper]   File name: 'D:\BS(CS)\Flux\actions-runner\bin\Runner.Worker.exe'
+[2025-05-12 10:14:06Z INFO ProcessInvokerWrapper]   Arguments: 'spawnclient 2416 2432'
+[2025-05-12 10:14:06Z INFO ProcessInvokerWrapper]   Working directory: 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 10:14:06Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-05-12 10:14:06Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-05-12 10:14:06Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'True'
+[2025-05-12 10:14:06Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-05-12 10:14:06Z INFO ProcessInvokerWrapper]   Persist current code page: 'False'
+[2025-05-12 10:14:06Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-05-12 10:14:06Z INFO ProcessInvokerWrapper]   High priority process: 'True'
+[2025-05-12 10:14:06Z INFO ProcessInvokerWrapper] Process started with process id 10888, waiting for process exit.
+[2025-05-12 10:14:06Z INFO JobDispatcher] Send job request message to worker for job 268f81ab-9504-52ad-b66d-097c39cc976f.
+[2025-05-12 10:14:07Z INFO ProcessChannel] Sending message of length 21162, with hash 'eefb4cb32b9e147a9ba1d9edb2b720c066694e0b3cb8f106ed427b3c389ca26a'
+[2025-05-12 10:14:07Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-05-12 10:14:07Z INFO JobNotification] Entering JobStarted Notification
+[2025-05-12 10:14:07Z INFO JobNotification] Entering StartMonitor
+[2025-05-12 10:14:58Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-05-12 10:15:07Z INFO JobDispatcher] Successfully renew job 268f81ab-9504-52ad-b66d-097c39cc976f, job is valid till 12/05/2025 10:25:06 am
+[2025-05-12 10:15:46Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:15:46Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-05-12 10:15:46Z INFO ProcessInvokerWrapper] Finished process 10888 with exit code 102, and elapsed time 00:01:39.5360708.
+[2025-05-12 10:15:46Z INFO JobDispatcher] Worker finished for job 268f81ab-9504-52ad-b66d-097c39cc976f. Code: 102
+[2025-05-12 10:15:46Z INFO JobDispatcher] finish job request for job 268f81ab-9504-52ad-b66d-097c39cc976f with result: Failed
+[2025-05-12 10:15:46Z INFO Terminal] WRITE LINE: 2025-05-12 10:15:46Z: Job Deploy Application using ArgoCD completed with result: Failed
+[2025-05-12 10:15:46Z INFO JobDispatcher] Stop renew job request for job 268f81ab-9504-52ad-b66d-097c39cc976f.
+[2025-05-12 10:15:46Z INFO JobDispatcher] job renew has been cancelled, stop renew job 268f81ab-9504-52ad-b66d-097c39cc976f.
+[2025-05-12 10:15:46Z INFO JobNotification] Entering JobCompleted Notification
+[2025-05-12 10:15:46Z INFO JobNotification] Entering EndMonitor
+[2025-05-12 10:15:46Z INFO MessageListener] Received job status event. JobState: Online
+[2025-05-12 10:15:49Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-05-12 10:16:39Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
