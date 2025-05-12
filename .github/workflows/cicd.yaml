@@ -55,7 +55,15 @@ jobs:
     - name: Update image tag in values.yaml
       run: |
         pip install yq
-        yq -i ".backend.tag = \"${{ needs.ci.outputs.image_tag }}\" | .frontend.tag = \"${{ needs.ci.outputs.image_tag }}\"" myapp/values.yaml
+        python -c "
+        import yaml
+        with open('myapp/values.yaml', 'r') as f:
+            values = yaml.safe_load(f)
+        values['backend']['tag'] = '${{ needs.ci.outputs.image_tag }}'
+        values['frontend']['tag'] = '${{ needs.ci.outputs.image_tag }}'
+        with open('myapp/values.yaml', 'w') as f:
+            yaml.dump(values, f)
+        "
 
     - name: Commit changes
       uses: EndBug/add-and-commit@v9
