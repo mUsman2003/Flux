@@ -1,0 +1,181 @@
+[2025-05-12 05:39:35Z INFO HostContext] No proxy settings were found based on environmental variables (http_proxy/https_proxy/HTTP_PROXY/HTTPS_PROXY)
+[2025-05-12 05:39:35Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 05:39:35Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 05:39:35Z INFO HostContext] Well known config file 'Credentials': 'D:\BS(CS)\Flux\actions-runner\.credentials'
+[2025-05-12 05:39:35Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 05:39:35Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 05:39:35Z INFO HostContext] Well known config file 'Runner': 'D:\BS(CS)\Flux\actions-runner\.runner'
+[2025-05-12 05:39:35Z INFO Listener] Runner is built for Windows (X64) - win-x64.
+[2025-05-12 05:39:35Z INFO Listener] RuntimeInformation: Microsoft Windows 10.0.26100.
+[2025-05-12 05:39:35Z INFO Listener] Version: 2.317.0
+[2025-05-12 05:39:35Z INFO Listener] Commit: 6dc005ee3690a0303e0d7269b6f60295d22dcfad
+[2025-05-12 05:39:35Z INFO Listener] Culture: en-PK
+[2025-05-12 05:39:35Z INFO Listener] UI Culture: en-US
+[2025-05-12 05:39:35Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 05:39:35Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 05:39:35Z INFO Listener] Validating directory permissions for: 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 05:39:35Z INFO CommandLineParser] Parse
+[2025-05-12 05:39:35Z INFO CommandLineParser] Parsing 5 args
+[2025-05-12 05:39:35Z INFO CommandLineParser] parsing argument
+[2025-05-12 05:39:35Z INFO CommandLineParser] HasArgs: False
+[2025-05-12 05:39:35Z INFO CommandLineParser] Adding Command: configure
+[2025-05-12 05:39:35Z INFO CommandLineParser] parsing argument
+[2025-05-12 05:39:35Z INFO CommandLineParser] HasArgs: True
+[2025-05-12 05:39:35Z INFO CommandLineParser] arg: url
+[2025-05-12 05:39:35Z INFO CommandLineParser] parsing argument
+[2025-05-12 05:39:35Z INFO CommandLineParser] HasArgs: True
+[2025-05-12 05:39:35Z INFO CommandLineParser] Adding option 'url': 'https://github.com/mUsman2003/Flux'
+[2025-05-12 05:39:35Z INFO CommandLineParser] parsing argument
+[2025-05-12 05:39:35Z INFO CommandLineParser] HasArgs: True
+[2025-05-12 05:39:35Z INFO CommandLineParser] arg: token
+[2025-05-12 05:39:35Z INFO CommandLineParser] parsing argument
+[2025-05-12 05:39:35Z INFO CommandLineParser] HasArgs: True
+[2025-05-12 05:39:35Z INFO CommandLineParser] Adding option 'token': '***'
+[2025-05-12 05:39:35Z INFO Listener] Arguments parsed
+[2025-05-12 05:39:35Z INFO Runner] ExecuteCommand
+[2025-05-12 05:39:35Z INFO ConfigurationStore] currentAssemblyLocation: D:\BS(CS)\Flux\actions-runner\bin\Runner.Listener.dll
+[2025-05-12 05:39:35Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 05:39:35Z INFO ConfigurationStore] binPath: D:\BS(CS)\Flux\actions-runner\bin
+[2025-05-12 05:39:35Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 05:39:35Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 05:39:35Z INFO ConfigurationStore] RootFolder: D:\BS(CS)\Flux\actions-runner
+[2025-05-12 05:39:35Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 05:39:35Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 05:39:35Z INFO HostContext] Well known config file 'Runner': 'D:\BS(CS)\Flux\actions-runner\.runner'
+[2025-05-12 05:39:35Z INFO ConfigurationStore] ConfigFilePath: D:\BS(CS)\Flux\actions-runner\.runner
+[2025-05-12 05:39:35Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 05:39:35Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 05:39:35Z INFO HostContext] Well known config file 'Credentials': 'D:\BS(CS)\Flux\actions-runner\.credentials'
+[2025-05-12 05:39:35Z INFO ConfigurationStore] CredFilePath: D:\BS(CS)\Flux\actions-runner\.credentials
+[2025-05-12 05:39:35Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 05:39:35Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 05:39:35Z INFO HostContext] Well known config file 'MigratedCredentials': 'D:\BS(CS)\Flux\actions-runner\.credentials_migrated'
+[2025-05-12 05:39:35Z INFO ConfigurationStore] MigratedCredFilePath: D:\BS(CS)\Flux\actions-runner\.credentials_migrated
+[2025-05-12 05:39:35Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 05:39:35Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 05:39:35Z INFO HostContext] Well known config file 'Service': 'D:\BS(CS)\Flux\actions-runner\.service'
+[2025-05-12 05:39:35Z INFO ConfigurationStore] ServiceConfigFilePath: D:\BS(CS)\Flux\actions-runner\.service
+[2025-05-12 05:39:35Z INFO CommandSettings] Flag 'help': 'False'
+[2025-05-12 05:39:35Z INFO CommandSettings] Flag 'version': 'False'
+[2025-05-12 05:39:35Z INFO CommandSettings] Flag 'commit': 'False'
+[2025-05-12 05:39:35Z INFO CommandSettings] Flag 'check': 'False'
+[2025-05-12 05:39:35Z INFO CommandSettings] Command 'configure': 'True'
+[2025-05-12 05:39:35Z INFO Terminal] WRITE LINE: 
+[2025-05-12 05:39:35Z INFO Terminal] WRITE LINE: --------------------------------------------------------------------------------
+[2025-05-12 05:39:35Z INFO Terminal] WRITE LINE: |        ____ _ _   _   _       _          _        _   _                      |
+[2025-05-12 05:39:35Z INFO Terminal] WRITE LINE: |       / ___(_) |_| | | |_   _| |__      / \   ___| |_(_) ___  _ __  ___      |
+[2025-05-12 05:39:35Z INFO Terminal] WRITE LINE: |      | |  _| | __| |_| | | | | '_ \    / _ \ / __| __| |/ _ \| '_ \/ __|     |
+[2025-05-12 05:39:35Z INFO Terminal] WRITE LINE: |      | |_| | | |_|  _  | |_| | |_) |  / ___ \ (__| |_| | (_) | | | \__ \     |
+[2025-05-12 05:39:35Z INFO Terminal] WRITE LINE: |       \____|_|\__|_| |_|\__,_|_.__/  /_/   \_\___|\__|_|\___/|_| |_|___/     |
+[2025-05-12 05:39:35Z INFO Terminal] WRITE LINE: |                                                                              |
+[2025-05-12 05:39:35Z INFO Terminal] WRITE: |                       
+[2025-05-12 05:39:35Z INFO Terminal] WRITE: Self-hosted runner registration
+[2025-05-12 05:39:35Z INFO Terminal] WRITE LINE:                         |
+[2025-05-12 05:39:35Z INFO Terminal] WRITE LINE: |                                                                              |
+[2025-05-12 05:39:35Z INFO Terminal] WRITE LINE: --------------------------------------------------------------------------------
+[2025-05-12 05:39:35Z INFO ConfigurationManager] ConfigureAsync
+[2025-05-12 05:39:35Z INFO CommandSettings] Flag 'generateServiceConfig': 'False'
+[2025-05-12 05:39:35Z INFO ConfigurationStore] IsConfigured()
+[2025-05-12 05:39:35Z INFO ConfigurationStore] IsConfigured: False
+[2025-05-12 05:39:35Z INFO ConfigurationManager] Is configured: False
+[2025-05-12 05:39:35Z INFO CommandSettings] Arg 'url': 'https://github.com/mUsman2003/Flux'
+[2025-05-12 05:39:35Z INFO CommandSettings] Remove url from Arg dictionary.
+[2025-05-12 05:39:35Z INFO CommandSettings] Arg 'token': '***'
+[2025-05-12 05:39:35Z INFO CommandSettings] Remove token from Arg dictionary.
+[2025-05-12 05:39:36Z INFO ConfigurationManager] Http response code: OK from 'POST https://api.github.com/actions/runner-registration' (E59B:29411C:438192:58AD9C:6821ADC7)
+[2025-05-12 05:39:36Z INFO ConfigurationManager] Using V2 flow: False
+[2025-05-12 05:39:36Z INFO ConfigurationManager] cred retrieved via GitHub auth
+[2025-05-12 05:39:36Z INFO RunnerServer] EstablishVssConnection
+[2025-05-12 05:39:36Z INFO RunnerServer] Establish connection with 100 seconds timeout.
+[2025-05-12 05:39:36Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-05-12 05:39:36Z INFO RunnerServer] EstablishVssConnection
+[2025-05-12 05:39:36Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2025-05-12 05:39:36Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-05-12 05:39:36Z INFO RunnerServer] EstablishVssConnection
+[2025-05-12 05:39:36Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2025-05-12 05:39:36Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-05-12 05:39:38Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-05-12 05:39:38Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-05-12 05:39:38Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-05-12 05:39:38Z INFO Terminal] WRITE LINE: 
+[2025-05-12 05:39:38Z INFO ConfigurationManager] Test Connection complete.
+[2025-05-12 05:39:38Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-05-12 05:39:38Z INFO HostContext] Well known directory 'Root': 'D:\BS(CS)\Flux\actions-runner'
+[2025-05-12 05:39:38Z INFO HostContext] Well known config file 'RSACredentials': 'D:\BS(CS)\Flux\actions-runner\.credentials_rsaparams'
+[2025-05-12 05:39:38Z INFO RSAEncryptedFileKeyManager] Creating new RSA key using 2048-bit key length
+[2025-05-12 05:39:39Z INFO RSAEncryptedFileKeyManager] Successfully saved RSA key parameters to file D:\BS(CS)\Flux\actions-runner\.credentials_rsaparams
+[2025-05-12 05:39:39Z INFO CommandSettings] Arg 'runnergroup': ''
+[2025-05-12 05:39:39Z INFO CommandSettings] Flag 'unattended': 'False'
+[2025-05-12 05:39:39Z INFO PromptManager] ReadValue
+[2025-05-12 05:39:39Z INFO Terminal] WRITE: Enter the name of the runner group to add this runner to: 
+[2025-05-12 05:39:39Z INFO Terminal] WRITE: [press Enter for Default] 
+[2025-05-12 05:39:39Z INFO Terminal] READ LINE
+[2025-05-12 05:39:43Z INFO Terminal] Read value: ''
+[2025-05-12 05:39:43Z INFO PromptManager] Falling back to the default: 'Default'
+[2025-05-12 05:39:43Z INFO Terminal] WRITE LINE: 
+[2025-05-12 05:39:43Z INFO ConfigurationManager] Found a self-hosted runner group with id 1 and name Default
+[2025-05-12 05:39:43Z INFO CommandSettings] Flag 'disableupdate': 'False'
+[2025-05-12 05:39:43Z INFO CommandSettings] Flag 'ephemeral': 'False'
+[2025-05-12 05:39:43Z INFO CommandSettings] Arg 'name': ''
+[2025-05-12 05:39:43Z INFO CommandSettings] Flag 'unattended': 'False'
+[2025-05-12 05:39:43Z INFO PromptManager] ReadValue
+[2025-05-12 05:39:43Z INFO Terminal] WRITE: Enter the name of runner: 
+[2025-05-12 05:39:43Z INFO Terminal] WRITE: [press Enter for DESKTOP-J3BA5A9] 
+[2025-05-12 05:39:43Z INFO Terminal] READ LINE
+[2025-05-12 05:39:47Z INFO Terminal] Read value: ''
+[2025-05-12 05:39:47Z INFO PromptManager] Falling back to the default: 'DESKTOP-J3BA5A9'
+[2025-05-12 05:39:47Z INFO Terminal] WRITE LINE: 
+[2025-05-12 05:39:47Z INFO CommandSettings] Arg 'labels': ''
+[2025-05-12 05:39:47Z INFO CommandSettings] Flag 'unattended': 'False'
+[2025-05-12 05:39:47Z INFO PromptManager] ReadValue
+[2025-05-12 05:39:47Z INFO Terminal] WRITE: This runner will have the following labels: 'self-hosted', 'Windows', 'X64' 
+Enter any additional labels (ex. label-1,label-2): 
+[2025-05-12 05:39:47Z INFO Terminal] WRITE: [press Enter to skip] 
+[2025-05-12 05:39:47Z INFO Terminal] READ LINE
+[2025-05-12 05:39:50Z INFO Terminal] Read value: ''
+[2025-05-12 05:39:50Z INFO Terminal] WRITE LINE: 
+[2025-05-12 05:39:50Z INFO CommandSettings] Flag 'disableupdate': 'False'
+[2025-05-12 05:39:50Z INFO CommandSettings] Flag 'no-default-labels': 'False'
+[2025-05-12 05:39:50Z INFO CommandSettings] Flag 'disableupdate': 'False'
+[2025-05-12 05:39:50Z INFO CommandSettings] Flag 'ephemeral': 'False'
+[2025-05-12 05:39:50Z INFO ConfigurationStore] Saving OAuth credential @ D:\BS(CS)\Flux\actions-runner\.credentials
+[2025-05-12 05:39:50Z INFO ConfigurationStore] Credentials Saved.
+[2025-05-12 05:39:50Z INFO ConfigurationStore] HasCredentials()
+[2025-05-12 05:39:50Z INFO ConfigurationStore] stored True
+[2025-05-12 05:39:50Z INFO CredentialManager] GetCredentialProvider
+[2025-05-12 05:39:50Z INFO CredentialManager] Creating type OAuth
+[2025-05-12 05:39:50Z INFO CredentialManager] Creating credential type: OAuth
+[2025-05-12 05:39:50Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\BS(CS)\Flux\actions-runner\.credentials_rsaparams
+[2025-05-12 05:39:51Z INFO RunnerServer] EstablishVssConnection
+[2025-05-12 05:39:51Z INFO RunnerServer] Establish connection with 100 seconds timeout.
+[2025-05-12 05:39:51Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-05-12 05:39:51Z INFO RunnerServer] EstablishVssConnection
+[2025-05-12 05:39:51Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2025-05-12 05:39:51Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-05-12 05:39:51Z INFO RunnerServer] EstablishVssConnection
+[2025-05-12 05:39:51Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2025-05-12 05:39:51Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-05-12 05:39:52Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-05-12 05:39:52Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-05-12 05:39:52Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-05-12 05:39:52Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\BS(CS)\Flux\actions-runner\.credentials_rsaparams
+[2025-05-12 05:39:52Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\BS(CS)\Flux\actions-runner\.credentials_rsaparams
+[2025-05-12 05:39:53Z ERR  GitHubActionsService] POST request to https://tokenghub.actions.githubusercontent.com/_apis/oauth2/token/865a1082-11c3-4dc8-97f7-83593b49a86d failed. HTTP Status: BadRequest
+[2025-05-12 05:39:53Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-05-12 05:39:53Z ERR  ConfigurationManager] Catch exception during test agent connection.
+[2025-05-12 05:39:53Z ERR  ConfigurationManager] GitHub.Services.OAuth.VssOAuthTokenRequestException: The token expired on 05/12/2025 05:44:53. Current server time is 05/12/2025 08:14:17.
+   at GitHub.Services.OAuth.VssOAuthTokenProvider.OnGetTokenAsync(IssuedToken failedToken, CancellationToken cancellationToken)
+   at GitHub.Services.Common.IssuedTokenProvider.GetTokenOperation.GetTokenAsync(VssTraceActivity traceActivity)
+   at GitHub.Services.Common.IssuedTokenProvider.GetTokenAsync(IssuedToken failedToken, CancellationToken cancellationToken)
+   at GitHub.Services.Common.VssHttpMessageHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   at GitHub.Services.Common.VssHttpRetryMessageHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at GitHub.Services.WebApi.VssHttpClientBase.SendAsync(HttpRequestMessage message, HttpCompletionOption completionOption, Object userState, CancellationToken cancellationToken)
+   at GitHub.Services.WebApi.VssHttpClientBase.SendAsync[T](HttpRequestMessage message, Object userState, CancellationToken cancellationToken)
+   at GitHub.Services.WebApi.VssHttpClientBase.SendAsync[T](HttpMethod method, IEnumerable`1 additionalHeaders, Guid locationId, Object routeValues, ApiResourceVersion version, HttpContent content, IEnumerable`1 queryParameters, Object userState, CancellationToken cancellationToken)
+   at GitHub.Runner.Listener.Configuration.ConfigurationManager.ConfigureAsync(CommandSettings command)
+[2025-05-12 05:39:53Z ERR  Runner] System.Exception: The local machine's clock may be out of sync with the server time by more than five minutes. Please sync your clock with your domain or internet time and try again.
+   at GitHub.Runner.Listener.Configuration.ConfigurationManager.ConfigureAsync(CommandSettings command)
+   at GitHub.Runner.Listener.Runner.ExecuteCommand(CommandSettings command)
+[2025-05-12 05:39:53Z ERR  Terminal] WRITE ERROR: The local machine's clock may be out of sync with the server time by more than five minutes. Please sync your clock with your domain or internet time and try again.
+[2025-05-12 05:39:53Z INFO Listener] Runner execution has finished with return code 1
