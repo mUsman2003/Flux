@@ -74,13 +74,12 @@ jobs:
         add: 'charts/python-app/values.yaml'
         push: true
         github_token: ${{ secrets.PAT }}
+
     - name: Install argocd
-      shell: bash
+      shell: pwsh
       run: |
-        curl -ksSL -o argocd https://my-argocd-server.argocd/download/argocd-linux-amd64
-        # curl -ksSL -o argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
-        chmod +x argocd
-        sudo mv ./argocd /usr/local/bin/argocd
+        Invoke-WebRequest -Uri "https://github.com/argoproj/argo-cd/releases/latest/download/argocd-windows-amd64.exe" -OutFile "argocd.exe"
+        Move-Item -Force .\argocd.exe "C:\Windows\System32\argocd.exe"
 
     - name: Argocd app sync
       shell: bash

@@ -191,3 +191,55 @@
 [2025-05-12 10:01:34Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
 [2025-05-12 10:02:25Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
 [2025-05-12 10:03:15Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-05-12 10:04:06Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-05-12 10:04:16Z INFO Terminal] WRITE LINE: Exiting...
+[2025-05-12 10:04:16Z INFO ConfigurationStore] IsServiceConfigured()
+[2025-05-12 10:04:16Z INFO ConfigurationStore] IsServiceConfigured: False
+[2025-05-12 10:04:16Z INFO HostContext] Runner will be shutdown for UserCancelled
+[2025-05-12 10:04:16Z WARN GitHubActionsService] GET request to https://broker.actions.githubusercontent.com/message?sessionId=01982f8a-f606-480d-8659-0a6211913847&status=Online&runnerVersion=2.317.0&os=Windows&architecture=X64&disableUpdate=false has been cancelled.
+[2025-05-12 10:04:16Z ERR  BrokerServer] Catch exception during request
+[2025-05-12 10:04:16Z ERR  BrokerServer] System.Threading.Tasks.TaskCanceledException: The operation was canceled.
+ ---> System.IO.IOException: Unable to read data from the transport connection: The I/O operation has been aborted because of either a thread exit or an application request..
+ ---> System.Net.Sockets.SocketException (995): The I/O operation has been aborted because of either a thread exit or an application request.
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](TIOAdapter adapter)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](TIOAdapter adapter, Memory`1 buffer)
+   at System.Net.Http.HttpConnection.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpClient.HandleFailure(Exception e, Boolean telemetryStarted, HttpResponseMessage response, CancellationTokenSource cts, CancellationToken cancellationToken, CancellationTokenSource pendingRequestsCts)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at Sdk.WebApi.WebApi.RawHttpClientBase.SendAsync(HttpRequestMessage message, HttpCompletionOption completionOption, Object userState, CancellationToken cancellationToken)
+   at Sdk.WebApi.WebApi.RawHttpClientBase.SendAsync[T](HttpRequestMessage message, Object userState, CancellationToken cancellationToken)
+   at Sdk.WebApi.WebApi.RawHttpClientBase.SendAsync[T](HttpMethod method, IEnumerable`1 additionalHeaders, Uri requestUri, HttpContent content, IEnumerable`1 queryParameters, Object userState, CancellationToken cancellationToken)
+   at GitHub.Actions.RunService.WebApi.BrokerHttpClient.GetRunnerMessageAsync(Nullable`1 sessionId, String runnerVersion, Nullable`1 status, String os, String architecture, Nullable`1 disableUpdate, CancellationToken cancellationToken)
+   at GitHub.Runner.Common.BrokerServer.<>c__DisplayClass7_0.<<GetRunnerMessageAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at GitHub.Runner.Common.RunnerService.RetryRequest[T](Func`1 func, CancellationToken cancellationToken, Int32 maxRetryAttemptsCount, Func`2 shouldRetry)
+[2025-05-12 10:04:16Z ERR  BrokerServer] #####################################################
+[2025-05-12 10:04:16Z ERR  BrokerServer] System.IO.IOException: Unable to read data from the transport connection: The I/O operation has been aborted because of either a thread exit or an application request..
+ ---> System.Net.Sockets.SocketException (995): The I/O operation has been aborted because of either a thread exit or an application request.
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](TIOAdapter adapter)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](TIOAdapter adapter, Memory`1 buffer)
+   at System.Net.Http.HttpConnection.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+[2025-05-12 10:04:16Z ERR  BrokerServer] #####################################################
+[2025-05-12 10:04:16Z ERR  BrokerServer] System.Net.Sockets.SocketException (995): The I/O operation has been aborted because of either a thread exit or an application request.
+[2025-05-12 10:04:16Z WARN BrokerServer] Back off 9.133 seconds before next retry. 4 attempt left.
+[2025-05-12 10:04:16Z INFO MessageListener] Get next message has been cancelled.
+[2025-05-12 10:04:16Z INFO JobDispatcher] Shutting down JobDispatcher. Make sure all WorkerDispatcher has finished.
+[2025-05-12 10:04:16Z INFO JobDispatcher] Ensure WorkerDispatcher for job 2cc8ef3d-e6ea-5402-8a6d-9ae7f09bb1f6 run to finish, cancel any running job.
+[2025-05-12 10:04:16Z INFO JobDispatcher] Job request 2cc8ef3d-e6ea-5402-8a6d-9ae7f09bb1f6 processed succeed.
+[2025-05-12 10:04:16Z INFO Runner] Deleting Runner Session...
+[2025-05-12 10:04:16Z INFO Terminal] WRITE LINE: Exiting...
+[2025-05-12 10:04:16Z INFO ConfigurationStore] IsServiceConfigured()
+[2025-05-12 10:04:16Z INFO ConfigurationStore] IsServiceConfigured: False
+[2025-05-12 10:04:16Z INFO HostContext] Runner will be shutdown for UserCancelled
+[2025-05-12 10:04:16Z INFO Terminal] WRITE LINE: Exiting...
+[2025-05-12 10:04:16Z INFO ConfigurationStore] IsServiceConfigured()
+[2025-05-12 10:04:16Z INFO ConfigurationStore] IsServiceConfigured: False
+[2025-05-12 10:04:16Z INFO HostContext] Runner will be shutdown for UserCancelled
+[2025-05-12 10:04:16Z INFO Listener] Runner execution been cancelled.
