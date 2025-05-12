@@ -1,0 +1,12 @@
+﻿{
+  "repositoryName": "mUsman2003/Flux",
+  "pipelineDirectory": "Flux",
+  "workspaceDirectory": "Flux\\Flux",
+  "repositories": {
+    "mUsman2003/Flux": {
+      "repositoryPath": "Flux\\Flux",
+      "lastRunOn": "05/12/2025 13:29:12 +05:00"
+    }
+  },
+  "lastRunOn": "05/12/2025 13:29:12 +05:00"
+}
