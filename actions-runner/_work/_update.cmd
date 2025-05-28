@@ -11,12 +11,12 @@ rem  UPDATELOG = _diag/SelfUpdate-UTC.log
 rem  RESTARTINTERACTIVERUNNER = 0/1
 
 setlocal
-set runnerpid=17312
+set runnerpid=23652
 set runnerprocessname=Runner.Listener.exe
 set rootfolder=D:\BS(CS)\Flux\actions-runner
 set existrunnerversion=2.317.0
-set downloadrunnerversion=2.323.0
-set logfile=D:\BS(CS)\Flux\actions-runner\_diag\SelfUpdate-20250512-082607.log
+set downloadrunnerversion=2.324.0
+set logfile=D:\BS(CS)\Flux\actions-runner\_diag\SelfUpdate-20250528-155123.log
 set restartinteractiverunner=0
 
 rem log user who run the script

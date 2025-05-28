@@ -75,16 +75,21 @@ jobs:
         push: true
         github_token: ${{ secrets.PAT }}
 
-    - name: Install argocd
-      shell: cmd
+    - name: Install Argo CD
+      shell: powershell
       run: |
-        curl -L -o argocd.exe https://github.com/argoproj/argo-cd/releases/latest/download/argocd-windows-amd64.exe
-        move /Y argocd.exe C:\Windows\System32\argocd.exe
+        $ErrorActionPreference = "Stop"
+        Invoke-WebRequest -Uri "https://github.com/argoproj/argo-cd/releases/latest/download/argocd-windows-amd64.exe" -OutFile "argocd.exe"
+        if (Test-Path "argocd.exe") {
+          Write-Output "argocd.exe downloaded successfully."
+        } else {
+          throw "Download failed."
+        }
 
     - name: Argocd app sync
       shell: cmd
       run: |
-        argocd login my-argocd-server.argocd --insecure --grpc-web --username admin --password %ARGOCD_PASSWORD%
-        argocd app sync python-app
+        .\argocd.exe login my-argocd-server.argocd --insecure --grpc-web --username admin --password %ARGOCD_PASSWORD%
+        .\argocd.exe app sync python-app
       env:
         ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }}
