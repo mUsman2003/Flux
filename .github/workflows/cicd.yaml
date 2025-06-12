@@ -75,17 +75,6 @@ jobs:
         push: true
         github_token: ${{ secrets.PAT }}
 
-    - name: Install Argo CD
-      shell: powershell
-      run: |
-        $ErrorActionPreference = "Stop"
-        Invoke-WebRequest -Uri "https://github.com/argoproj/argo-cd/releases/latest/download/argocd-windows-amd64.exe" -OutFile "argocd.exe"
-        if (Test-Path "argocd.exe") {
-          Write-Output "argocd.exe downloaded successfully."
-        } else {
-          throw "Download failed."
-        }
-
     - name: Argocd app sync
       shell: cmd
       run: |
