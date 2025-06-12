@@ -9,6 +9,7 @@ jobs:
   ci:
     name: Build Docker Image and Push
     runs-on: ubuntu-latest
+    if: "!contains(join(github.event.head_commit.modified, ','), '.github/workflows/')" # ✅ Skip CI if only workflows are modified
     outputs:
       image_tag: ${{ steps.set-tag.outputs.tag }}
 
@@ -47,7 +48,7 @@ jobs:
     name: Deploy Application using ArgoCD
     needs: ci
     runs-on: self-hosted
-
+    if: contains(join(github.event.head_commit.modified, ','), '.github/workflows/')
     steps:
     - name: Checkout the Repo
       uses: actions/checkout@v3
