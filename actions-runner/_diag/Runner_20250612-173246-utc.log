@@ -135,3 +135,110 @@
 [2025-06-12 17:45:39Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
 [2025-06-12 17:46:30Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
 [2025-06-12 17:47:21Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 17:48:11Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 17:49:02Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 17:49:53Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 17:50:43Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 17:51:34Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 17:52:26Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 17:53:17Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 17:54:08Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 17:54:58Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 17:55:49Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 17:56:40Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 17:56:52Z INFO MessageListener] Message '5278369111332089130' received from session '32f98eb5-20c0-46fc-ad6a-777df110c453'.
+[2025-06-12 17:56:52Z INFO ConfigurationStore] HasCredentials()
+[2025-06-12 17:56:52Z INFO ConfigurationStore] stored True
+[2025-06-12 17:56:52Z INFO CredentialManager] GetCredentialProvider
+[2025-06-12 17:56:52Z INFO CredentialManager] Creating type OAuth
+[2025-06-12 17:56:52Z INFO CredentialManager] Creating credential type: OAuth
+[2025-06-12 17:56:52Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\BS(CS)\Flux\actions-runner\.credentials_rsaparams
+[2025-06-12 17:56:52Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\BS(CS)\Flux\actions-runner\.credentials_rsaparams
+[2025-06-12 17:56:52Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file D:\BS(CS)\Flux\actions-runner\.credentials_rsaparams
+[2025-06-12 17:56:53Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-06-12 17:56:55Z INFO JobDispatcher] Job request 0 for plan 3cb31fa4-aef8-40a2-8cd5-bdbe8ad4bfd1 job be658109-313f-5716-af76-a4c866c9e7dc received.
+[2025-06-12 17:56:55Z INFO MessageListener] Received job status event. JobState: Busy
+[2025-06-12 17:56:55Z INFO MessageListener] _getMessagesTokenSource is already disposed.
+[2025-06-12 17:56:55Z INFO Terminal] WRITE LINE: 2025-06-12 17:56:55Z: Running job: Deploy Application using ArgoCD
+[2025-06-12 17:56:55Z INFO JobDispatcher] Start renew job request 0 for job be658109-313f-5716-af76-a4c866c9e7dc.
+[2025-06-12 17:56:56Z INFO JobDispatcher] Successfully renew job be658109-313f-5716-af76-a4c866c9e7dc, job is valid till 12/06/2025 6:06:56 pm
+[2025-06-12 17:56:57Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 17:56:57Z INFO HostContext] Well known directory 'Bin': 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-06-12 17:56:57Z INFO ProcessInvokerWrapper] Starting process:
+[2025-06-12 17:56:57Z INFO ProcessInvokerWrapper]   File name: 'D:\BS(CS)\Flux\actions-runner\bin\Runner.Worker.exe'
+[2025-06-12 17:56:57Z INFO ProcessInvokerWrapper]   Arguments: 'spawnclient 2404 2428'
+[2025-06-12 17:56:57Z INFO ProcessInvokerWrapper]   Working directory: 'D:\BS(CS)\Flux\actions-runner\bin'
+[2025-06-12 17:56:57Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-06-12 17:56:57Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-06-12 17:56:57Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'True'
+[2025-06-12 17:56:57Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-06-12 17:56:57Z INFO ProcessInvokerWrapper]   Persist current code page: 'False'
+[2025-06-12 17:56:57Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-06-12 17:56:57Z INFO ProcessInvokerWrapper]   High priority process: 'True'
+[2025-06-12 17:56:58Z INFO ProcessInvokerWrapper] Process started with process id 16252, waiting for process exit.
+[2025-06-12 17:56:58Z INFO JobDispatcher] Send job request message to worker for job be658109-313f-5716-af76-a4c866c9e7dc.
+[2025-06-12 17:56:59Z INFO ProcessChannel] Sending message of length 20895, with hash '508818989e59cbd2476521e7a14b08478993edcb4447e3b8d666d72fe0cc9c82'
+[2025-06-12 17:57:10Z INFO JobNotification] Entering JobStarted Notification
+[2025-06-12 17:57:10Z INFO JobNotification] Entering StartMonitor
+[2025-06-12 17:57:48Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 17:57:59Z INFO JobDispatcher] Successfully renew job be658109-313f-5716-af76-a4c866c9e7dc, job is valid till 12/06/2025 6:07:59 pm
+[2025-06-12 17:58:38Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 17:58:59Z INFO JobDispatcher] Successfully renew job be658109-313f-5716-af76-a4c866c9e7dc, job is valid till 12/06/2025 6:09:00 pm
+[2025-06-12 17:59:29Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 18:00:00Z INFO JobDispatcher] Successfully renew job be658109-313f-5716-af76-a4c866c9e7dc, job is valid till 12/06/2025 6:10:00 pm
+[2025-06-12 18:00:19Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 18:01:00Z INFO JobDispatcher] Successfully renew job be658109-313f-5716-af76-a4c866c9e7dc, job is valid till 12/06/2025 6:11:00 pm
+[2025-06-12 18:01:10Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 18:01:58Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-06-12 18:01:58Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-06-12 18:01:58Z INFO ProcessInvokerWrapper] Finished process 16252 with exit code 102, and elapsed time 00:05:00.1319569.
+[2025-06-12 18:01:58Z INFO JobDispatcher] Worker finished for job be658109-313f-5716-af76-a4c866c9e7dc. Code: 102
+[2025-06-12 18:01:58Z INFO JobDispatcher] finish job request for job be658109-313f-5716-af76-a4c866c9e7dc with result: Failed
+[2025-06-12 18:01:58Z INFO Terminal] WRITE LINE: 2025-06-12 18:01:58Z: Job Deploy Application using ArgoCD completed with result: Failed
+[2025-06-12 18:01:58Z INFO JobDispatcher] Stop renew job request for job be658109-313f-5716-af76-a4c866c9e7dc.
+[2025-06-12 18:01:58Z INFO JobDispatcher] job renew has been cancelled, stop renew job be658109-313f-5716-af76-a4c866c9e7dc.
+[2025-06-12 18:01:58Z INFO JobNotification] Entering JobCompleted Notification
+[2025-06-12 18:01:58Z INFO JobNotification] Entering EndMonitor
+[2025-06-12 18:01:58Z INFO MessageListener] Received job status event. JobState: Online
+[2025-06-12 18:02:01Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 18:02:51Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 18:03:42Z INFO MessageListener] BrokerMigration message received. Polling Broker for messages...
+[2025-06-12 18:03:55Z INFO HostContext] Runner will be shutdown for UserCancelled
+[2025-06-12 18:03:55Z WARN GitHubActionsService] GET request to https://broker.actions.githubusercontent.com/message?sessionId=32f98eb5-20c0-46fc-ad6a-777df110c453&status=Online&runnerVersion=2.317.0&os=Windows&architecture=X64&disableUpdate=false has been cancelled.
+[2025-06-12 18:03:55Z ERR  BrokerServer] Catch exception during request
+[2025-06-12 18:03:55Z ERR  BrokerServer] System.Threading.Tasks.TaskCanceledException: The operation was canceled.
+ ---> System.IO.IOException: Unable to read data from the transport connection: The I/O operation has been aborted because of either a thread exit or an application request..
+ ---> System.Net.Sockets.SocketException (995): The I/O operation has been aborted because of either a thread exit or an application request.
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](TIOAdapter adapter)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](TIOAdapter adapter, Memory`1 buffer)
+   at System.Net.Http.HttpConnection.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpClient.HandleFailure(Exception e, Boolean telemetryStarted, HttpResponseMessage response, CancellationTokenSource cts, CancellationToken cancellationToken, CancellationTokenSource pendingRequestsCts)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at Sdk.WebApi.WebApi.RawHttpClientBase.SendAsync(HttpRequestMessage message, HttpCompletionOption completionOption, Object userState, CancellationToken cancellationToken)
+   at Sdk.WebApi.WebApi.RawHttpClientBase.SendAsync[T](HttpRequestMessage message, Object userState, CancellationToken cancellationToken)
+   at Sdk.WebApi.WebApi.RawHttpClientBase.SendAsync[T](HttpMethod method, IEnumerable`1 additionalHeaders, Uri requestUri, HttpContent content, IEnumerable`1 queryParameters, Object userState, CancellationToken cancellationToken)
+   at GitHub.Actions.RunService.WebApi.BrokerHttpClient.GetRunnerMessageAsync(Nullable`1 sessionId, String runnerVersion, Nullable`1 status, String os, String architecture, Nullable`1 disableUpdate, CancellationToken cancellationToken)
+   at GitHub.Runner.Common.BrokerServer.<>c__DisplayClass7_0.<<GetRunnerMessageAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at GitHub.Runner.Common.RunnerService.RetryRequest[T](Func`1 func, CancellationToken cancellationToken, Int32 maxRetryAttemptsCount, Func`2 shouldRetry)
+[2025-06-12 18:03:55Z ERR  BrokerServer] #####################################################
+[2025-06-12 18:03:55Z ERR  BrokerServer] System.IO.IOException: Unable to read data from the transport connection: The I/O operation has been aborted because of either a thread exit or an application request..
+ ---> System.Net.Sockets.SocketException (995): The I/O operation has been aborted because of either a thread exit or an application request.
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](TIOAdapter adapter)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](TIOAdapter adapter, Memory`1 buffer)
+   at System.Net.Http.HttpConnection.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+[2025-06-12 18:03:55Z ERR  BrokerServer] #####################################################
+[2025-06-12 18:03:55Z ERR  BrokerServer] System.Net.Sockets.SocketException (995): The I/O operation has been aborted because of either a thread exit or an application request.
+[2025-06-12 18:03:55Z WARN BrokerServer] Back off 8.791 seconds before next retry. 4 attempt left.
+[2025-06-12 18:03:55Z INFO MessageListener] Get next message has been cancelled.
+[2025-06-12 18:03:55Z INFO JobDispatcher] Shutting down JobDispatcher. Make sure all WorkerDispatcher has finished.
+[2025-06-12 18:03:55Z INFO JobDispatcher] Ensure WorkerDispatcher for job be658109-313f-5716-af76-a4c866c9e7dc run to finish, cancel any running job.
+[2025-06-12 18:03:55Z INFO JobDispatcher] Job request be658109-313f-5716-af76-a4c866c9e7dc processed succeed.
+[2025-06-12 18:03:55Z INFO Runner] Deleting Runner Session...
