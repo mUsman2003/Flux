@@ -1,20 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: flux
-  namespace: argocd
+  name: myapp
+  namespace: flux
 spec:
   project: default
-
   source:
     repoURL: https://github.com/mUsman2003/Flux
-    targetRevision: main
-    path: kubernetes
-
+    targetRevision: HEAD
+    path: myapp/templates # this must contain valid manifests
   destination:
     server: https://kubernetes.default.svc
     namespace: default
-
   syncPolicy:
     automated:
       prune: true
