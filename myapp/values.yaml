@@ -1,6 +1,6 @@
 backend:
   image: musman2003/flux-backend
-  tag: '123'
+  tag: 'latest'
 frontend:
   image: musman2003/flux-frontend
-  tag: '123'
+  tag: 'latest'

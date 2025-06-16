@@ -25,4 +25,9 @@ kubectl port-forward service/argocd-server -n argocd 8080:443
 
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 
-DOEist3LtLmjRf8y
+xYhijVrxWO-wu2N4
+
+
+
+
+argocd app create flux --repo https://github.com/mUsman2003/Flux.git --path myapp --dest-server https://kubernetes.default.svc --dest-namespace default --helm --sync-policy automated --auto-prune --self-heal
